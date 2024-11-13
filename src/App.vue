@@ -1,4 +1,5 @@
 <template>
+  <sidebar/>
     <RouterView />
 </template>
 <script></script>
@@ -12,3 +13,13 @@
   overflow-x: hidden;
 }
 </style>
+<script>
+import sidebar from "@/components/sidebar.vue";
+export default {
+  name: "App",
+  components: {
+    sidebar,
+  },
+  
+};
+</script>
