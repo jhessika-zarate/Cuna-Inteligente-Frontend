@@ -1,10 +1,11 @@
 <template>
-  <sidebar/>
+  <!--<sidebar/>-->
     <RouterView />
 </template>
 <script></script>
 
 <style >
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 #app {
   background-color: white;
   width: 100vw;
@@ -12,9 +13,13 @@
   font-family: 'Avenir Next';
   overflow-x: hidden;
 }
+body {
+  font-family: Montserrat;
+}
 </style>
 <script>
 import sidebar from "@/components/sidebar.vue";
+
 export default {
   name: "App",
   components: {
