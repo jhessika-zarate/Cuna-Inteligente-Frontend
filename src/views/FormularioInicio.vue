@@ -124,7 +124,7 @@
       submitForm() {
         console.log("Formulario enviado:", this.answers);
         alert("Formulario completado. ¡Gracias!");
-        this.$router.push('/');
+        this.$router.push('/Home');
       },
     },
   };
