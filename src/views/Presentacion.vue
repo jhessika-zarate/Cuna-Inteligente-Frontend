@@ -3,7 +3,7 @@
     
     <div class="contenedorlogo">
       <img class="logo" src="@/assets/Teddy.jpg" alt="" />
-      <button class="boton">
+      <button class="boton" @click="empezar">
         COMENZAR
     </button>
     </div>
@@ -14,6 +14,12 @@
   <script>
   export default {
     name: "ParallaxBannerWithCards",
+    methods: {
+        empezar() {
+       
+        this.$router.push('/Form');
+      },
+    }
   };
   </script>
   
