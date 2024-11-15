@@ -1,0 +1,144 @@
+<template>
+  <div class="container">
+   
+    <div class="sidebar">
+      <a href="#" @click="redirectToHome">
+        <i class="fas fa-water"></i>
+        <span>Hoy</span>
+      </a>
+      <a href="#" @click="redirectToSeguimiento">
+        <i class="fas fa-thermometer-half"></i>
+        <span>Seguimiento</span>
+      </a>
+      <a href="#" @click="redirectToDeteccionSonido">
+        <i class="fas fa-microphone-alt"></i>
+        <span>Recuerdos</span>
+      </a>
+      <a href="#" @click="redirectToHistorial">
+        <i class="fas fa-history"></i>
+        <span>Más</span>
+      </a>
+      <a href="#" @click="logout">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Salir</span>
+      </a>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  methods: {
+    redirectToHome() {
+      this.$router.push('/Home');  // Ruta para la página de "Hoy"
+    },
+    redirectToSeguimiento() {
+      this.$router.push('/Seguimiento');  // Ruta para la página de "Seguimiento"
+    },
+    redirectToDeteccionSonido() {
+      this.$router.push('/deteccion-sonido');  // Ruta para la página de "Recuerdos"
+    },
+    redirectToHistorial() {
+      this.$router.push('/historial');  // Ruta para la página de "Más"
+    },
+    logout() {
+      // Lógica de logout, por ejemplo, eliminar el token de sesión o redirigir al login
+      this.$router.push('/login');  // Redirige a la página de login
+    }
+  }
+}
+</script>
+
+<style scoped>
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+:root {
+  --accent-color: #fff;
+  --gradient-color: #FBFBFB;
+}
+
+.container {
+  display: flex;
+  flex-direction: column-reverse; /* Reordena los elementos, colocando el sidebar al final */
+  align-items: center;
+  z-index: 10000000;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-image: linear-gradient(-45deg, #e3eefe 0%, #efddfb 100%);
+}
+
+.sidebar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #ffffff;
+  border-top: 1px solid #ccc;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  transition: all 0.3s ease;
+}
+
+.sidebar a {
+  color: #707070;
+  text-align: center;
+  flex: 1;
+  padding: 10px 0;
+  font-family: 'Lato', sans-serif;
+  transition: background 0.3s, color 0.3s;
+}
+
+.sidebar a i {
+  font-size: 24px;
+  color: #569ca3;
+}
+
+.sidebar a span {
+  display: block;
+  font-size: 0.9rem;
+  color: #569ca3;
+  margin-top: 5px;
+  transition: color 0.3s;
+}
+
+.sidebar a:hover {
+  background-color: #f0f0f0;
+}
+
+.sidebar a:hover i,
+.sidebar a:hover span {
+  color: #000000;
+}
+
+.sidebar a:hover {
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para móviles */
+@media (max-width: 768px) {
+  .sidebar a span {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 540px) {
+  .sidebar a span {
+    display: none;
+  }
+
+  .sidebar a i {
+    font-size: 20px;
+  }
+}
+</style>
