@@ -18,7 +18,7 @@
         <i class="fas fa-history"></i>
         <span>Más</span>
       </a>
-      <a href="#" @click="logout">
+      <a href="#" @click="doLogout">
         <i class="fas fa-sign-out-alt"></i>
         <span>Salir</span>
       </a>
@@ -27,8 +27,22 @@
 </template>
 
 <script>
+import { useAuthStore } from "@/stores/Privado/authStore";
+
+
 export default {
+  setup() {
+    const authStore = useAuthStore();
+    return { authStore };
+  },
+
   methods: {
+    doLogout(){
+        this.authStore.logout();
+        this.$router.push("/")
+        //recargar pagina
+
+      },
     redirectToHome() {
       this.$router.push('/Home');  // Ruta para la página de "Hoy"
     },

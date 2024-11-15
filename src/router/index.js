@@ -3,6 +3,8 @@ import HomeView from '../views/HomeView.vue'
 import Presentacion from '@/views/Presentacion.vue'
 import FormularioInicio from '@/views/FormularioInicio.vue'
 import Seguimiento from '@/views/Seguimiento.vue'
+import Login from '@/views/Login.vue'
+import FormularioNuevoBebe from '@/views/FormularioNuevoBebe.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -34,6 +36,16 @@ const router = createRouter({
       name: 'Seguimiento',
       component: Seguimiento,
     },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login,
+    },
+    {
+      path: '/FormularioNuevoBebe',
+      name: 'FormularioNuevoBebe',
+      component: FormularioNuevoBebe
+    }
   ],
 })
 

@@ -91,6 +91,7 @@
 import { useBebeStore } from "@/stores/Publico/Bebe";
 import { useUsusrioStore } from "@/stores/Publico/Usuario";
 import { mapActions } from "pinia";
+import Cookies from "js-cookie";
 import { useAuthStore } from "@/stores/Privado/authStore";
 export default {
   setup() {
@@ -119,9 +120,6 @@ export default {
       currentStep: 1,
       answers: {},
       questions: [
-        { id: 1, label: "Nombre de Usuario", type: "text" },
-        { id: 2, label: "Correo Electrónico", type: "text" },
-        { id: 3, label: "Contraseña", type: "text" },
         { id: 4, label: "Nombre", type: "text" },
         { id: 5, label: "Apellido Paterno", type: "text" },
         { id: 6, label: "Apellido Materno", type: "text" },
@@ -135,11 +133,7 @@ export default {
         { id: 9, label: "Peso KG", type: "text" },
       ],
       questionsPerStep: 3,
-      stepTitles: [
-        "Primero déjanos saber un poco sobre ti",
-        "Sobre el Bebe",
-        "Sobre el Bebe",
-      ],
+      stepTitles: ["Sobre el Bebe", "Sobre el Bebe"],
     };
   },
   computed: {
@@ -168,64 +162,26 @@ export default {
         this.currentStep--;
       }
     },
-    async doLogin(datoGmail, datoContrasenia) {
-      try {
-        const credentials = {
-          gmail: datoGmail,
-          contrasenia: datoContrasenia,
-        };
-        alert("consulta", credentials);
-        console.log("consulta", credentials);
-        const response = await this.login(credentials);
-        alert("perfecto", response);
-        if (response) {
-          if (
-            response.response.type === 1 &&
-            response.response.authToken !== null
-          ) {
-            alert("perfecto");
-          } else {
-            alert("usuarii adentro o contrasenia incorrectos");
-            throw new Error("Usuario o contraseña incorrectos");
-          }
-        } else {
-          alert("usuarii o contrasenia incorrectos");
-          throw new Error("Usuario o contraseña incorrectos");
-        }
-      } catch (error) {
-        alert("usuarii o contrasenia incorrectos afuera adfuera");
-      }
-    },
     async submitForm() {
       try {
-        this.usuario.username = this.answers[1];
-        this.usuario.gmail = this.answers[2];
-        this.usuario.contrasenia = this.answers[3];
+        this.bebe.nombre = this.answers[4];
+        this.bebe.apellidopaterno = this.answers[5];
+        this.bebe.apellidomaterno = this.answers[6];
+        this.bebe.fechadenacimiento = this.answers[7];
+        this.bebe.color = this.answers[8];
+        this.bebe.idUsuario.idUsuario = Cookies.get("idUser");
+        console.log("mandamos", this.bebe);
+        const bebeResponse = await this.postBebe(this.bebe);
+        console.log("bebeResponse", bebeResponse);
+        if (bebeResponse) {
+          alert("Formulario completado. ¡Gracias!");
 
-        const usuarioResponse = await this.postUsuario(this.usuario);
-        if (usuarioResponse) {
-          this.bebe.idUsuario.idUsuario = usuarioResponse.idUsuario;
-          this.bebe.nombre = this.answers[4];
-          this.bebe.apellidopaterno = this.answers[5];
-          this.bebe.apellidomaterno = this.answers[6];
-          this.bebe.fechadenacimiento = this.answers[7];
-          this.bebe.color = this.answers[8];
-
-          const bebeResponse = await this.postBebe(this.bebe);
-          if (bebeResponse) {
-            alert("Formulario completado. ¡Gracias!");
-            //funcion doLogin
-            this.doLogin(this.usuario.gmail, this.usuario.contrasenia);
-
-            this.$router.push("/Home");
-          } else {
-            alert("Error al enviar datos del bebé.");
-          }
+          this.$router.push("/Home");
         } else {
-          alert("Error al enviar datos de usuario.");
+          alert("Error al no hizo post.");
         }
       } catch (error) {
-        console.error("Error al enviar el formulario:", error);
+        console.error("Error al enviar el los datos del bebe:", error);
       }
     },
   },
