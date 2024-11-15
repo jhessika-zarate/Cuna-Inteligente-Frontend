@@ -1,8 +1,15 @@
 <template>
   <div class="main-container">
     <div>
+     
       <sidebar />
       <div class="container">
+        <div class="banner-container">
+  <img class="banner" src="@/assets/banner.png" alt="" />
+  <img class="logo" src="@/assets/Teddy.png" alt="" />
+  <p class="banner-text">Bienvenid@ (NOMBRE USUARIO)</p>
+</div>
+
         <h1 class="step-title">Datos del Bebé</h1>
 
        
@@ -159,6 +166,31 @@ export default {
   margin-left: 1rem;
   margin-right: 1rem;
 }
+.banner-container {
+  position: relative;
+  width: 100%;
+  height: 20vh; /* Mantener la altura del banner */
+}
+
+.banner {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Asegura que la imagen cubra el contenedor */
+  filter: brightness(0.7);
+}
+
+.banner-text {
+  position: absolute;
+  top: 50%; 
+  left: 40%; 
+  transform: translate(-50%, -50%); 
+  color: white;
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para mejor visibilidad */
+  font-family: Montserrat, sans-serif;
+}
+
 .logobb:hover{
   transform: scale(1.1);
 }
@@ -217,7 +249,14 @@ li {
   border-radius: 5px;
 
 }
-
+.logo {
+  width: 8rem;
+  height: 8rem;
+  position: absolute;
+  top: 50%; 
+  left: 85%; 
+  transform: translate(-50%, -50%); 
+}
 .step-title {
   text-align: center;
   font-size: xx-large;
