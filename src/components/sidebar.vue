@@ -3,7 +3,7 @@
    
     <div class="sidebar">
       <a href="#" @click="redirectToHome">
-        <i class="fas fa-water"></i>
+       <i class="fas fa-cloud"></i>
         <span>Hoy</span>
       </a>
       <a href="#" @click="redirectToSeguimiento">
