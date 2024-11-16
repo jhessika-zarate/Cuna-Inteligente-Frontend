@@ -1,10 +1,12 @@
 <template>
+  <div :class="bebeActual.color === 'Femenino' ? 'femenino' : 'masculino'">
   <div class="main-container">
     <div>
 
       <sidebar />
       <div class="container">
         <div class="banner-container">
+          <img class="logoe" src="@/assets/Teddylogoe.png" alt="" />
           <img class="banner" src="@/assets/banner.png" alt="" />
           <img class="logo" src="@/assets/Teddy.png" alt="" />
           <p class="banner-text">Bienvenid@ (NOMBRE USUARIO)</p>
@@ -14,7 +16,7 @@
 
 
         <div class="baby-info">
-          <p>Elige</p>
+          <p>Selecciona el bebe que deseas monitorear</p>
           <div class="muestrabbs">
             <!-- div con for de listaBesbes-->
 
@@ -115,6 +117,7 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -210,6 +213,17 @@ export default {
 </script>
 
 <style scoped>
+.femenino {
+  --primary-color: #ee94cb;
+  --secondary-color: #cf7ab6;
+  --highlight-color: #f5c6cb;
+}
+
+.masculino {
+  --primary-color: #72b7c4;
+  --secondary-color: #3c646b;
+  --highlight-color: #bee5eb;
+}
 .contenedorbb{
   align-items: center;
   align-content: center;
@@ -226,8 +240,12 @@ export default {
 .banner-container {
   position: relative;
   width: 100%;
-  height: 20vh;
-  /* Mantener la altura del banner */
+  height: 23vh; /* Mantener la altura del banner */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; /* Apilar logo y texto verticalmente */
+  gap: 10px; /* Espacio entre los elementos */
 }
 
 .banner {
@@ -240,17 +258,16 @@ export default {
 
 .banner-text {
   position: absolute;
-  top: 50%;
+  top: 40%; /* Ajusta según sea necesario */
   left: 40%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   color: white;
   font-size: 1.5rem;
   font-weight: bold;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-  /* Sombra para mejor visibilidad */
   font-family: Montserrat, sans-serif;
+  z-index: 1; /* Asegura que el texto esté por encima del logo */
 }
-
 .logobb:hover {
   transform: scale(1.1);
 }
@@ -263,7 +280,9 @@ export default {
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-
+label{
+  font-family: Montserrat;
+}
 .main-container {
   background-image: url("/src//assets/Fondobb.png");
   min-height: 100vh;
@@ -274,9 +293,12 @@ export default {
 h1,
 h2 {
   text-align: center;
+  font-family: Montserrat;
   color: #333;
 }
-
+p{
+  font-family: Montserrat;
+}
 .botonbb {
   position: relative;
   padding: 1px 10px;
@@ -286,6 +308,7 @@ h2 {
   position: inherit;
   align-self: center;
   text-align: center;
+  font-family: Montserrat;
   border-color: #c9cecf;
   cursor: pointer;
   outline: none;
@@ -295,9 +318,10 @@ h2 {
 .botonbbelegido {
   position: relative;
   padding: 1px 10px;
+  font-family: Montserrat;
   color: #000000;
   font-size: 15px;
-  background-color: rgb(143, 169, 187);
+  background-color: var(--primary-color);
   font-weight: bold;
   position: inherit;
   align-self: center;
@@ -312,7 +336,7 @@ h2 {
 }
 
 .botonbb:hover {
-  background-color: #a4d5df;
+  background-color: var(--secondary-color);
   transform: scale(1.1);
 }
 
@@ -337,6 +361,15 @@ li {
   left: 85%;
   transform: translate(-50%, -50%);
 }
+.logoe {
+  width: 7rem;
+  
+  position: absolute;
+  top: 20%;
+  left: 17%;
+  z-index: 50;
+  transform: translate(-50%, -50%);
+}
 
 .step-title {
   text-align: center;
@@ -351,7 +384,9 @@ li {
   display: flex;
   flex-direction: row;
   padding: 0.5rem;
-  overflow-x: scroll;
+  overflow-x: scroll; /* Permite el desplazamiento horizontal */
+  scrollbar-width: none; /* Oculta la barra de desplazamiento en Firefox */
+  -ms-overflow-style: none; /* Oculta la barra en IE y Edge */
 }
 
 .update-form label {
@@ -408,7 +443,7 @@ li {
 .update-form button {
   width: 100%;
   padding: 10px;
-  background-color: #60858c;
+  background-color: var(--primary-color);
   color: white;
   border: none;
   border-radius: 10px;
@@ -417,6 +452,6 @@ li {
 }
 
 .update-form button:hover {
-  background-color: #97c0c7;
+  background-color: var(--secondary-color);
 }
 </style>
