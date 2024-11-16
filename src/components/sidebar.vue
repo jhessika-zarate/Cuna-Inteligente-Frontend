@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
+ 
    
     <div class="sidebar">
       <a href="#" @click="redirectToHome">
-       <i class="fas fa-cloud"></i>
+        <font-awesome-icon :icon="['fas', 'user-secret']" style="height: 5rem;" />
         <span>Hoy</span>
       </a>
       <a href="#" @click="redirectToSeguimiento">
@@ -23,7 +23,7 @@
         <span>Salir</span>
       </a>
     </div>
-  </div>
+ 
 </template>
 
 <script>
@@ -95,6 +95,7 @@ body {
 .sidebar {
   position: fixed;
   bottom: 0;
+  z-index: 10000000;
   width: 100%;
   background-color: #ffffff;
   border-top: 1px solid #ccc;

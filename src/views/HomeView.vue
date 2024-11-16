@@ -1,33 +1,39 @@
 <template>
   <div class="main-container">
     <div>
-     
+
       <sidebar />
       <div class="container">
         <div class="banner-container">
-  <img class="banner" src="@/assets/banner.png" alt="" />
-  <img class="logo" src="@/assets/Teddy.png" alt="" />
-  <p class="banner-text">Bienvenid@ (NOMBRE USUARIO)</p>
-</div>
+          <img class="banner" src="@/assets/banner.png" alt="" />
+          <img class="logo" src="@/assets/Teddy.png" alt="" />
+          <p class="banner-text">Bienvenid@ (NOMBRE USUARIO)</p>
+        </div>
 
-        <h1 class="step-title">Datos del Bebé</h1>
+      
 
-       
+
         <div class="baby-info">
-          
+          <p>Elige</p>
           <div class="muestrabbs">
             <!-- div con for de listaBesbes-->
 
 
             <li v-for="bebe in listaBebe" :key="bebe.idBebe">
-              <div v-if="bebe.color == 'Femenino'">
-                <img class="logobb" src="@/assets/ninia.png" alt="" />
-              </div>
-              <div v-if="bebe.color == 'Masculino'">
-                <img class="logobb" src="@/assets/ninio.png" alt="" />
-              </div>
-
+              <div class="contenedorbb">
+                <div v-if="bebe.color == 'Femenino' ">
+                  <img class="logobb"  src="@/assets/ninia.png" alt="" />
+                  </div>
+                  <div v-if="bebe.color == 'Masculino'">
+                  <img class="logobb" src="@/assets/ninio.png" alt="" />
+                </div>
+                <div v-if="bebeActual.nombre !== bebe.nombre">
               <button class="botonbb" @click="actualizarBebe(bebe)">{{ bebe.nombre }}</button>
+            </div>
+            <div v-if="bebeActual.nombre == bebe.nombre">
+              <button class="botonbbelegido" @click="actualizarBebe(bebe)">{{ bebe.nombre }}</button>
+            </div>
+          </div>
             </li>
 
           </div>
@@ -37,22 +43,65 @@
             </form>
           </div>
         </div><!-- Formulario para actualizar altura y peso -->
-         <!-- Información actual del bebé -->
-         <div class="baby-info">
-          <h2 style="font-weight: 700;text-align: left;font-family: Montserrat;" >Información Actual</h2>
-          <p><strong>Nombre:</strong> {{ bebeActual.nombre }}</p>
-          <p>
-            <!---transforma la fecha para que de si es este formato 2024-11-03T00:00:00.000+00:00 otro  Invalid Date -->
-            <strong>Fecha de Nacimiento:</strong>
-            {{ new Date(bebeActual.fechadenacimiento).toLocaleDateString() }}
-          </p>
-          <p><strong>Altura Actual:</strong> {{ babyData.altura }} cm</p>
-          <p><strong>Peso Actual:</strong> {{ babyData.peso }} kg</p>
-        </div>
 
+        <h1 style="font-family: Montserrat;font-weight: 700;">
+
+          <strong>Información de </strong>
+          {{ (bebeActual.nombre) }}
+        </h1>
+        <div v-if="bebeActual.color == 'Femenino'">
+          <div class="baby-info">
+
+            <div class="info-grid">
+              <div class="info-card" style="background-image: url(/src/assets/6.png);">
+                <font-awesome-icon :icon="['fas', 'weight-scale']"
+                  style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
+                <p>Peso: <strong>{{ bebeActual.peso }} kg</strong></p>
+              </div>
+              <div class="info-card" style="background-image: url(/src/assets/6.png);">
+                <font-awesome-icon :icon="['fas', 'ruler']" style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
+                <p>Altura: <strong>{{ bebeActual.altura }} cm</strong></p>
+              </div>
+              <div class="info-card" style="background-image: url(/src/assets/6.png);">
+                <font-awesome-icon :icon="['fas', 'baby']" style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
+                <p>Última Comida: <strong>{{ bebeActual.ultimaComida || 'N/A' }}</strong></p>
+              </div>
+              <div class="info-card" style="background-image: url(/src/assets/6.png);">
+                <font-awesome-icon :icon="['fas', 'calendar']" style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
+                <p>Fecha Nacimiento: <strong>{{ new Date(bebeActual.fechadenacimiento).toLocaleDateString() }}</strong>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-if="bebeActual.color == 'Masculino'">
+          <div class="baby-info">
+
+            <div class="info-grid">
+              <div class="info-card" style="background-image: url(/src/assets/5.png);">
+                <font-awesome-icon :icon="['fas', 'weight-scale']"
+                  style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
+                <p>Peso: <strong>{{ bebeActual.peso }} kg</strong></p>
+              </div>
+              <div class="info-card" style="background-image: url(/src/assets/5.png);">
+                <font-awesome-icon :icon="['fas', 'ruler']" style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
+                <p>Altura: <strong>{{ bebeActual.altura }} cm</strong></p>
+              </div>
+              <div class="info-card" style="background-image: url(/src/assets/5.png);">
+                <font-awesome-icon :icon="['fas', 'baby']" style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
+                <p>Última Comida: <strong>{{ bebeActual.ultimaComida || 'N/A' }}</strong></p>
+              </div>
+              <div class="info-card" style="background-image: url(/src/assets/5.png);">
+                <font-awesome-icon :icon="['fas', 'calendar']" style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
+                <p>Fecha Nacimiento: <strong>{{ new Date(bebeActual.fechadenacimiento).toLocaleDateString() }}</strong>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- Formulario para actualizar altura y peso -->
         <div class="update-form">
-          <h2 style="font-weight: 700;text-align: left;font-family: Montserrat;"  >Registrar Cambio de Altura y Peso</h2>
+          <h2 style="font-weight: 700;text-align: left;font-family: Montserrat;">Registrar Cambio de Altura y Peso</h2>
           <form @submit.prevent="updateData">
             <label for="altura">Nueva Altura (cm):</label>
             <input type="number" v-model="altura" required />
@@ -161,39 +210,51 @@ export default {
 </script>
 
 <style scoped>
-.logobb {
-  width: 5rem;
-  margin-left: 1rem;
+.contenedorbb{
+  align-items: center;
+  align-content: center;
+  text-align: center;
   margin-right: 1rem;
+  margin-bottom: 1rem;
 }
+.logobb {
+  width: 4rem;
+  margin: 0 auto;
+  
+}
+
 .banner-container {
   position: relative;
   width: 100%;
-  height: 20vh; /* Mantener la altura del banner */
+  height: 20vh;
+  /* Mantener la altura del banner */
 }
 
 .banner {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Asegura que la imagen cubra el contenedor */
+  object-fit: cover;
+  /* Asegura que la imagen cubra el contenedor */
   filter: brightness(0.7);
 }
 
 .banner-text {
   position: absolute;
-  top: 50%; 
-  left: 40%; 
-  transform: translate(-50%, -50%); 
+  top: 50%;
+  left: 40%;
+  transform: translate(-50%, -50%);
   color: white;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: bold;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para mejor visibilidad */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  /* Sombra para mejor visibilidad */
   font-family: Montserrat, sans-serif;
 }
 
-.logobb:hover{
+.logobb:hover {
   transform: scale(1.1);
 }
+
 .container {
   max-width: 600px;
   margin: 20px auto;
@@ -207,6 +268,7 @@ export default {
   background-image: url("/src//assets/Fondobb.png");
   min-height: 100vh;
   background-repeat: repeat;
+  padding-bottom: 10rem;
 }
 
 h1,
@@ -224,15 +286,32 @@ h2 {
   position: inherit;
   align-self: center;
   text-align: center;
-  margin-left: 1rem;
-  margin-right: 1rem;
   border-color: #c9cecf;
   cursor: pointer;
   outline: none;
   border-radius: 30px;
   transition: color 0.5s;
 }
-.botonbb:hover{
+.botonbbelegido {
+  position: relative;
+  padding: 1px 10px;
+  color: #000000;
+  font-size: 15px;
+  background-color: rgb(143, 169, 187);
+  font-weight: bold;
+  position: inherit;
+  align-self: center;
+  transform: scale(1.2);
+  text-align: center;
+ 
+  border-color: #c9cecf;
+  cursor: pointer;
+  outline: none;
+  border-radius: 30px;
+  transition: color 0.5s;
+}
+
+.botonbb:hover {
   background-color: #a4d5df;
   transform: scale(1.1);
 }
@@ -249,14 +328,16 @@ li {
   border-radius: 5px;
 
 }
+
 .logo {
   width: 8rem;
   height: 8rem;
   position: absolute;
-  top: 50%; 
-  left: 85%; 
-  transform: translate(-50%, -50%); 
+  top: 50%;
+  left: 85%;
+  transform: translate(-50%, -50%);
 }
+
 .step-title {
   text-align: center;
   font-size: xx-large;
@@ -269,13 +350,50 @@ li {
 .muestrabbs {
   display: flex;
   flex-direction: row;
-  padding: 2rem;
+  padding: 0.5rem;
+  overflow-x: scroll;
 }
 
 .update-form label {
   display: block;
   margin-top: 10px;
   color: #555;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  /* Ajusta el número de columnas automáticamente */
+  gap: 20px;
+  /* Espaciado entre tarjetas */
+  margin-top: 20px;
+}
+
+.info-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+.info-card:hover{
+  transform: scale(1.05);
+}
+
+.info-card i {
+
+  margin-bottom: 10px;
+}
+
+.info-card p {
+  color: white;
+  font-size: medium;
+  font-weight: 600;
+  font-family: Montserrat
 }
 
 .update-form input {
