@@ -92,6 +92,8 @@
   import { useUsusrioStore } from "@/stores/Publico/Usuario";
   import { mapActions } from "pinia";
   import { useAuthStore } from "@/stores/Privado/authStore";
+  import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/src/sweetalert2.scss' 
   export default {
     setup() {
       const { login } = useAuthStore();
@@ -155,45 +157,70 @@
         }
       },
       async doLogin(datoGmail, datoContrasenia) {
-        try {
-          const credentials = {
-            gmail: datoGmail,
-            contrasenia: datoContrasenia,
-          };
-          alert("consulta", credentials);
-          console.log("consulta", credentials);
-          const response = await this.login(credentials);
-          alert("perfecto", response);
-          if (response) {
-            if (
-              response.response.type === 1 &&
-              response.response.authToken !== null
-            ) {
+  try {
+    const credentials = {
+      gmail: datoGmail,
+      contrasenia: datoContrasenia,
+    };
 
-              alert("perfecto");this.$router.push("/Home");
-            } else {
-              alert("usuarii adentro o contrasenia incorrectos");
-              throw new Error("Usuario o contraseña incorrectos");
-            }
-          } else {
-            alert("usuarii o contrasenia incorrectos");
-            throw new Error("Usuario o contraseña incorrectos");
-          }
-        } catch (error) {
-          alert("usuarii o contrasenia incorrectos afuera adfuera");
-        }
+    // Mostrar un mensaje de carga mientras se realiza la consulta
+    Swal.fire({
+      title: "Iniciando sesión...",
+      text: "Por favor, espere",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
       },
-      async submitForm() {
-        try {
-          this.usuario.gmail = this.answers[1];
-          this.usuario.contrasenia = this.answers[2];
-  
-          this.doLogin(this.usuario.gmail, this.usuario.contrasenia);
-  
-        } catch (error) {
-          console.error("Error al enviar las credenciales:", error);
-        }
-      },
+    });
+
+    const response = await this.login(credentials);
+
+    // Verificar la respuesta
+    if (response && response.response.type === 1 && response.response.authToken !== null) {
+      Swal.fire({
+        icon: "success",
+        title: "Inicio de sesión exitoso",
+        text: "¡Bienvenido de nuevo!",
+        confirmButtonText: "Continuar",
+      }).then(() => {
+        this.$router.push("/Home");
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Error en las credenciales",
+        text: "Usuario o contraseña incorrectos.",
+        confirmButtonText: "Intentar de nuevo",
+      });
+      throw new Error("Usuario o contraseña incorrectos");
+    }
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "No se pudo iniciar sesión. Verifique sus credenciales.",
+      confirmButtonText: "Intentar de nuevo",
+    });
+  }
+},
+
+async submitForm() {
+  try {
+    this.usuario.gmail = this.answers[1];
+    this.usuario.contrasenia = this.answers[2];
+
+    await this.doLogin(this.usuario.gmail, this.usuario.contrasenia);
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Error al enviar el formulario",
+      text: "Ocurrió un problema al enviar las credenciales.",
+      confirmButtonText: "Intentar de nuevo",
+    });
+    console.error("Error al enviar las credenciales:", error);
+  }
+}
+
     },
   };
   </script>
