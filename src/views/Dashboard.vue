@@ -44,8 +44,8 @@
             </div>
           </template>
           <div class="chart-area">
-            <line-chart class="grafica-principal"
-             
+            <line-chart
+              class="grafica-principal"
               ref="bigChart"
               chart-id="big-line-chart"
               :chart-data="bigLineChart.chartData"
@@ -77,7 +77,14 @@
       </div>
     </div>
 
-    
+    <div class="row">
+      <div class="col-12 sped">
+        <VelocímetroChart
+          :chartData="chartData.velocimetro.chartData"
+          :chartOptions="chartData.velocimetro.chartOptions"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -85,16 +92,19 @@
 import LineChart from "@/components/Dashboard/LineChart.vue";
 import BarChart from "@/components/Dashboard/BarChart.vue";
 import { chartData } from "@/components/Dashboard/chartConfig";
+import VelocímetroChart from "@/components/Dashboard/VelocímetroChart.vue";
 
 export default {
   components: {
     LineChart,
     BarChart,
+    VelocímetroChart,
   },
   data() {
     return {
       bigLineChart: chartData.bigLineChart,
       charts: chartData.otherCharts,
+      chartData,
     };
   },
   computed: {
@@ -242,7 +252,10 @@ export default {
 /* Contenedor principal para los gráficos */
 .charts-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); /* Usa un tamaño mínimo adecuado */
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(320px, 1fr)
+  ); /* Usa un tamaño mínimo adecuado */
   gap: 20px; /* Espacio entre los gráficos */
   padding: 20px;
 }
@@ -250,7 +263,10 @@ export default {
 /* Asegúrate de que el contenedor se vea bien en pantallas más grandes */
 @media (min-width: 1200px) {
   .charts-container {
-    grid-template-columns: repeat(3, 1fr); /* 3 columnas para pantallas grandes */
+    grid-template-columns: repeat(
+      3,
+      1fr
+    ); /* 3 columnas para pantallas grandes */
   }
 }
 /* Cada gráfico dentro del contenedor */
@@ -269,33 +285,36 @@ export default {
   background-color: #fff;
   padding: 20px;
 }
-.grafica-principal{
+.grafica-principal {
   height: 20rem;
 }
 
 /* Asegúrate de que el contenedor se vea bien en pantallas más grandes */
 @media (max-width: 450px) {
   .chart-item {
-
- 
-  padding: 0px;
-}
-.charts-container{
-  padding: 0px;
-}
-/* Estilos para los gráficos */
-.chart-component {
-  height: 10rem;
-
-}
-.grafica-principal{
-  height: 15rem;
-}
-
+    padding: 0px;
+  }
+  .charts-container {
+    padding: 0px;
+  }
+  /* Estilos para los gráficos */
+  .chart-component {
+    height: 10rem;
+  }
+  .grafica-principal {
+    height: 15rem;
+  }
 }
 @media (max-width: 400px) {
-  .pantalla{
+  .pantalla {
     padding: 10px;
   }
 }
+.sped {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px; /* Altura fija para el velocímetro */
+}
+
 </style>
