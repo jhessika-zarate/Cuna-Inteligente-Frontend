@@ -138,6 +138,17 @@ export default {
         console.log("usuario",this.usuario);
       }
     });
+
+  },
+  beforeCreate() {
+    if (!Cookies.get("idUser")) {
+      this.$router.push("/login");
+    }
+    else{
+      console.log("idUser",Cookies.get("idUser"));
+   
+
+    }
   },
 
   setup() {
