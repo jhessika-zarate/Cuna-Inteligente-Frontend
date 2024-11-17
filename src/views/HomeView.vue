@@ -9,7 +9,7 @@
           <img class="logoe" src="@/assets/Teddylogoe.png" alt="" />
           <img class="banner" src="@/assets/banner.png" alt="" />
           <img class="logo" src="@/assets/Teddy.png" alt="" />
-          <p class="banner-text">Bienvenid@ (NOMBRE USUARIO)</p>
+          <p class="banner-text">Bienvenid@ {{ usuario }}</p>
         </div>
 
       
@@ -123,7 +123,6 @@
 <script>
 import sidebar from "@/components/sidebar.vue";
 import { useBebeStore } from "@/stores/Publico/Bebe";
-import { useUsusrioStore } from "@/stores/Publico/Usuario";
 import Cookies from "js-cookie";
 import FormularioNuevoBebe from "./FormularioNuevoBebe.vue";
 export default {
@@ -135,6 +134,8 @@ export default {
     this.getListaBebe().then(() => {
       if (this.listaBebe.length > 0) {
         this.actualizarBebe(this.listaBebe[0]); // Seleccionar el primer bebé al cargar
+        this.usuario =this.listaBebe[0].idUsuario.username;
+        console.log("usuario",this.usuario);
       }
     });
   },
@@ -157,7 +158,12 @@ export default {
           idUsuario: null,
         },
       },
-
+      usuario: {
+        idUsuario: null,
+        username: null,
+        gmail: null,
+        contrasenia: null,
+      },
       bebeActual: {
         idBebe: null,
         nombre: null,
@@ -202,13 +208,14 @@ export default {
       const idUser = Cookies.get("idUser");
       console.log("idUser: ", idUser);
       this.listaBebe = await this.useBebeStoreAdmi.getBabybyUser(idUser);
-
+      
       console.log("lista luego de pedir", this.listaBebe);
       if (this.listaBebe == null) {
         alert("No se encontraron bebes registrados");
       }
     },
   },
+  
 };
 </script>
 
