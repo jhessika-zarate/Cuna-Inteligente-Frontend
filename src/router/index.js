@@ -5,6 +5,7 @@ import FormularioInicio from '@/views/FormularioInicio.vue'
 import Seguimiento from '@/views/Seguimiento.vue'
 import Login from '@/views/Login.vue'
 import FormularioNuevoBebe from '@/views/FormularioNuevoBebe.vue'
+import Dashboard from '@/views/Dashboard.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -45,6 +46,11 @@ const router = createRouter({
       path: '/FormularioNuevoBebe',
       name: 'FormularioNuevoBebe',
       component: FormularioNuevoBebe
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: Dashboard
     }
   ],
 })
