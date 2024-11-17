@@ -26,7 +26,7 @@ export default {
       label:['a', 'b'],
 
       data: [40, 20], // Mitad y mitad para depuración
-      backgroundColor: ["#42b883", "#e4e4e4"],
+      backgroundColor: ["#d9b29c", "#e4e4e4"],
       borderWidth: 0,
     },
   

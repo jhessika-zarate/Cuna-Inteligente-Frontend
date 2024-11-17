@@ -74,7 +74,7 @@ export const chartData = {
         "DEC",
       ],
     },
-    gradientColors: ["#f39c12", "#f1c40f"], // Amarillo-oro
+    gradientColors: ["#d9b29c", "#d9b29c"], // Amarillo-oro
     gradientStops: [1, 0.6, 0],
     extraOptions: { responsive: true },
   },
@@ -125,27 +125,29 @@ export const chartData = {
       extraOptions: { responsive: true },
     },
     {
-      title: "Daily Sales",
-      subtitle: "3,500€",
-      chartId: "blue-bar-chart",
-      component: "bar-chart",
+      title: "Total Shipments",
+      subtitle: "763,215",
+      chartId: "purple-line-chart",
+      component: "line-chart",
       chartData: {
         datasets: [
           {
-            label: "Dataset 2", // Etiqueta para la serie de datos
-            data: [53, 20, 10, 80, 100, 45],
-            backgroundColor: "rgba(46,204,113,0.3)", // Verde claro con opacidad
-            borderColor: "#2ecc71", // Verde
+            label: "Dataset 1", // Etiqueta para la serie de datos
+
+            data: [80, 100, 70, 80, 120, 80],
+            backgroundColor: "rgba(155,89,182,0.3)", // Morado claro con opacidad
+            borderColor: "#9b59b6", // Morado
             borderWidth: 2,
             fill: true,
           },
         ],
-        labels: ["USA", "GER", "AUS", "UK", "RO", "BR"],
+        labels: ["JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
       },
-      gradientColors: ["#27ae60", "#2ecc71"], // Gradiente verde
-      gradientStops: [1, 0.6, 0],
+      gradientColors: ["#8e44ad", "#9b59b6"], // Gradiente morado
+      gradientStops: [1, 0.5, 0],
       extraOptions: { responsive: true },
     },
+  
   ],
   velocimetro: {
   

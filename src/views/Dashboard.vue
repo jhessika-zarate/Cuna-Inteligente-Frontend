@@ -1,5 +1,7 @@
 <template>
+      <sidebar />
   <div class="pantalla">
+
     <!-- Título de Estadísticas del bebé -->
     <div class="row">
       <div class="col-12 text-center">
@@ -89,6 +91,7 @@
 </template>
 
 <script>
+import sidebar from "@/components/sidebar.vue";
 import LineChart from "@/components/Dashboard/LineChart.vue";
 import BarChart from "@/components/Dashboard/BarChart.vue";
 import { chartData } from "@/components/Dashboard/chartConfig";
@@ -99,6 +102,7 @@ export default {
     LineChart,
     BarChart,
     VelocímetroChart,
+    sidebar,
   },
   data() {
     return {
@@ -130,6 +134,10 @@ export default {
 <style scoped>
 .pantalla {
   padding: 30px;
+  background-image: url("/src//assets/Fondobb.png");
+  min-height: 100vh;
+  background-repeat: repeat;
+  padding-bottom: 5rem;
 }
 /* Estilo general para las tarjetas */
 .card {
