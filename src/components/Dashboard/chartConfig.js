@@ -1,3 +1,5 @@
+import { useBebeStore } from "@/stores/Publico/Bebe";
+
 const config = {
   colors: {
     default: "#344675",
@@ -44,7 +46,7 @@ export const chartData = {
         },
         {
           label: "Dataset 2",
-          data: [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120],
+          data: [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 0],
           backgroundColor: "rgba(52,152,219,0.3)", // Azul con opacidad
           borderColor: "#3498db", // Azul claro
           borderWidth: 2,
@@ -60,7 +62,7 @@ export const chartData = {
         },
       ],
       labels: [
-        "JAN",
+        "chu",
         "FEB",
         "MAR",
         "APR",
@@ -110,15 +112,22 @@ export const chartData = {
       chartData: {
         datasets: [
           {
-            label: "Dataset 2", // Etiqueta para la serie de datos
-            data: [53, 20, 10, 80, 100, 45],
+            label: "MES PASADO", // Etiqueta para la serie de datos
+            data: [53, 20],
             backgroundColor: "rgba(46,204,113,0.3)", // Verde claro con opacidad
             borderColor: "#2ecc71", // Verde
             borderWidth: 2,
             fill: true,
+          }, {
+            label: "MES ACTUAL", // Etiqueta para la serie de datos
+            data: [93, 10],
+            backgroundColor: "#3498db", // Verde claro con opacidad
+            borderColor: "#3498db", // Verde
+            borderWidth: 2,
+            fill: true,
           },
         ],
-        labels: ["USA", "GER", "AUS", "UK", "RO", "BR"],
+        labels: ["Peso", "Altura"],
       },
       gradientColors: ["#27ae60", "#2ecc71"], // Gradiente verde
       gradientStops: [1, 0.6, 0],

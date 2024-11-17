@@ -96,7 +96,8 @@ import LineChart from "@/components/Dashboard/LineChart.vue";
 import BarChart from "@/components/Dashboard/BarChart.vue";
 import { chartData } from "@/components/Dashboard/chartConfig";
 import VelocímetroChart from "@/components/Dashboard/VelocímetroChart.vue";
-
+import { useBebeStore } from "@/stores/Publico/Bebe";
+import Cookies from "js-cookie";
 export default {
   components: {
     LineChart,
@@ -104,11 +105,23 @@ export default {
     VelocímetroChart,
     sidebar,
   },
+  setup() {
+    const bebeStore = useBebeStore();
+    return { bebeStore };
+  },
+  async beforeCreate() {
+    const datos= await this.bebeStore.getTemperaturabyUserData(Cookies.get("idUser"));
+    console.log("beforeCreate",datos);
+this.bigLineChart=datos;
+  },
+
   data() {
     return {
-      bigLineChart: chartData.bigLineChart,
+      //bigLineChart: chartData.bigLineChart,
+      bigLineChart: null,
       charts: chartData.otherCharts,
       chartData,
+
     };
   },
   computed: {

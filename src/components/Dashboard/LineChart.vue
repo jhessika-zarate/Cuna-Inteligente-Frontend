@@ -51,13 +51,13 @@ export default {
           x: {
             title: {
               display: true,
-              text: 'X Axis',
+              text: 'Horas del día',
             },
           },
           y: {
             title: {
               display: true,
-              text: 'Y Axis',
+              text: 'Temperatura (°C)',
             },
           },
         },
