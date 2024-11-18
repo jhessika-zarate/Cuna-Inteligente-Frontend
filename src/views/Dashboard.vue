@@ -141,12 +141,24 @@ export default {
   async beforeCreate() {
     const datos= await this.bebeStore.getTemperaturabyUserData(Cookies.get("idUser"));
     console.log("beforeCreate",datos);
-this.bigLineChart=datos;
+    this.bigLineChart=datos;
+    if (!Cookies.get("idUser")) {
+      this.$router.push("/login");
+    }
+    else {
+      console.log("idUser", Cookies.get("idUser"));
+
+
+    }
   },
 
   data() {
     return {
       listaBebe: [],
+      //bigLineChart: chartData.bigLineChart,
+      bigLineChart: null,
+      charts: chartData.otherCharts,
+      chartData,
       bebe: {
         idBebe: null,
         nombre: null,
@@ -175,10 +187,7 @@ this.bigLineChart=datos;
           idUsuario: null,
         },
       },
-      //bigLineChart: chartData.bigLineChart,
-      bigLineChart: null,
-      charts: chartData.otherCharts,
-      chartData,
+      
 
     };
   },
@@ -224,16 +233,7 @@ this.bigLineChart=datos;
       }
     });
   },
-  beforeCreate() {
-    if (!Cookies.get("idUser")) {
-      this.$router.push("/login");
-    }
-    else {
-      console.log("idUser", Cookies.get("idUser"));
-
-
-    }
-  },
+ 
 };
 </script>
 <style scoped>
