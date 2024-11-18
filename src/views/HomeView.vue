@@ -415,7 +415,7 @@ li {
 
 .info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(2,1fr);
   /* Ajusta el número de columnas automáticamente */
   gap: 20px;
   /* Espaciado entre tarjetas */
