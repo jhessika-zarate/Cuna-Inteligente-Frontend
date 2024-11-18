@@ -1,7 +1,28 @@
 <template>
       <sidebar />
   <div class="pantalla">
+    <div class="muestrabbs">
+              <!-- div con for de listaBesbes-->
 
+
+              <li v-for="bebe in listaBebe" :key="bebe.idBebe">
+                <div class="contenedorbb">
+                  <div v-if="bebe.color == 'Femenino'">
+                    <img class="logobb" src="@/assets/ninia.png" alt="" />
+                  </div>
+                  <div v-if="bebe.color == 'Masculino'">
+                    <img class="logobb" src="@/assets/ninio.png" alt="" />
+                  </div>
+                  <div v-if="bebeActual.nombre !== bebe.nombre">
+                    <button class="botonbb" @click="actualizarBebe(bebe)">{{ bebe.nombre }}</button>
+                  </div>
+                  <div v-if="bebeActual.nombre == bebe.nombre">
+                    <button class="botonbbelegido" @click="actualizarBebe(bebe)">{{ bebe.nombre }}</button>
+                  </div>
+                </div>
+              </li>
+
+            </div>
     <!-- Título de Estadísticas del bebé -->
     <div class="row">
       <div class="col-12 text-center">
@@ -125,6 +146,35 @@ this.bigLineChart=datos;
 
   data() {
     return {
+      listaBebe: [],
+      bebe: {
+        idBebe: null,
+        nombre: null,
+        apellidopaterno: null,
+        apellidomaterno: null,
+        fechadenacimiento: null,
+        color: null,
+        idUsuario: {
+          idUsuario: null,
+        },
+      },
+      usuario: {
+        idUsuario: null,
+        username: null,
+        gmail: null,
+        contrasenia: null,
+      },
+      bebeActual: {
+        idBebe: null,
+        nombre: null,
+        apellidopaterno: null,
+        apellidomaterno: null,
+        fechadenacimiento: null,
+        color: null,
+        idUsuario: {
+          idUsuario: null,
+        },
+      },
       //bigLineChart: chartData.bigLineChart,
       bigLineChart: null,
       charts: chartData.otherCharts,
@@ -146,9 +196,43 @@ this.bigLineChart=datos;
       chart.chartData.datasets[0].data = chart.allData[index];
       chart.activeIndex = index;
     },
+    actualizarBebe(bebe) {
+      console.log("Actualizando bebé:", bebe);
+      this.bebeActual = { ...bebe }; // Copiar directamente los datos del bebé seleccionado
+      console.log("bebeActual actualizado:", this.bebeActual);
+    }
+    ,
+    async getListaBebe() {
+      console.log("idUser: ", Cookies.get("idUser"));
+      const idUser = Cookies.get("idUser");
+      console.log("idUser: ", idUser);
+      this.listaBebe = await this.useBebeStoreAdmi.getBabybyUser(idUser);
+
+      console.log("lista luego de pedir", this.listaBebe);
+      if (this.listaBebe == null) {
+        alert("No se encontraron bebes registrados");
+      }
+    },
   },
   mounted() {
     this.initBigChart(0);
+    this.getListaBebe().then(() => {
+      if (this.listaBebe.length > 0) {
+        this.actualizarBebe(this.listaBebe[0]); // Seleccionar el primer bebé al cargar
+        this.usuario = this.listaBebe[0].idUsuario.username;
+        console.log("usuario", this.usuario);
+      }
+    });
+  },
+  beforeCreate() {
+    if (!Cookies.get("idUser")) {
+      this.$router.push("/login");
+    }
+    else {
+      console.log("idUser", Cookies.get("idUser"));
+
+
+    }
   },
 };
 </script>

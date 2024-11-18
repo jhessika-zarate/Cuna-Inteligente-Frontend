@@ -93,7 +93,7 @@ import { useUsusrioStore } from "@/stores/Publico/Usuario";
 import { mapActions } from "pinia";
 import { useAuthStore } from "@/stores/Privado/authStore";
 import Swal from 'sweetalert2/dist/sweetalert2.js'
-import 'sweetalert2/src/sweetalert2.scss'
+import 'sweetalert2/src/sweetalert2.scss' 
 export default {
   setup() {
     const { login } = useAuthStore();
