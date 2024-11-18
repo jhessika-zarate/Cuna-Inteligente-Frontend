@@ -21,8 +21,8 @@
       :class="{ active: $route.path === '/dashboard' }" 
       @click="redirectToHistorial"
     >
-      <font-awesome-icon :icon="['fas', 'question']" class="icon" />
-      <span>Guia</span>
+      <font-awesome-icon :icon="['fas', 'chart-line']" class="icon" />
+      <span>Dashboard</span>
     </a>
     <a 
       href="#" 
