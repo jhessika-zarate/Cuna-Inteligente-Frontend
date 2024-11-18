@@ -5,153 +5,118 @@
     <div class="baby-info">
       <h1 style="font-family: Montserrat;font-weight: 800;">
 
-   
-   <font-awesome-icon :icon="['fas', 'clipboard']" style="height: 2rem;color: var(--primary-color);margin: 0.5rem;" />
-   Registro
+
+        <font-awesome-icon :icon="['fas', 'clipboard']"
+          style="height: 2rem;color: var(--primary-color);margin: 0.5rem;" />
+        Registro
       </h1>
       <div class="info-grid">
-        <div class="info-card" @click="openModal('peso')">
+        <div class="info-card" @click="openModal('pesoaltura')">
           <font-awesome-icon :icon="['fas', 'weight-scale']" style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
-          <p>Peso</p>
+          <p>Peso y Altura</p>
         </div>
-        <div class="info-card"  @click="openModal('altura')">
-          <font-awesome-icon :icon="['fas', 'ruler']" style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
-          <p>Altura</p>
-        </div>
+
         <div class="info-card" @click="openModal('comida')">
-  <font-awesome-icon :icon="['fas', 'bowl-food']" style="height: 5rem; color: whitesmoke; margin: 0.5rem;" />
-  <p>Última Comida</p>
-</div>
-
-
-      </div>
-    </div>
-  </div>
-  <!-- Modal de Peso -->
-  <div v-if="showModal && currentModal === 'peso'" class="modal-overlay" @click.self="closeModal">
-  <div class="modal">
-    <h2>Registrar Peso</h2>
-    <div class="balance-container">
-      <div class="scale">
-        <div class="needle" :style="{ transform: `rotate(${(peso / maxPeso) * 180 - 90}deg)` }"></div>
-        <div class="scale-marks">
-          <span v-for="n in 11" :key="n" :style="{ left: `${(n - 1) * 10}%` }">
-            {{ (n - 1) * (maxPeso / 10) }}
-          </span>
+          <font-awesome-icon :icon="['fas', 'bowl-food']" style="height: 5rem; color: whitesmoke; margin: 0.5rem;" />
+          <p>Última Comida</p>
         </div>
+
+
       </div>
-      <div class="input-container">
-        <!-- Control deslizante -->
-        <input
-          type="range"
-          v-model.number="peso"
-          :min="minPeso"
-          :max="maxPeso"
-          step="0.1"
-          class="slider"
-        />
-        <!-- Campo de texto -->
-        <input
-          type="number"
-          v-model.number="peso"
-          :min="minPeso"
-          :max="maxPeso"
-          step="0.1"
-          class="text-input"
-        />
-      </div>
-      <p>Peso actual: <strong>{{ peso }} kg</strong></p>
     </div>
-    <button @click="savePeso" class="btn-save">Guardar</button>
   </div>
-</div>
-<!-- Modal de Altura -->
-<div v-if="showModal && currentModal === 'altura'" class="modal-overlay" @click.self="closeModal">
-  <div class="modal">
-    <h2>Registrar Altura</h2>
-    <div class="height-container">
-      <!-- Regla -->
-      <div class="ruler">
-        <div class="progress" :style="{ height: `${(altura / maxAltura) * 100}%` }"></div>
-        <div class="ruler-marks">
-          <div v-for="n in 31" :key="n" class="ruler-mark" :style="{ bottom: `${(n - 1) * 3.33}%` }">
-            <span v-if="(n - 1) % 5 === 0">{{ (n - 1) * (maxAltura / 30) }} -</span>
+  <div v-if="showModal && currentModal === 'pesoaltura'"class="modal-overlay" @click.self="closeModal">
+    <div class="modal">
+      
+
+      <!-- Contenedor de Peso -->
+      
+      <div class="height-container">
+        
+        <div class="scale">
+          <div class="needle" :style="{ transform: `rotate(${(peso / maxPeso) * 180 - 90}deg)` }"></div>
+          <div class="scale-marks">
+            <span v-for="n in 11" :key="n" :style="{ left: `${(n - 1) * 10}%` }">
+              {{ (n - 1) * (maxPeso / 10) }}
+            </span>
           </div>
         </div>
-      </div>
-
-      <!-- Controles -->
-      <div class="input-container">
-        <div class="slider-container">
-          <input
-            type="range"
-            v-model.number="altura"
-            :min="minAltura"
-            :max="maxAltura"
-            step="0.5"
-            class="slider"
-          />
+        <div class="input-container">
+          <h1>Peso</h1>
+          <input type="range" v-model.number="peso" :min="minPeso" :max="maxPeso" step="0.1" class="slider" />
+          <input type="number" v-model.number="peso" :min="minPeso" :max="maxPeso" step="0.1" class="text-input" />
+          <p style="text-align: center;font-size: larger;">Peso actual: <strong>{{ peso }} kg</strong></p>
         </div>
-        <input
-          type="number"
-          v-model.number="altura"
-          :min="minAltura"
-          :max="maxAltura"
-          step="0.5"
-          class="text-input"
-        />
-      </div>
-    </div>
-    <p>Altura actual: <strong>{{ altura }} cm</strong></p>
-    <button @click="saveAltura" class="btn-save">Guardar</button>
-  </div>
-</div>
-<div v-if="showModal && currentModal === 'comida'" class="modal-overlay" @click.self="closeModal">
-  <div class="modal">
-    <h2>Registrar Última Comida</h2>
-    <div class="food-container">
-      <!-- Selección de tipo de comida -->
-      <div class="food-type">
        
-        <div class="button-group">
-          <button
-            class="food-button"
-            :class="{ active: comidaSeleccionada === 'Sólido' }"
-            @click="comidaSeleccionada = 'Sólido'"
-          >
-            <font-awesome-icon :icon="['fas', 'drumstick-bite']" />
-            Sólido
-          </button>
-          <button
-            class="food-button"
-            :class="{ active: comidaSeleccionada === 'Líquido' }"
-            @click="comidaSeleccionada = 'Líquido'"
-          >
-            <font-awesome-icon :icon="['fas', 'glass-whiskey']" />
-            Líquido
-          </button>
+      </div>
+      
+      <!-- Contenedor de Altura -->
+      <div class="height-container">
+        
+        <div class="ruler">
+          
+          <div class="progress" :style="{ height: `${(altura / maxAltura) * 100}%` }"></div>
+          <div class="ruler-marks">
+            <div v-for="n in 31" :key="n" class="ruler-mark" :style="{ bottom: `${(n - 1) * 3.33}%` }">
+              <span v-if="(n - 1) % 5 === 0">{{ (n - 1) * (maxAltura / 30) }} -</span>
+            </div>
+          </div>
         </div>
+        <div class="input-container">
+          <h1>Altura</h1>
+          <input type="range" v-model.number="altura" :min="minAltura" :max="maxAltura" step="0.5" class="slider" />
+          <input type="number" v-model.number="altura" :min="minAltura" :max="maxAltura" step="0.5"
+            class="text-input" />
+            <p style="font-size: larger;" >Altura actual: <strong>{{ altura }} cm</strong></p>
+        </div>
+        
       </div>
 
-      <!-- Campo de fecha y hora -->
-      
-<div class="food-datetime">
-  <label for="fecha">Fecha:</label>
-  <input type="date" v-model="fecha" id="fecha" />
-  <label for="hora">Hora:</label>
-  <input type="time" v-model="hora" id="hora" />
-</div>
+      <!-- Botón de guardar -->
+      <button @click="saveDatos" class="btn-save">Guardar</button>
     </div>
-    <br>
-    <p>
-      Última comida: <strong>{{ comidaSeleccionada }}</strong>, <br>
-     
-      Fecha: <strong>{{ fecha }}</strong>, <br>
-      Hora: <strong>{{ hora }}</strong><br>
-    </p>
-    <button @click="saveComida" class="btn-save">Guardar</button>
   </div>
-</div>
+
+  <div v-if="showModal && currentModal === 'comida'" class="modal-overlay" @click.self="closeModal">
+    <div class="modal">
+      <h1>Registrar Última Comida</h1>
+      <div class="food-container">
+        <!-- Selección de tipo de comida -->
+        <div class="food-type">
+
+          <div class="button-group">
+            <button class="food-button" :class="{ active: comidaSeleccionada === 'Sólido' }"
+              @click="comidaSeleccionada = 'Sólido'">
+              <font-awesome-icon :icon="['fas', 'drumstick-bite']" />
+              Sólido
+            </button>
+            <button class="food-button" :class="{ active: comidaSeleccionada === 'Líquido' }"
+              @click="comidaSeleccionada = 'Líquido'">
+              <font-awesome-icon :icon="['fas', 'glass-whiskey']" />
+              Líquido
+            </button>
+          </div>
+        </div>
+
+        <!-- Campo de fecha y hora -->
+
+        <div class="food-datetime">
+          <label for="fecha">Fecha:</label>
+          <input type="date" v-model="fecha" id="fecha" /><br>
+          <label for="hora">Hora:</label>
+          <input type="time" v-model="hora" id="hora" />
+        </div>
+      </div>
+      <br>
+      <p style="font-size: larger;" >
+        Última comida: <strong>{{ comidaSeleccionada }}</strong>, <br>
+
+        Fecha: <strong>{{ fecha }}</strong>, <br>
+        Hora: <strong>{{ hora }}</strong><br>
+      </p>
+      <button @click="saveComida" class="btn-save">Guardar</button>
+    </div>
+  </div>
 
 
 </template>
@@ -168,7 +133,7 @@ export default {
     return {
       showModal: false,
       currentModal: null,
-      peso: 10, 
+      peso: 10,
       altura: 50,
       minPeso: 0,
       maxPeso: 50,
@@ -181,10 +146,10 @@ export default {
         hour: "2-digit",
         minute: "2-digit",
       }), // Hora actual en formato HH:MM
-    
-    cantidad: 0,
-    horario: "",
-    comidas: ["Leche", "Papilla", "Fruta", "Cereal", "Otros"],
+
+      cantidad: 0,
+      horario: "",
+      comidas: ["Leche", "Papilla", "Fruta", "Cereal", "Otros"],
       options: [
         { label: "Desarrollo", icon: "fas fa-baby" },
 
@@ -213,9 +178,9 @@ export default {
       this.closeModal();
     },
     saveComida() {
-    console.log(`Comida: ${this.comidaSeleccionada}, Hora: ${this.horario}`);
-    this.closeModal();
-  },
+      console.log(`Comida: ${this.comidaSeleccionada}, Hora: ${this.horario}`);
+      this.closeModal();
+    },
   },
 };
 </script>
@@ -233,7 +198,7 @@ export default {
 
 .button-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   grid-template-rows: repeat(3, 1fr);
   /* 3 filas para los 6 botones */
   gap: 20px;
@@ -241,7 +206,9 @@ export default {
   width: 80%;
   max-width: 800px;
 }
-
+h1 ,p,h2{
+  font-family: Montserrat;
+}
 .baby-info {
   margin-bottom: 20px;
   padding: 10px;
@@ -277,7 +244,9 @@ export default {
 .info-card:hover {
   transform: scale(1.05);
 }
-
+label{
+  font-family: Montserrat;
+}
 .info-card i {
 
   margin-bottom: 10px;
@@ -345,8 +314,8 @@ export default {
   background: #fff;
   padding: 20px;
   border-radius: 8px;
-  width: 90%;
-  max-width: 400px;
+  width: 100%;
+  max-width: 500px;
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -374,6 +343,7 @@ export default {
 .btn-save:hover {
   background-color: var(--secondary-color);
 }
+
 .balance-container {
   display: flex;
   flex-direction: column;
@@ -389,6 +359,7 @@ export default {
   border: 2px solid #ccc;
   overflow: hidden;
   margin-bottom: 20px;
+  margin: 1rem;
 }
 
 .needle {
@@ -415,6 +386,7 @@ export default {
   font-size: 12px;
   transform: translateX(-50%);
 }
+
 .height-container {
   display: flex;
   flex-direction: row;
@@ -430,7 +402,8 @@ export default {
   border-radius: 8px;
   border: 2px solid #ccc;
   overflow: hidden;
-  margin-right: 20px;
+  margin:2rem ;
+  
 }
 
 .progress {
@@ -481,6 +454,7 @@ export default {
   padding: 5px;
   font-size: 1rem;
 }
+
 .food-container {
   display: flex;
   flex-direction: column;
@@ -494,6 +468,7 @@ export default {
   flex-direction: column;
   align-items: flex-start;
 }
+
 .food-button {
   background-color: #f0f0f0;
   border: none;
@@ -507,10 +482,12 @@ export default {
   gap: 10px;
   transition: background-color 0.3s;
 }
+
 .button-group {
   display: flex;
   flex-direction: row;
-  position: relative;  /* O relative si es necesario */
+  position: relative;
+  /* O relative si es necesario */
   top: 100%;
   left: 65%;
   transform: translate(-50%, 20%);

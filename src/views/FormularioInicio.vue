@@ -49,7 +49,23 @@
                   {{ option }}
                 </option>
               </select>
-            </template>
+            </template> 
+            <template v-else-if="question.type === 'password'">
+          <div class="password-container">
+            <input
+              :id="`question-${index}`"
+              :type="showPassword ? 'text' : 'password'"
+              v-model="answers[question.id]"
+              required
+            />
+            <span
+              class="toggle-password"
+              @click="togglePasswordVisibility"
+            >
+              {{ showPassword ? '🙈' : '👁️' }}
+            </span>
+          </div>
+        </template>
           </div>
           <!-- Botones de navegación -->
           <div class="navigation-buttons">
@@ -101,6 +117,7 @@ export default {
   },
   data() {
     return {
+      showPassword: false,
       usuario: {
         idUsuario: null,
         username: null,
@@ -123,7 +140,7 @@ export default {
       questions: [
         { id: 1, label: "Nombre de Usuario", type: "text" },
         { id: 2, label: "Correo Electrónico", type: "text" },
-        { id: 3, label: "Contraseña", type: "text" },
+        { id: 3, label: "Contraseña", type: "password" },
         { id: 4, label: "Nombre", type: "text" },
         { id: 5, label: "Apellido Paterno", type: "text" },
         { id: 6, label: "Apellido Materno", type: "text" },
@@ -132,7 +149,7 @@ export default {
           id: 8,
           label: "Género",
           type: "select",
-          options: ["Masculino", "Femenino", "Otro"],
+          options: ["Masculino", "Femenino"],
         },
         { id: 9, label: "Peso KG", type: "text" },
       ],
@@ -169,6 +186,9 @@ export default {
       if (this.currentStep > 1) {
         this.currentStep--;
       }
+    },
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
     },
     async doLogin(datoGmail, datoContrasenia) {
   try {
@@ -239,6 +259,21 @@ async submitForm() {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+.password-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.password-container input {
+  flex: 1;
+}
+
+.toggle-password {
+  cursor: pointer;
+  margin-left: 8px;
+  font-size: 1.2rem;
+}
 .contenedorpreguntas {
   max-width: 800px; /* Limita el ancho del formulario */
   width: 100%;
