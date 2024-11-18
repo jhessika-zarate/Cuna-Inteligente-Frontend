@@ -396,159 +396,175 @@ export const useBebeStore = defineStore("bebe", {
       try {
         const response = await axios.get(`${RutaApi}datosmesbebe/${idBaby}`);
         const registros = response.data.response;
-    console.log("Datos obtenidos en obtenerDatosGraficas:", registros);
+        console.log("Datos obtenidos en obtenerDatosGraficas:", registros);
         if (!registros || registros.length < 2) {
-          throw new Error("Se necesitan al menos dos registros para generar las gráficas.");
+          throw new Error(
+            "Se necesitan al menos dos registros para generar las gráficas."
+          );
         }
-    
+
         // Ordenar registros por fecha (opcional, si no están ordenados)
         registros.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
-    
+
         // Datos para gráficas
-        const alturas = registros.map(r => r.altura);
-        const pesos = registros.map(r => r.peso);
-        const fechas = registros.map(r => new Date(r.fecha).toLocaleDateString());
-    
+        const alturas = registros.map((r) => r.altura);
+        const pesos = registros.map((r) => r.peso);
+        const fechas = registros.map((r) =>
+          new Date(r.fecha).toLocaleDateString()
+        );
+
         const penultimo = registros[registros.length - 2];
         const ultimo = registros[registros.length - 1];
-    
-          return {
-            otherCharts: [
-              {
-                title: "Crecimiento en Altura",
-                subtitle: "Evolución del bebé",
-                chartId: "altura-line-chart",
-                component: "line-chart",
-                chartData: {
-                  datasets: [
-                    {
-                      label: "Altura (cm)",
-                      data: alturas,
-                      backgroundColor: "rgba(155,89,182,0.3)",
-                      borderColor: "#9b59b6",
-                      borderWidth: 2,
-                      fill: true,
-                    },
-                  ],
-                  labels: fechas,
-                },
-                gradientColors: ["#8e44ad", "#9b59b6"],
-                gradientStops: [1, 0.5, 0],
-                extraOptions: { responsive: true },
+
+        return {
+          otherCharts: [
+            {
+              title: "Crecimiento en Altura",
+              subtitle: "Evolución del bebé",
+              chartId: "altura-line-chart",
+              component: "line-chart",
+              chartData: {
+                datasets: [
+                  {
+                    label: "Altura (cm)",
+                    data: alturas,
+                    backgroundColor: "rgba(155,89,182,0.3)",
+                    borderColor: "#9b59b6",
+                    borderWidth: 2,
+                    fill: true,
+                  },
+                ],
+                labels: fechas,
               },
-              {
-                title: "Comparación Últimos Registros",
-                subtitle: "Altura y Peso",
-                chartId: "comparacion-bar-chart",
-                component: "bar-chart",
-                chartData: {
-                  datasets: [
-                    {
-                      label: "Peso (kg)",
-                      data: [penultimo.peso, ultimo.peso],
-                      backgroundColor: "#3498db",
-                      borderColor: "#3498db",
-                      borderWidth: 2,
-                    },
-                    {
-                      label: "Altura (cm)",
-                      data: [penultimo.altura, ultimo.altura],
-                      backgroundColor: "#2ecc71",
-                      borderColor: "#2ecc71",
-                      borderWidth: 2,
-                    },
-                  ],
-                  labels: ["Penúltimo Registro", "Último Registro"],
-                },
-                gradientColors: ["#27ae60", "#2ecc71"],
-                gradientStops: [1, 0.6, 0],
-                extraOptions: { responsive: true },
+              gradientColors: ["#8e44ad", "#9b59b6"],
+              gradientStops: [1, 0.5, 0],
+              extraOptions: { responsive: true },
+            },
+            {
+              title: "Comparación Últimos Registros",
+              subtitle: "Altura y Peso",
+              chartId: "comparacion-bar-chart",
+              component: "bar-chart",
+              chartData: {
+                datasets: [
+                  {
+                    label: "Peso (kg)",
+                    data: [penultimo.peso, ultimo.peso],
+                    backgroundColor: "#3498db",
+                    borderColor: "#3498db",
+                    borderWidth: 2,
+                  },
+                  {
+                    label: "Altura (cm)",
+                    data: [penultimo.altura, ultimo.altura],
+                    backgroundColor: "#2ecc71",
+                    borderColor: "#2ecc71",
+                    borderWidth: 2,
+                  },
+                ],
+                labels: ["Penúltimo Registro", "Último Registro"],
               },
-              {
-                title: "Aumento de Peso",
-                subtitle: "Progresión en peso del bebé",
-                chartId: "peso-line-chart",
-                component: "line-chart",
-                chartData: {
-                  datasets: [
-                    {
-                      label: "Peso (kg)",
-                      data: pesos,
-                      backgroundColor: "rgba(46,204,113,0.3)",
-                      borderColor: "#2ecc71",
-                      borderWidth: 2,
-                      fill: true,
-                    },
-                  ],
-                  labels: fechas,
-                },
-                gradientColors: ["#27ae60", "#2ecc71"],
-                gradientStops: [1, 0.5, 0],
-                extraOptions: { responsive: true ,scales: {
+              gradientColors: ["#27ae60", "#2ecc71"],
+              gradientStops: [1, 0.6, 0],
+              extraOptions: { responsive: true },
+            },
+            {
+              title: "Aumento de Peso",
+              subtitle: "Progresión en peso del bebé",
+              chartId: "peso-line-chart",
+              component: "line-chart",
+              chartData: {
+                datasets: [
+                  {
+                    label: "Peso (kg)",
+                    data: pesos,
+                    backgroundColor: "rgba(46,204,113,0.3)",
+                    borderColor: "#2ecc71",
+                    borderWidth: 2,
+                    fill: true,
+                  },
+                ],
+                labels: fechas,
+              },
+              gradientColors: ["#27ae60", "#2ecc71"],
+              gradientStops: [1, 0.5, 0],
+              extraOptions: {
+                responsive: true,
+                scales: {
                   x: {
                     title: {
                       display: true,
-                      text: '2ía',
+                      text: "2ía",
                     },
                   },
                   y: {
                     title: {
                       display: true,
-                      text: '2)',
+                      text: "2)",
                     },
                   },
-                },},
-                
+                },
               },
-            ],
-          };
-          } catch (error) {
-            console.error("Error al obtener los datos:", error.message);
-            return null;
-          }
-    
-        },
+            },
+          ],
+        };
+      } catch (error) {
+        console.error("Error al obtener los datos:", error.message);
+        return null;
+      }
+    },
 
-        async fetchHumedadData(idBebe) {
-          try {
-            const response = await axios.get(`${RutaApi}registrohumedad/${idBebe}`);
-            if (response.data && response.data.code === "200") {
-              const registros = response.data.response;
-              if (registros.length > 0) {
-                const ultimoRegistro = registros.reduce((prev, current) => {
-                  return new Date(prev.fecha) > new Date(current.fecha) ? prev : current;
-                });
-                const humedad = ultimoRegistro.humedad;
-               return humedad;
-              }
-            } else {
-              console.error("Error en la respuesta del servidor:", response.data.errorMessage);
-            }
-          } catch (error) {
-            console.error("Error al obtener datos de humedad:", error);
+    async fetchHumedadData(idBebe) {
+      try {
+        const response = await axios.get(`${RutaApi}registrohumedad/${idBebe}`);
+        if (response.data && response.data.code === "200") {
+          const registros = response.data.response;
+          if (registros.length > 0) {
+            const ultimoRegistro = registros.reduce((prev, current) => {
+              return new Date(prev.fecha) > new Date(current.fecha)
+                ? prev
+                : current;
+            });
+            const humedad = ultimoRegistro.humedad;
+            return humedad;
           }
-        },
+        } else {
+          console.error(
+            "Error en la respuesta del servidor:",
+            response.data.errorMessage
+          );
+        }
+      } catch (error) {
+        console.error("Error al obtener datos de humedad:", error);
+      }
+    },
 
-        async fetchTemperaturaData(idBebe) {
-          try {
-            const response = await axios.get(`${RutaApi}registrotemperatura/${idBebe}`);
-            if (response.data && response.data.code === "200") {
-              const registros = response.data.response;
-              if (registros.length > 0) {
-                const ultimoRegistro = registros.reduce((prev, current) => {
-                  return new Date(prev.fecha) > new Date(current.fecha) ? prev : current;
-                });
-                const humedad = ultimoRegistro.temperatura;
-               return humedad;
-              }
-            } else {
-              console.error("Error en la respuesta del servidor:", response.data.errorMessage);
-            }
-          } catch (error) {
-            console.error("Error al obtener datos de humedad:", error);
+    async fetchTemperaturaData(idBebe) {
+      try {
+        const response = await axios.get(
+          `${RutaApi}registrotemperatura/${idBebe}`
+        );
+        if (response.data && response.data.code === "200") {
+          const registros = response.data.response;
+          if (registros.length > 0) {
+            const ultimoRegistro = registros.reduce((prev, current) => {
+              return new Date(prev.fecha) > new Date(current.fecha)
+                ? prev
+                : current;
+            });
+            const humedad = ultimoRegistro.temperatura;
+            return humedad;
           }
-        },
-
+        } else {
+          console.error(
+            "Error en la respuesta del servidor:",
+            response.data.errorMessage
+          );
+        }
+      } catch (error) {
+        console.error("Error al obtener datos de humedad:", error);
+      }
+    },
 
     //pruebas de selecionar bebe
     /**
@@ -624,12 +640,32 @@ export const useBebeStore = defineStore("bebe", {
       }
     },
 
-    async putBebeMovimiento(movimiento) {
+    async putBebeMovimiento(idUsuario) {
       this.loading = true;
       var response = null;
       try {
         response = await axios.put(
-          `${RutaApi}bebe/cambiar/movimiento/${movimiento}`
+          `${RutaApi}bebe/movimiento/true/${idUsuario}`
+        );
+        console.log("Datos obtenidos en putBebeMovimiento:", response);
+        return this.bebe;
+      } catch (error) {
+        this.error = error;
+      } finally {
+        this.loading = false;
+        if (response.data.code === "200") {
+          return response.data.response;
+        } else {
+          return null;
+        }
+      }
+    },
+    async putBebeMovimientofalse() {
+      this.loading = true;
+      var response = null;
+      try {
+        response = await axios.put(
+          `${RutaApi}bebe/movimiento/false`
         );
         console.log("Datos obtenidos en putBebeMovimiento:", response);
         return this.bebe;
@@ -746,7 +782,5 @@ export const useBebeStore = defineStore("bebe", {
         this.loading = false;
       }
     },
-
-
   },
 });

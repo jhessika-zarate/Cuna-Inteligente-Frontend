@@ -2,7 +2,6 @@
   <div :class="bebeActual.color === 'Femenino' ? 'femenino' : 'masculino'">
     <div class="main-container">
       <div>
-
         <sidebar />
         <div class="container">
           <div class="banner-container">
@@ -12,14 +11,10 @@
             <p class="banner-text">Bienvenid@ {{ usuario }}</p>
           </div>
 
-
-
-
           <div class="baby-info">
             <p>Selecciona el bebe que deseas monitorear</p>
             <div class="muestrabbs">
               <!-- div con for de listaBesbes-->
-
 
               <li v-for="bebe in listaBebe" :key="bebe.idBebe">
                 <div class="contenedorbb">
@@ -30,58 +25,101 @@
                     <img class="logobb" src="@/assets/ninio.png" alt="" />
                   </div>
                   <div v-if="bebeActual.nombre !== bebe.nombre">
-                    <button class="botonbb" @click="actualizarBebe(bebe)">{{ bebe.nombre }}</button>
+                    <button class="botonbb" @click="actualizarBebe(bebe)">
+                      {{ bebe.nombre }}
+                    </button>
                   </div>
                   <div v-if="bebeActual.nombre == bebe.nombre">
-                    <button class="botonbbelegido" @click="actualizarBebe(bebe)">{{ bebe.nombre }}</button>
+                    <button
+                      class="botonbbelegido"
+                      @click="actualizarBebe(bebe)"
+                    >
+                      {{ bebe.nombre }}
+                    </button>
                   </div>
                 </div>
               </li>
-
             </div>
             <div class="update-form">
               <form @submit.prevent="FormularioNuevoBebe">
                 <button type="submit">Nuevo bebe</button>
               </form>
             </div>
-          </div><!-- Formulario para actualizar altura y peso -->
-          <div >
-            <div class="banner-container" style="height: 4rem;" >
+          </div>
+          <!-- Formulario para actualizar altura y peso -->
+          <div>
+            <div class="banner-container" style="height: 4rem">
               <img class="bannermovil" src="@/assets/movil.png" alt="" />
-              <h1 class="banner-textmovil" >Control Movil</h1>
+              <h1 class="banner-textmovil">Control Movil</h1>
               <label class="switch">
-                <input type="checkbox">
+                <input
+                  type="checkbox"
+                  v-model="isChecked"
+                  @change="toggleMessage()"
+                />
                 <span class="slider"></span>
               </label>
             </div>
           </div>
-          <h1 style="font-family: Montserrat;font-weight: 700;">
-
+          <h1 style="font-family: Montserrat; font-weight: 700">
             <strong>Información de </strong>
-            {{ (bebeActual.nombre) }}
+            {{ bebeActual.nombre }}
           </h1>
           <div v-if="bebeActual.color == 'Femenino'">
             <div class="baby-info">
-
               <div class="info-grid">
-                <div class="info-card" style="background-image: url(/src/assets/6.png);">
-                  <font-awesome-icon :icon="['fas', 'weight-scale']"
-                    style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
-                  <p>Peso: <strong>{{ bebeActual.peso }} kg</strong></p>
+                <div
+                  class="info-card"
+                  style="background-image: url(/src/assets/6.png)"
+                >
+                  <font-awesome-icon
+                    :icon="['fas', 'weight-scale']"
+                    style="height: 5rem; color: whitesmoke; margin: 0.5rem"
+                  />
+                  <p>
+                    Peso: <strong>{{ bebeActual.peso }} kg</strong>
+                  </p>
                 </div>
-                <div class="info-card" style="background-image: url(/src/assets/6.png);">
-                  <font-awesome-icon :icon="['fas', 'ruler']" style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
-                  <p>Altura: <strong>{{ bebeActual.altura }} cm</strong></p>
+                <div
+                  class="info-card"
+                  style="background-image: url(/src/assets/6.png)"
+                >
+                  <font-awesome-icon
+                    :icon="['fas', 'ruler']"
+                    style="height: 5rem; color: whitesmoke; margin: 0.5rem"
+                  />
+                  <p>
+                    Altura: <strong>{{ bebeActual.altura }} cm</strong>
+                  </p>
                 </div>
-                <div class="info-card" style="background-image: url(/src/assets/6.png);">
-                  <font-awesome-icon :icon="['fas', 'baby']" style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
-                  <p>Última Comida: <strong>{{ bebeActual.ultimaComida || 'N/A' }}</strong></p>
+                <div
+                  class="info-card"
+                  style="background-image: url(/src/assets/6.png)"
+                >
+                  <font-awesome-icon
+                    :icon="['fas', 'baby']"
+                    style="height: 5rem; color: whitesmoke; margin: 0.5rem"
+                  />
+                  <p>
+                    Última Comida:
+                    <strong>{{ bebeActual.ultimaComida || "N/A" }}</strong>
+                  </p>
                 </div>
-                <div class="info-card" style="background-image: url(/src/assets/6.png);">
-                  <font-awesome-icon :icon="['fas', 'calendar']"
-                    style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
-                  <p>Fecha Nacimiento: <strong>{{ new Date(bebeActual.fechadenacimiento).toLocaleDateString()
-                      }}</strong>
+                <div
+                  class="info-card"
+                  style="background-image: url(/src/assets/6.png)"
+                >
+                  <font-awesome-icon
+                    :icon="['fas', 'calendar']"
+                    style="height: 5rem; color: whitesmoke; margin: 0.5rem"
+                  />
+                  <p>
+                    Fecha Nacimiento:
+                    <strong>{{
+                      new Date(
+                        bebeActual.fechadenacimiento
+                      ).toLocaleDateString()
+                    }}</strong>
                   </p>
                 </div>
               </div>
@@ -89,32 +127,64 @@
           </div>
           <div v-if="bebeActual.color == 'Masculino'">
             <div class="baby-info">
-
               <div class="info-grid">
-                <div class="info-card" style="background-image: url(/src/assets/5.png);">
-                  <font-awesome-icon :icon="['fas', 'weight-scale']"
-                    style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
-                  <p>Peso: <strong>{{ bebeActual.peso }} kg</strong></p>
+                <div
+                  class="info-card"
+                  style="background-image: url(/src/assets/5.png)"
+                >
+                  <font-awesome-icon
+                    :icon="['fas', 'weight-scale']"
+                    style="height: 5rem; color: whitesmoke; margin: 0.5rem"
+                  />
+                  <p>
+                    Peso: <strong>{{ bebeActual.peso }} kg</strong>
+                  </p>
                 </div>
-                <div class="info-card" style="background-image: url(/src/assets/5.png);">
-                  <font-awesome-icon :icon="['fas', 'ruler']" style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
-                  <p>Altura: <strong>{{ bebeActual.altura }} cm</strong></p>
+                <div
+                  class="info-card"
+                  style="background-image: url(/src/assets/5.png)"
+                >
+                  <font-awesome-icon
+                    :icon="['fas', 'ruler']"
+                    style="height: 5rem; color: whitesmoke; margin: 0.5rem"
+                  />
+                  <p>
+                    Altura: <strong>{{ bebeActual.altura }} cm</strong>
+                  </p>
                 </div>
-                <div class="info-card" style="background-image: url(/src/assets/5.png);">
-                  <font-awesome-icon :icon="['fas', 'baby']" style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
-                  <p>Última Comida: <strong>{{ bebeActual.ultimaComida || 'N/A' }}</strong></p>
+                <div
+                  class="info-card"
+                  style="background-image: url(/src/assets/5.png)"
+                >
+                  <font-awesome-icon
+                    :icon="['fas', 'baby']"
+                    style="height: 5rem; color: whitesmoke; margin: 0.5rem"
+                  />
+                  <p>
+                    Última Comida:
+                    <strong>{{ bebeActual.ultimaComida || "N/A" }}</strong>
+                  </p>
                 </div>
-                <div class="info-card" style="background-image: url(/src/assets/5.png);">
-                  <font-awesome-icon :icon="['fas', 'calendar']"
-                    style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
-                  <p>Fecha Nacimiento: <strong>{{ new Date(bebeActual.fechadenacimiento).toLocaleDateString()
-                      }}</strong>
+                <div
+                  class="info-card"
+                  style="background-image: url(/src/assets/5.png)"
+                >
+                  <font-awesome-icon
+                    :icon="['fas', 'calendar']"
+                    style="height: 5rem; color: whitesmoke; margin: 0.5rem"
+                  />
+                  <p>
+                    Fecha Nacimiento:
+                    <strong>{{
+                      new Date(
+                        bebeActual.fechadenacimiento
+                      ).toLocaleDateString()
+                    }}</strong>
                   </p>
                 </div>
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -139,16 +209,12 @@ export default {
         console.log("usuario", this.usuario);
       }
     });
-
   },
   beforeCreate() {
     if (!Cookies.get("idUser")) {
       this.$router.push("/login");
-    }
-    else {
+    } else {
       console.log("idUser", Cookies.get("idUser"));
-
-
     }
   },
 
@@ -158,6 +224,8 @@ export default {
   },
   data() {
     return {
+      isChecked: false, // Estado del switch
+      message: "", // Mensaje a mostrar
       listaBebe: [],
       bebe: {
         idBebe: null,
@@ -207,7 +275,6 @@ export default {
       this.altura = null;
       this.peso = null;
       alert("Datos actualizados correctamente");
-
     },
     actualizarBebe(bebe) {
       console.log("Actualizando bebé:", bebe);
@@ -226,9 +293,8 @@ export default {
         root.style.setProperty("--highlight-color", "#bee5eb");
         root.style.setProperty("--gradient-color", "#3c7f8d");
       }
-    }
+    },
 
-    ,
     async getListaBebe() {
       console.log("idUser: ", Cookies.get("idUser"));
       const idUser = Cookies.get("idUser");
@@ -240,8 +306,26 @@ export default {
         alert("No se encontraron bebes registrados");
       }
     },
+    async toggleMessage() {
+      if (this.isChecked) {
+        this.message = "¡Bienvenido!";
+        console.log(
+          "isChecked2",
+          this.isChecked,
+          "bebe",
+          this.bebeActual.idBebe
+        );
+        const movil = await this.useBebeStoreAdmi.putBebeMovimiento(
+          Cookies.get("idUser")
+        );
+        console.log("movil", movil);
+      }else{
+       const movil = await this.useBebeStoreAdmi.putBebeMovimientofalse(
+        );
+        console.log("movil", movil);
+      }
+    },
   },
-
 };
 </script>
 
@@ -274,7 +358,7 @@ export default {
   right: 5%;
   transform: translateX(-50%);
   color: white;
-  
+
   font-family: Montserrat, sans-serif;
   z-index: 1;
 }
@@ -295,7 +379,7 @@ export default {
   right: 0;
   bottom: 0;
   background-color: rgb(182, 182, 182);
-  transition: .4s;
+  transition: 0.4s;
   border-radius: 10px;
 }
 
@@ -309,18 +393,18 @@ export default {
   bottom: 0.3em;
   transform: rotate(270deg);
   background-color: rgb(255, 255, 255);
-  transition: .4s;
+  transition: 0.4s;
 }
 
-.switch input:checked+.slider {
+.switch input:checked + .slider {
   background-color: var(--primary-color);
 }
 
-.switch input:focus+.slider {
-  box-shadow: 0 0 1px #2196F3;
+.switch input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
 }
 
-.switch input:checked+.slider:before {
+.switch input:checked + .slider:before {
   transform: translateX(2.5em);
 }
 
@@ -335,14 +419,12 @@ export default {
 .logobb {
   width: 4rem;
   margin: 0 auto;
-
 }
 
 .contenedormovil {
   display: flex;
   flex-direction: row;
   background-image: url(/assets/movil.png);
-
 }
 
 .banner-container {
@@ -392,7 +474,7 @@ export default {
   position: absolute;
   top: 25%;
   /* Ajusta según sea necesario */
-  left:25%;
+  left: 25%;
   transform: translateX(-50%);
   color: white;
   font-size: 1rem;
@@ -490,7 +572,6 @@ li {
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 5px;
-
 }
 
 .logo {
@@ -565,7 +646,6 @@ li {
 }
 
 .info-card i {
-
   margin-bottom: 10px;
 }
 
@@ -573,7 +653,7 @@ li {
   color: white;
   font-size: medium;
   font-weight: 600;
-  font-family: Montserrat
+  font-family: Montserrat;
 }
 
 .update-form input {
