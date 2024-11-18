@@ -311,25 +311,49 @@ export const useBebeStore = defineStore("bebe", {
     https://backend-control-tareas-jhessika.serverbb.online/api/v1/bebe/cambiar/movimiento/true
 
      */
+// Cambiar bebé seleccionado en el backend y actualizar el estado local
+async setBebeSeleccionado(idBebe) {
+  this.loading = true;
+  try {
+    const response = await axios.put(`${RutaApi}seleccionado/${idBebe}`);
+    if (response.data.code === "200") {
+      this.bebeSeleccionado = this.bebes.find((bebe) => bebe.idBebe === idBebe);
+      console.log("Bebé seleccionado cambiado a:", this.bebeSeleccionado);
+      return response.data.response;
+    } else {
+      throw new Error("Error al cambiar el bebé seleccionado.");
+    }
+  } catch (error) {
+    this.error = error;
+    console.error("Error en setBebeSeleccionado:", error);
+  } finally {
+    this.loading = false;
+  }
+},
 
-    async getBebeSeleccionado() {
-      this.loading = true;
-      var response = null;
-      try {
-        response = await axios.get(`${RutaApi}seleccionado`);
-        console.log("Datos obtenidos en getBebeSeleccionado:", response);
-        return this.bebe;
-      } catch (error) {
-        this.error = error;
-      } finally {
-        this.loading = false;
-        if (response.data.code === "200") {
-          return response.data.response;
-        } else {
-          return null;
-        }
-      }
-    },
+
+
+async getBebeSeleccionado() {
+  this.loading = true;
+  try {
+    const response = await axios.get(`${RutaApi}seleccionado`);
+    console.log("Datos obtenidos en getBebeSeleccionado:", response);
+
+    console.log(response.status);
+    if (response.status === 200) {
+      this.bebes = response.data;
+      return this.bebes;
+    } else {
+      throw new Error("Error al obtener el bebé seleccionado.");
+    }
+  } catch (error) {
+    this.error = error;
+    console.error("Error en getBebeSeleccionado:", error);
+  } finally {
+    this.loading = false;
+  }
+},
+
 
     async putBebeSeleccionado(idBebe) {
       this.loading = true;
