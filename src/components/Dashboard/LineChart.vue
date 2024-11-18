@@ -30,6 +30,14 @@ export default {
     chartData: {
       type: Object,
       required: true,
+    }, 
+    titulox: {
+      type: String,
+      required: true,
+    },
+    tituloy: {
+      type: String,
+      required: true,
     },
     chartOptions: {
       type: Object,
@@ -51,13 +59,13 @@ export default {
           x: {
             title: {
               display: true,
-              text: 'Horas del día',
+              text: 'Fecha',
             },
           },
           y: {
             title: {
               display: true,
-              text: 'Temperatura (°C)',
+              text: '',
             },
           },
         },
