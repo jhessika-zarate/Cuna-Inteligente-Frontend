@@ -25,7 +25,7 @@
       return {
         options: [
           { label: "Desarrollo", icon: "fas fa-baby" },
-          { label: "Crecimiento", icon: "fas fa-chart-line" },
+        
           { label: "Alimento", icon: "fas fa-utensils" },
           { label: "Peso", icon: "fas fa-weight" },
           { label: "Sueño", icon: "fas fa-bed" },

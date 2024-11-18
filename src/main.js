@@ -5,8 +5,10 @@ import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
-
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/src/sweetalert2.scss'
 const app = createApp(App)
+
 .component('font-awesome-icon', FontAwesomeIcon)
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'

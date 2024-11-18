@@ -1,9 +1,10 @@
 <template>
   <div class="fondo">
     <div class="contenedorlogo">
+      <img class="logoe" src="@/assets/Teddylogoe.png" alt="" />
       <img class="logo" src="@/assets/Teddy.jpg" alt="" />
       <button class="boton" @click="empezar">COMENZAR</button>
-      <button class="boton" @click="login">INCIAR SESION</button>
+      <button class="boton" @click="login">INICIAR SESION</button>
     </div>
   </div>
 </template>
@@ -52,5 +53,9 @@ export default {
 .logo {
   width: 20rem;
   height: 20rem;
+}
+.logoe {
+  width: 20rem;
+
 }
 </style>

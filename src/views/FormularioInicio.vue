@@ -92,6 +92,8 @@ import { useBebeStore } from "@/stores/Publico/Bebe";
 import { useUsusrioStore } from "@/stores/Publico/Usuario";
 import { mapActions } from "pinia";
 import { useAuthStore } from "@/stores/Privado/authStore";
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/src/sweetalert2.scss'
 export default {
   setup() {
     const { login } = useAuthStore();
@@ -169,65 +171,68 @@ export default {
       }
     },
     async doLogin(datoGmail, datoContrasenia) {
-      try {
-        const credentials = {
-          gmail: datoGmail,
-          contrasenia: datoContrasenia,
-        };
-        alert("consulta", credentials);
-        console.log("consulta", credentials);
-        const response = await this.login(credentials);
-        alert("perfecto", response);
-        if (response) {
-          if (
-            response.response.type === 1 &&
-            response.response.authToken !== null
-          ) {
-            alert("perfecto");
-          } else {
-            alert("usuarii adentro o contrasenia incorrectos");
-            throw new Error("Usuario o contraseña incorrectos");
-          }
-        } else {
-          alert("usuarii o contrasenia incorrectos");
-          throw new Error("Usuario o contraseña incorrectos");
-        }
-      } catch (error) {
-        alert("usuarii o contrasenia incorrectos afuera adfuera");
+  try {
+    const credentials = {
+      gmail: datoGmail, 
+      contrasenia: datoContrasenia,
+    };
+    console.log("Consulta", credentials);
+
+    const response = await this.login(credentials);
+
+    if (response) {
+      if (
+        response.response.type === 1 &&
+        response.response.authToken !== null
+      ) {
+        Swal.fire('¡Perfecto!', 'Inicio de sesión exitoso.', 'success');
+      } else {
+        Swal.fire('Error', 'Usuario o contraseña incorrectos.', 'error');
+        throw new Error("Usuario o contraseña incorrectos");
       }
-    },
-    async submitForm() {
-      try {
-        this.usuario.username = this.answers[1];
-        this.usuario.gmail = this.answers[2];
-        this.usuario.contrasenia = this.answers[3];
+    } else {
+      Swal.fire('Error', 'Usuario o contraseña incorrectos.', 'error');
+      throw new Error("Usuario o contraseña incorrectos");
+    }
+  } catch (error) {
+    Swal.fire('Error', 'Usuario o contraseña incorrectos.', 'error');
+  }
+},
 
-        const usuarioResponse = await this.postUsuario(this.usuario);
-        if (usuarioResponse) {
-          this.bebe.idUsuario.idUsuario = usuarioResponse.idUsuario;
-          this.bebe.nombre = this.answers[4];
-          this.bebe.apellidopaterno = this.answers[5];
-          this.bebe.apellidomaterno = this.answers[6];
-          this.bebe.fechadenacimiento = this.answers[7];
-          this.bebe.color = this.answers[8];
+async submitForm() {
+  try {
+    this.usuario.username = this.answers[1];
+    this.usuario.gmail = this.answers[2];
+    this.usuario.contrasenia = this.answers[3];
 
-          const bebeResponse = await this.postBebe(this.bebe);
-          if (bebeResponse) {
-            alert("Formulario completado. ¡Gracias!");
-            //funcion doLogin
-            this.doLogin(this.usuario.gmail, this.usuario.contrasenia);
+    const usuarioResponse = await this.postUsuario(this.usuario);
 
-            this.$router.push("/Home");
-          } else {
-            alert("Error al enviar datos del bebé.");
-          }
-        } else {
-          alert("Error al enviar datos de usuario.");
-        }
-      } catch (error) {
-        console.error("Error al enviar el formulario:", error);
+    if (usuarioResponse) {
+      this.bebe.idUsuario.idUsuario = usuarioResponse.idUsuario;
+      this.bebe.nombre = this.answers[4];
+      this.bebe.apellidopaterno = this.answers[5];
+      this.bebe.apellidomaterno = this.answers[6];
+      this.bebe.fechadenacimiento = this.answers[7];
+      this.bebe.color = this.answers[8];
+
+      const bebeResponse = await this.postBebe(this.bebe);
+
+      if (bebeResponse) {
+        Swal.fire('¡Formulario Completado!', 'Gracias por completar el formulario.', 'success');
+        this.doLogin(this.usuario.gmail, this.usuario.contrasenia);
+        this.$router.push("/Home");
+      } else {
+        Swal.fire('Error', 'Error al enviar datos del bebé.', 'error');
       }
-    },
+    } else {
+      Swal.fire('Error', 'Error al enviar datos de usuario.', 'error');
+    }
+  } catch (error) {
+    console.error("Error al enviar el formulario:", error);
+    Swal.fire('Error', 'Ocurrió un problema al enviar el formulario.', 'error');
+  }
+},
+
   },
 };
 </script>
