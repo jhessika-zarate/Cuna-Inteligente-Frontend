@@ -1,86 +1,121 @@
 <template>
   <sidebar />
   <div class="pantalla">
-    <div class="muestrabbs">
-      <!-- div con for de listaBesbes-->
+    <div v-if="ContenedorSeleccionado && !ObtencionDatos">
+      <div class="muestrabbs">
+        <!-- div con for de listaBesbes-->
 
-      <li v-for="bebe in listaBebe" :key="bebe.idBebe">
-        <div class="contenedorbb">
-          <div v-if="bebe.color == 'Femenino'">
-            <img class="logobb" src="@/assets/ninia.png" alt="" />
+        <li v-for="bebe in listaBebe" :key="bebe.idBebe">
+          <div class="contenedorbb">
+            <div v-if="bebe.color == 'Femenino'">
+              <img class="logobb" src="@/assets/ninia.png" alt="" />
+            </div>
+            <div v-if="bebe.color == 'Masculino'">
+              <img class="logobb" src="@/assets/ninio.png" alt="" />
+            </div>
+            <div v-if="bebe.seleccionado">
+              <button class="botonbb" @click="actualizarBebe(bebe)">
+                {{ bebe.nombre }}
+              </button>
+            </div>
+            <div v-if="!bebe.seleccionado">
+              <button class="botonbbelegido" @click="actualizarBebe(bebe)">
+                {{ bebe.nombre }}
+              </button>
+            </div>
           </div>
-          <div v-if="bebe.color == 'Masculino'">
-            <img class="logobb" src="@/assets/ninio.png" alt="" />
-          </div>
-          <div v-if="bebe.seleccionado">
-            <button class="botonbb" @click="actualizarBebe(bebe)">
-              {{ bebe.nombre }}
-            </button>
-          </div>
-          <div v-if="!bebe.seleccionado">
-            <button class="botonbbelegido" @click="actualizarBebe(bebe)">
-              {{ bebe.nombre }}
-            </button>
+        </li>
+      </div>
+
+      <!-- Título de Estadísticas del bebé -->
+      <div class="row">
+        <div class="col-12 text-center">
+          <h2 class="title">Estadísticas del Bebé</h2>
+        </div>
+      </div>
+
+      <!-- Primer gráfico que ocupa toda la fila ACTIVUDAD EN LA NOCHE  -->
+      <div class="row">
+        <div class="col-12">
+          <card type="chart">
+            \
+            <div class="chart-area">
+              <line-chart
+                class="grafica-principal"
+                ref="bigChart"
+                chart-id="big-line-chart"
+                :chart-data="bigLineChart.chartData"
+                :gradient-colors="bigLineChart.gradientColors"
+                :gradient-stops="bigLineChart.gradientStops"
+                :extra-options="bigLineChart.extraOptions"
+              ></line-chart>
+            </div>
+          </card>
+        </div>
+      </div>
+
+      <div class="charts-container2">
+        <!-- Dos instancias del gráfico con valores de humedad distintos -->
+        <div class="col-6 sped">
+          <VelocímetroChart :humidityValue="humidityValue1" titulo="Humedad" />
+        </div>
+        <div class="col-6 sped">
+          <VelocímetroChart :humidityValue="humidityValue2" titulo="Temperatura" />
+        </div>
+      </div>
+
+      <!-- Otros gráficos organizados en 3 columnas -->
+      <div class="charts-container">
+        <div v-for="chart in charts" :key="chart.chartId" class="chart-item">
+          <div class="card">
+            <div class="card-body">
+              <component
+                :is="chart.component"
+                class="chart-component"
+                :chart-id="chart.chartId"
+                :chart-data="chart.chartData"
+                gradient-colors='["#f96332", "#f96332"]'
+                gradient-stops="[0, 0.5, 0.7, 0.9]"
+                :extra-options="chart.extraOptions"
+                titulox="Fecha"
+                tituloy="kilogramos"
+              ></component>
+            </div>
           </div>
         </div>
-      </li>
-    </div>
-    <!-- Título de Estadísticas del bebé -->
-    <div class="row">
-      <div class="col-12 text-center">
-        <h2 class="title">Estadísticas del Bebé</h2>
       </div>
     </div>
+    <div v-else class="centered-container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <!-- que si es true  diga seleccionee bebe y sino que diga seleccione otro beb con datos-->
+          <h2 class="title" v-if="ObtencionDatos">
+            Seleccione un bebe con registros previos
+          </h2>
+          <h2 class="title" v-else>Seleccione un bebe</h2>
 
-    <!-- Primer gráfico que ocupa toda la fila ACTIVUDAD EN LA NOCHE  -->
-    <div class="row">
-      <div class="col-12">
-        <card type="chart">
-          \
-          <div class="chart-area">
-            <line-chart
-              class="grafica-principal"
-              ref="bigChart"
-              chart-id="big-line-chart"
-              :chart-data="bigLineChart.chartData"
-              :gradient-colors="bigLineChart.gradientColors"
-              :gradient-stops="bigLineChart.gradientStops"
-              :extra-options="bigLineChart.extraOptions"
-            ></line-chart>
-          </div>
-        </card>
-      </div>
-    </div>
-
-    <div class="charts-container">
-      <div class="col-6 sped">
-        <VelocímetroChart
-          :chartData="chartData.velocimetro.chartData"
-          :chartOptions="chartData.velocimetro.chartOptions"
-        />
-      </div>
-      <div class="col-6 sped">
-        <VelocímetroChart
-          :chartData="chartData.velocimetro.chartData"
-          :chartOptions="chartData.velocimetro.chartOptions"
-        />
-      </div>
-    </div>
-
-    <!-- Otros gráficos organizados en 3 columnas -->
-    <div class="charts-container">
-      <div v-for="chart in charts" :key="chart.chartId" class="chart-item">
-        <div class="card">
-          <div class="card-body">
-            <component
-              :is="chart.component"
-              class="chart-component"
-              :chart-id="chart.chartId"
-              :chart-data="chart.chartData"
-              gradient-colors='["#f96332", "#f96332"]'
-              gradient-stops="[0, 0.5, 0.7, 0.9]"
-              :extra-options="chart.extraOptions"
-            ></component>
+          <div class="muestrabbs">
+            <!-- div con for de listaBebes-->
+            <li v-for="bebe in listaBebe" :key="bebe.idBebe">
+              <div class="contenedorbb">
+                <div v-if="bebe.color == 'Femenino'">
+                  <img class="logobb" src="@/assets/ninia.png" alt="" />
+                </div>
+                <div v-if="bebe.color == 'Masculino'">
+                  <img class="logobb" src="@/assets/ninio.png" alt="" />
+                </div>
+                <div v-if="bebe.seleccionado">
+                  <button class="botonbb" @click="actualizarBebe(bebe)">
+                    {{ bebe.nombre }}
+                  </button>
+                </div>
+                <div v-if="!bebe.seleccionado">
+                  <button class="botonbbelegido" @click="actualizarBebe(bebe)">
+                    {{ bebe.nombre }}
+                  </button>
+                </div>
+              </div>
+            </li>
           </div>
         </div>
       </div>
@@ -113,8 +148,39 @@ export default {
     const datos = await this.bebeStore.getTemperaturabyUserData(
       Cookies.get("idUser")
     );
-    console.log("beforeCreate", datos);
-    this.bigLineChart = datos;
+    const BebeSeleccionado = await this.bebeStore.getBebeSeleccionado();
+    if (BebeSeleccionado.idUsuario.idUsuario == Cookies.get("idUser")) {
+      this.ContenedorSeleccionado = true;
+    }
+    const actividadBebe = await this.bebeStore.getActivityByBabyData(
+      BebeSeleccionado.idBebe
+    );
+    const crecimientobebe = await this.bebeStore.obtenerDatosGraficas(
+      BebeSeleccionado.idBebe
+    );
+    const humedadBebe = await this.bebeStore.fetchHumedadData(
+      BebeSeleccionado.idBebe
+    );
+    console.log("humedadBebe", humedadBebe);
+    const temperaturaBebe = await this.bebeStore.fetchTemperaturaData(
+      BebeSeleccionado.idBebe
+    );
+
+    // Asignar los valores a los gráficos
+    this.humidityValue1 = humedadBebe;
+    this.humidityValue2 = temperaturaBebe;
+
+    console.log("temperaturaBebe", temperaturaBebe);
+
+    console.log("actividadBebe", actividadBebe);
+    if (actividadBebe) {
+      this.ObtencionDatos = false;
+    }
+    this.bigLineChart = actividadBebe;
+    this.charts = crecimientobebe.otherCharts;
+    console.log("bigLineChart", this.bigLineChart);
+    console.log("charts", this.charts);
+
     if (!Cookies.get("idUser")) {
       this.$router.push("/login");
     } else {
@@ -124,6 +190,11 @@ export default {
 
   data() {
     return {
+      humidityValue1: 0, // Inicializa el valor de humedad para el primer gráfico
+      humidityValue2: 0, // Inicializa el valor de humedad para el segundo gráfico
+
+      ContenedorSeleccionado: false,
+      ObtencionDatos: true,
       listaBebe: [],
       bigLineChart: chartData.bigLineChart,
 
@@ -157,7 +228,6 @@ export default {
         gmail: null,
         contrasenia: null,
       },
-     
     };
   },
   computed: {
@@ -174,20 +244,21 @@ export default {
       chart.chartData.datasets[0].data = chart.allData[index];
       chart.activeIndex = index;
     },
-   actualizarBebe(actualBebe) {
+    actualizarBebe(actualBebe) {
+      if (actualBebe.idBebe == this.bebe.idBebe) return;
       console.log("quiero actualizar esta a acyual", actualBebe);
       this.cambiarSeleccionado(actualBebe.idBebe);
       console.log("ahora este es el bebe", this.bebe);
       this.bebe = { ...actualBebe }; // Copiar directamente los datos del bebé seleccionado
-      this. getListaBebe();
+      this.getListaBebe();
+      location.reload();
     },
 
-    async cambiarSeleccionado(id){
+    async cambiarSeleccionado(id) {
       console.log("id de bebe enviado", id);
       const datosActualizados = await this.bebeStore.putBebeSeleccionado(id);
-    
+
       console.log("datosActualizados", datosActualizados);
-     
     },
     async getListaBebe() {
       console.log("idUser: ", Cookies.get("idUser"));
@@ -195,8 +266,8 @@ export default {
       console.log("idUser: ", idUser);
       this.listaBebe = await this.useBebeStoreAdmi.getBabybyUser(idUser);
       const pruebaBebe = await this.useBebeStoreAdmi.getBebeSeleccionado();
-       this.bebe ={...pruebaBebe};
-       this.Temporalbebe ={...pruebaBebe};
+      this.bebe = { ...pruebaBebe };
+      this.Temporalbebe = { ...pruebaBebe };
       console.log("lista luego de pedir", this.listaBebe);
       console.log("bebe seleccionado", this.bebe);
       if (this.listaBebe == null) {
@@ -206,12 +277,11 @@ export default {
   },
   mounted() {
     //this.initBigChart(0);
-    
+
     this.getListaBebe().then(() => {
       if (this.listaBebe.length > 0) {
         this.usuario = this.listaBebe[0].idUsuario.username;
         console.log("usuario", this.usuario);
-       
       }
     });
   },
@@ -425,11 +495,27 @@ li {
   padding: 20px;
 }
 
+.charts-container2 {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(520px, 1fr)
+  ); /* Usa un tamaño mínimo adecuado */
+  gap: 20px; /* Espacio entre los gráficos */
+  padding: 20px;
+}
+
 /* Asegúrate de que el contenedor se vea bien en pantallas más grandes */
 @media (min-width: 1200px) {
   .charts-container {
     grid-template-columns: repeat(
       3,
+      1fr
+    ); /* 3 columnas para pantallas grandes */
+  }
+  .charts-container2 {
+    grid-template-columns: repeat(
+      2,
       1fr
     ); /* 3 columnas para pantallas grandes */
   }
@@ -462,6 +548,9 @@ li {
   .charts-container {
     padding: 0px;
   }
+  .charts-container2 {
+    padding: 0px;
+  }
   /* Estilos para los gráficos */
   .chart-component {
     height: 10rem;
@@ -469,10 +558,18 @@ li {
   .grafica-principal {
     height: 15rem;
   }
+  .sped {
+    margin-top: 2rem;
+    width: 60%;
+    margin-bottom: 2rem;
+  }
 }
 @media (max-width: 400px) {
   .pantalla {
     padding: 10px;
+  }
+  .sped {
+    width: 10%;
   }
 }
 .sped {
@@ -480,5 +577,28 @@ li {
   justify-content: center;
   align-items: center;
   height: 200px; /* Altura fija para el velocímetro */
+  width: 80%;
+}
+
+.centered-container {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  min-height: 50vh; /* Altura mínima de la pantalla completa */
+}
+
+.title {
+  margin-bottom: 20px; /* Ajusta el espaciado del título */
+}
+
+.muestrabbs {
+  display: flex;
+  flex-wrap: wrap; /* Permite que los elementos se ajusten si hay muchos */
+  gap: 10px; /* Espaciado entre los elementos */
+  justify-content: center; /* Centra horizontalmente el contenido */
+}
+
+.contenedorbb {
+  margin: 10px;
 }
 </style>

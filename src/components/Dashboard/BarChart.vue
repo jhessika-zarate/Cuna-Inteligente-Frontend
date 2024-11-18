@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Bar :data="chartData" :options="chartOptions" />
+    <Bar :data="chartData" :options="chartOptions" :titulox="titulox" :tituloy="tituloy" />
   </div>
 </template>
 
@@ -30,6 +30,14 @@ export default {
       type: Object,
       required: true,
     },
+    titulox: {
+      type: String,
+      required: true,
+    },
+    tituloy: {
+      type: String,
+      required: true,
+    },
     chartOptions: {
       type: Object,
       required: false,
@@ -40,13 +48,13 @@ export default {
           x: {
             title: {
               display: true,
-              text: 'X Axis',
+              text: 'Fecha',
             },
           },
           y: {
             title: {
               display: true,
-              text: 'Y Axis',
+              text: 'Valor',
             },
           },
         },
