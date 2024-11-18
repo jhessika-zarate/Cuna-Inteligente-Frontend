@@ -1,5 +1,6 @@
 <template>
   <div class="main-container">
+    <sidebar />
     <!-- Banner y título -->
     <div class="banner">
       <div class="banner-content">
@@ -32,8 +33,12 @@
 
   
   <script>
+  import sidebar from '@/components/sidebar.vue';
   export default {
     name: "Consejos",
+    components: {
+    sidebar,
+  },
     data() {
       return {
         consejos: [
