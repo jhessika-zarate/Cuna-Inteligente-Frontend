@@ -18,7 +18,7 @@
     </a>
     <a 
       href="#" 
-      :class="{ active: $route.path === '/historial' }" 
+      :class="{ active: $route.path === '/dashboard' }" 
       @click="redirectToHistorial"
     >
       <font-awesome-icon :icon="['fas', 'question']" class="icon" />
@@ -63,7 +63,7 @@ export default {
       this.$router.push('/deteccion-sonido');  // Ruta para la página de "Recuerdos"
     },
     redirectToHistorial() {
-      this.$router.push('/historial');  // Ruta para la página de "Más"
+      this.$router.push('/dashboard');  // Ruta para la página de "Más"
     },
     logout() {
       // Lógica de logout, por ejemplo, eliminar el token de sesión o redirigir al login
