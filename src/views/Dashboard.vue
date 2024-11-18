@@ -126,6 +126,7 @@ import BarChart from "@/components/Dashboard/BarChart.vue";
 import { chartData } from "@/components/Dashboard/chartConfig";
 import VelocímetroChart from "@/components/Dashboard/VelocímetroChart.vue";
 import { useBebeStore } from "@/stores/Publico/Bebe";
+
 import Cookies from "js-cookie";
 export default {
   components: {
@@ -136,7 +137,8 @@ export default {
   },
   setup() {
     const bebeStore = useBebeStore();
-    return { bebeStore };
+    const useBebeStoreAdmi = useBebeStore();
+    return { bebeStore, useBebeStoreAdmi };
   },
   async beforeCreate() {
     const datos= await this.bebeStore.getTemperaturabyUserData(Cookies.get("idUser"));
