@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <!-- Primer gráfico que ocupa toda la fila -->
+    <!-- Primer gráfico que ocupa toda la fila ACTIVUDAD EN LA NOCHE  -->
     <div class="row">
       <div class="col-12">
         <card type="chart">
@@ -60,8 +60,24 @@
       </div>
     </div>
 
-    <!-- Otros gráficos organizados en 3 columnas -->
+   
     <div class="charts-container">
+      <div class="col-6 sped">
+        <VelocímetroChart
+          :chartData="chartData.velocimetro.chartData"
+          :chartOptions="chartData.velocimetro.chartOptions"
+        />
+      </div>
+      <div class="col-6 sped">
+        <VelocímetroChart
+          :chartData="chartData.velocimetro.chartData"
+          :chartOptions="chartData.velocimetro.chartOptions"
+        />
+      </div>
+    </div>
+
+     <!-- Otros gráficos organizados en 3 columnas -->
+     <div class="charts-container">
       <div v-for="chart in charts" :key="chart.chartId" class="chart-item">
         <div class="card">
           <div class="card-body">
@@ -79,14 +95,6 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-12 sped">
-        <VelocímetroChart
-          :chartData="chartData.velocimetro.chartData"
-          :chartOptions="chartData.velocimetro.chartOptions"
-        />
-      </div>
-    </div>
   </div>
 </template>
 

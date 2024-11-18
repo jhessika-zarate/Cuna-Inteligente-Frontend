@@ -298,5 +298,79 @@ export const useBebeStore = defineStore("bebe", {
         }
       }
     },
+
+    //pruebas de selecionar bebe
+    /**
+     get obtener bebe selecionado 
+     https://backend-control-tareas-jhessika.serverbb.online/api/v1/seleccionado
+     put para seleccionar el bebe actual pasandole el id del bebe
+     https://backend-control-tareas-jhessika.serverbb.online/api/v1/bebe/seleccionado/1
+    put para cambiar el movimiento del bebe a true
+    https://backend-control-tareas-jhessika.serverbb.online/api/v1/bebe/cambiar/movimiento/true
+     put para cambiar el movimiento del bebe a false
+    https://backend-control-tareas-jhessika.serverbb.online/api/v1/bebe/cambiar/movimiento/true
+
+     */
+
+    async getBebeSeleccionado() {
+      this.loading = true;
+      var response = null;
+      try {
+        response = await axios.get(`${RutaApi}seleccionado`);
+        console.log("Datos obtenidos en getBebeSeleccionado:", response);
+        return this.bebe;
+      } catch (error) {
+        this.error = error;
+      } finally {
+        this.loading = false;
+        if (response.data.code === "200") {
+          return response.data.response;
+        } else {
+          return null;
+        }
+      }
+    },
+
+    async putBebeSeleccionado(idBebe) {
+      this.loading = true;
+      var response = null;
+      try {
+        response = await axios.put(`${RutaApi}bebe/seleccionado/${idBebe}`);
+        console.log("Datos obtenidos en putBebeSeleccionado:", response);
+        return this.bebe;
+      } catch (error) {
+        this.error = error;
+      } finally {
+        this.loading = false;
+        if (response.data.code === "200") {
+          return response.data.response;
+        } else {
+          return null;
+        }
+      }
+    },
+
+    async putBebeMovimiento(movimiento) {
+      this.loading = true;
+      var response = null;
+      try {
+        response = await axios.put(
+          `${RutaApi}bebe/cambiar/movimiento/${movimiento}`
+        );
+        console.log("Datos obtenidos en putBebeMovimiento:", response);
+        return this.bebe;
+      } catch (error) {
+        this.error = error;
+      } finally {
+        this.loading = false;
+        if (response.data.code === "200") {
+          return response.data.response;
+        } else {
+          return null;
+        }
+      }
+    },
+
+
   },
 });

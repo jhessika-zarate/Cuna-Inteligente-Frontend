@@ -89,16 +89,16 @@ export const chartData = {
       chartData: {
         datasets: [
           {
-            label: "Dataset 1", // Etiqueta para la serie de datos
+            label: "Actividad en la noche", // Etiqueta para la serie de datos
 
-            data: [80, 100, 70, 80, 120, 80],
+            data: [0, 1, 0, 1, 1, 0],
             backgroundColor: "rgba(155,89,182,0.3)", // Morado claro con opacidad
             borderColor: "#9b59b6", // Morado
             borderWidth: 2,
             fill: true,
           },
         ],
-        labels: ["JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
+        labels: ["8 pm","9 pm","9:30 pm", "10 pm", "11 pm", "12 pm", "2 am", "5am"],
       },
       gradientColors: ["#8e44ad", "#9b59b6"], // Gradiente morado
       gradientStops: [1, 0.5, 0],
@@ -118,8 +118,9 @@ export const chartData = {
             borderColor: "#2ecc71", // Verde
             borderWidth: 2,
             fill: true,
-          }, {
-            label: "MES ACTUAL", // Etiqueta para la serie de datos
+          },
+          {
+            label: "MES ACTUAL vs MES PASADO", // Etiqueta para la serie de datos
             data: [93, 10],
             backgroundColor: "#3498db", // Verde claro con opacidad
             borderColor: "#3498db", // Verde
@@ -141,9 +142,18 @@ export const chartData = {
       chartData: {
         datasets: [
           {
-            label: "Dataset 1", // Etiqueta para la serie de datos
+            label: "Crecimiento altura", // Etiqueta para la serie de datos
 
-            data: [80, 100, 70, 80, 120, 80],
+            data: [60, 100, 120, 150, 150, 160],
+            backgroundColor: "rgba(155,89,182,0.3)", // Morado claro con opacidad
+            borderColor: "#9b59b6", // Morado
+            borderWidth: 2,
+            fill: true,
+          },
+          {
+            label: "Crecimiento altura", // Etiqueta para la serie de datos
+
+            data: [60, 100, 120, 150, 150, 160],
             backgroundColor: "rgba(155,89,182,0.3)", // Morado claro con opacidad
             borderColor: "#9b59b6", // Morado
             borderWidth: 2,
@@ -156,9 +166,6 @@ export const chartData = {
       gradientStops: [1, 0.5, 0],
       extraOptions: { responsive: true },
     },
-  
   ],
-  velocimetro: {
-  
-  },
+  velocimetro: {},
 };
