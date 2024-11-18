@@ -101,19 +101,7 @@
             </div>
           </div>
         </div>
-        <!-- Formulario para actualizar altura y peso -->
-        <div class="update-form">
-          <h2 style="font-weight: 700;text-align: left;font-family: Montserrat;">Registrar Cambio de Altura y Peso</h2>
-          <form @submit.prevent="updateData">
-            <label for="altura">Nueva Altura (cm):</label>
-            <input type="number" v-model="altura" required />
-
-            <label for="peso">Nuevo Peso (kg):</label>
-            <input type="number" v-model="peso" required />
-
-            <button type="submit">Registrar Cambio</button>
-          </form>
-        </div>
+        
       </div>
     </div>
   </div>
@@ -209,10 +197,24 @@ export default {
 
     },
     actualizarBebe(bebe) {
-      console.log("Actualizando bebé:", bebe);
-      this.bebeActual = { ...bebe }; // Copiar directamente los datos del bebé seleccionado
-      console.log("bebeActual actualizado:", this.bebeActual);
-    }
+  console.log("Actualizando bebé:", bebe);
+  this.bebeActual = { ...bebe };
+
+  // Cambiar colores según el género
+  const root = document.documentElement;
+  if (bebe.color === "Femenino") {
+    root.style.setProperty("--primary-color", "#ee94cb");
+    root.style.setProperty("--secondary-color", "#cf7ab6");
+    root.style.setProperty("--highlight-color", "#f5c6cb");
+    root.style.setProperty("--gradient-color", "#9e6fdf");
+  } else if (bebe.color === "Masculino") {
+    root.style.setProperty("--primary-color", "#72b7c4");
+    root.style.setProperty("--secondary-color", "#3c646b");
+    root.style.setProperty("--highlight-color", "#bee5eb");
+    root.style.setProperty("--gradient-color", "#3c7f8d");
+  }
+}
+
     ,
     async getListaBebe() {
       console.log("idUser: ", Cookies.get("idUser"));
@@ -235,12 +237,14 @@ export default {
   --primary-color: #ee94cb;
   --secondary-color: #cf7ab6;
   --highlight-color: #f5c6cb;
+  --gradient-color:#9e6fdf;
 }
 
 .masculino {
   --primary-color: #72b7c4;
-  --secondary-color: #3c646b;
+  --secondary-color: #3c7f8d;
   --highlight-color: #bee5eb;
+  --gradient-color:#3c486b;
 }
 .contenedorbb{
   align-items: center;

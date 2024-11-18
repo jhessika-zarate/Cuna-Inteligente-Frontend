@@ -14,6 +14,13 @@
   font-family: 'Avenir Next';
   overflow-x: hidden;
 }
+:root {
+  --primary-color: #ee94cb;
+  --secondary-color: #cf7ab6;
+  --highlight-color: #f5c6cb;
+  --gradient-color:#9e6fdf;
+}
+
 body {
   font-family: Montserrat;
 }
