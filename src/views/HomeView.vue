@@ -162,7 +162,14 @@
                   />
                   <p>
                     Última Comida:
-                    <strong>{{ bebeActual.ultimaComida || "N/A" }}</strong>
+                    <strong>{{ new Date(
+                        bebeActual.ultimaComida
+                      ).toLocaleDateString()
+                   }}</strong><br>
+                    Tipo:
+                    <strong v-if="bebeActual.ultimaComidaTipo==true">{{ 'Solido' || "N/A" }}</strong>
+                    <strong v-else>{{ 'Liquido' || "N/A" }}</strong>
+                  
                   </p>
                 </div>
                 <div
@@ -250,11 +257,14 @@ export default {
         apellidopaterno: null,
         apellidomaterno: null,
         fechadenacimiento: null,
+        ultimaComida: null,
+        ultimaComidaTipo: null,
         color: null,
         idUsuario: {
           idUsuario: null,
         },
       },
+      ultimaComida2:[],
       datosBebes: [],
       babyData: {
         nombre: "Juanito",
@@ -284,6 +294,10 @@ export default {
       console.log("datos bebe", this.datosBebes);
       this.bebeActual.peso = this.datosBebes.peso;
       this.bebeActual.altura = this.datosBebes.altura;
+      this.ultimaComida2= await this.useBebeStoreAdmi.getUltimoRegistroAlimentacion(this.bebeActual.idBebe);
+      console.log("ultima comida", this.ultimaComida2);
+      this.bebeActual.ultimaComida = this.ultimaComida2.fecha;
+      this.bebeActual.ultimaComidaTipo = this.ultimaComida2.tipocomida;
       // Cambiar colores según el género
       const root = document.documentElement;
       if (bebe.color === "Femenino") {

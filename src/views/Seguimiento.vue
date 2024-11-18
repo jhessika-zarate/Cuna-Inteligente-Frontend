@@ -1,75 +1,137 @@
 <template>
-
   <div class="main-container">
     <sidebar />
     <div class="baby-info">
-      <h1 style="font-family: Montserrat;font-weight: 800;">
-
-
-        <font-awesome-icon :icon="['fas', 'clipboard']"
-          style="height: 2rem;color: var(--primary-color);margin: 0.5rem;" />
+      <h1 style="font-family: Montserrat; font-weight: 800">
+        <font-awesome-icon
+          :icon="['fas', 'clipboard']"
+          style="height: 2rem; color: var(--primary-color); margin: 0.5rem"
+        />
         Registro
       </h1>
+
       <div class="info-grid">
         <div class="info-card" @click="openModal('pesoaltura')">
-          <font-awesome-icon :icon="['fas', 'weight-scale']" style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
+          <font-awesome-icon
+            :icon="['fas', 'weight-scale']"
+            style="height: 5rem; color: whitesmoke; margin: 0.5rem"
+          />
           <p>Peso y Altura</p>
         </div>
 
         <div class="info-card" @click="openModal('comida')">
-          <font-awesome-icon :icon="['fas', 'bowl-food']" style="height: 5rem; color: whitesmoke; margin: 0.5rem;" />
+          <font-awesome-icon
+            :icon="['fas', 'bowl-food']"
+            style="height: 5rem; color: whitesmoke; margin: 0.5rem"
+          />
           <p>Última Comida</p>
         </div>
-
-
+        <!-- Combo box para seleccionar comida -->
       </div>
     </div>
   </div>
-  <div v-if="showModal && currentModal === 'pesoaltura'"class="modal-overlay" @click.self="closeModal">
+  <div
+    v-if="showModal && currentModal === 'pesoaltura'"
+    class="modal-overlay"
+    @click.self="closeModal"
+  >
     <div class="modal">
-      
-
       <!-- Contenedor de Peso -->
-      
+      <div class="food-select">
+        <label for="comidaCombo">Selecciona al bebe:</label>
+        <select v-model="RegistroComida.idBebe" id="comidaCombo">
+          <option disabled value="">Seleccione una opción</option>
+          <option
+            v-for="comida in listaBebe"
+            :key="comida.idBebe"
+            :value="comida.idBebe"
+          >
+            {{ comida.nombre }}
+          </option>
+        </select>
+      </div>
       <div class="height-container">
-        
         <div class="scale">
-          <div class="needle" :style="{ transform: `rotate(${(peso / maxPeso) * 180 - 90}deg)` }"></div>
+          <div
+            class="needle"
+            :style="{ transform: `rotate(${(RegistroDatosBebe.peso / maxPeso) * 180 - 90}deg)` }"
+          ></div>
           <div class="scale-marks">
-            <span v-for="n in 11" :key="n" :style="{ left: `${(n - 1) * 10}%` }">
+            <span
+              v-for="n in 11"
+              :key="n"
+              :style="{ left: `${(n - 1) * 10}%` }"
+            >
               {{ (n - 1) * (maxPeso / 10) }}
             </span>
           </div>
         </div>
         <div class="input-container">
           <h1>Peso</h1>
-          <input type="range" v-model.number="peso" :min="minPeso" :max="maxPeso" step="0.1" class="slider" />
-          <input type="number" v-model.number="peso" :min="minPeso" :max="maxPeso" step="0.1" class="text-input" />
-          <p style="text-align: center;font-size: larger;">Peso actual: <strong>{{ peso }} kg</strong></p>
+          <input
+            type="range"
+            v-model.number="RegistroDatosBebe.peso"
+            :min="minPeso"
+            :max="maxPeso"
+            step="0.1"
+            class="slider"
+          />
+          <input
+            type="number"
+            v-model.number="RegistroDatosBebe.peso"
+            :min="minPeso"
+            :max="maxPeso"
+            step="0.1"
+            class="text-input"
+          />
+          <p style="text-align: center; font-size: larger">
+            Peso actual: <strong>{{ RegistroDatosBebe.peso }} kg</strong>
+          </p>
         </div>
-       
       </div>
-      
+
       <!-- Contenedor de Altura -->
       <div class="height-container">
-        
         <div class="ruler">
-          
-          <div class="progress" :style="{ height: `${(altura / maxAltura) * 100}%` }"></div>
+          <div
+            class="progress"
+            :style="{ height: `${(RegistroDatosBebe.altura / maxAltura) * 100}%` }"
+          ></div>
           <div class="ruler-marks">
-            <div v-for="n in 31" :key="n" class="ruler-mark" :style="{ bottom: `${(n - 1) * 3.33}%` }">
-              <span v-if="(n - 1) % 5 === 0">{{ (n - 1) * (maxAltura / 30) }} -</span>
+            <div
+              v-for="n in 31"
+              :key="n"
+              class="ruler-mark"
+              :style="{ bottom: `${(n - 1) * 3.33}%` }"
+            >
+              <span v-if="(n - 1) % 5 === 0"
+                >{{ (n - 1) * (maxAltura / 30) }} -</span
+              >
             </div>
           </div>
         </div>
         <div class="input-container">
           <h1>Altura</h1>
-          <input type="range" v-model.number="altura" :min="minAltura" :max="maxAltura" step="0.5" class="slider" />
-          <input type="number" v-model.number="altura" :min="minAltura" :max="maxAltura" step="0.5"
-            class="text-input" />
-            <p style="font-size: larger;" >Altura actual: <strong>{{ altura }} cm</strong></p>
+          <input
+            type="range"
+            v-model.number="RegistroDatosBebe.altura"
+            :min="minAltura"
+            :max="maxAltura"
+            step="0.5"
+            class="slider"
+          />
+          <input
+            type="number"
+            v-model.number="RegistroDatosBebe.altura"
+            :min="minAltura"
+            :max="maxAltura"
+            step="0.5"
+            class="text-input"
+          />
+          <p style="font-size: larger">
+            Altura actual: <strong>{{ RegistroDatosBebe.altura }} cm</strong>
+          </p>
         </div>
-        
       </div>
 
       <!-- Botón de guardar -->
@@ -77,21 +139,43 @@
     </div>
   </div>
 
-  <div v-if="showModal && currentModal === 'comida'" class="modal-overlay" @click.self="closeModal">
+  <div
+    v-if="showModal && currentModal === 'comida'"
+    class="modal-overlay"
+    @click.self="closeModal"
+  >
     <div class="modal">
       <h1>Registrar Última Comida</h1>
+      <div class="food-select">
+        <label for="comidaCombo">Selecciona al bebe:</label>
+        <select v-model="RegistroComida.idBebe" id="comidaCombo">
+          <option disabled value="">Seleccione una opción</option>
+          <option
+            v-for="comida in listaBebe"
+            :key="comida.idBebe"
+            :value="comida.idBebe"
+          >
+            {{ comida.nombre }}
+          </option>
+        </select>
+      </div>
       <div class="food-container">
         <!-- Selección de tipo de comida -->
         <div class="food-type">
-
           <div class="button-group">
-            <button class="food-button" :class="{ active: comidaSeleccionada === 'Sólido' }"
-              @click="comidaSeleccionada = 'Sólido'">
+            <button
+              class="food-button"
+              :class="{ active: comidaSeleccionada === 'Sólido' }"
+              @click="comidaSeleccionada = 'Sólido'"
+            >
               <font-awesome-icon :icon="['fas', 'drumstick-bite']" />
               Sólido
             </button>
-            <button class="food-button" :class="{ active: comidaSeleccionada === 'Líquido' }"
-              @click="comidaSeleccionada = 'Líquido'">
+            <button
+              class="food-button"
+              :class="{ active: comidaSeleccionada === 'Líquido' }"
+              @click="comidaSeleccionada = 'Líquido'"
+            >
               <font-awesome-icon :icon="['fas', 'glass-whiskey']" />
               Líquido
             </button>
@@ -102,51 +186,89 @@
 
         <div class="food-datetime">
           <label for="fecha">Fecha:</label>
-          <input type="date" v-model="fecha" id="fecha" /><br>
+          <input type="date" v-model="fecha" id="fecha" /><br />
           <label for="hora">Hora:</label>
           <input type="time" v-model="hora" id="hora" />
         </div>
       </div>
-      <br>
-      <p style="font-size: larger;" >
-        Última comida: <strong>{{ comidaSeleccionada }}</strong>, <br>
+      <br />
+      <p style="font-size: larger">
+        Última comida: <strong>{{ comidaSeleccionada }}</strong
+        >, <br />
 
-        Fecha: <strong>{{ fecha }}</strong>, <br>
-        Hora: <strong>{{ hora }}</strong><br>
+        Fecha: <strong>{{ fecha }}</strong
+        >, <br />
+        Hora: <strong>{{ hora }}</strong
+        ><br />
       </p>
       <button @click="saveComida" class="btn-save">Guardar</button>
     </div>
   </div>
-
-
 </template>
 
 <script>
 import sidebar from "@/components/sidebar.vue";
-
+import { useBebeStore } from "@/stores/Publico/Bebe";
+import Cookies from "js-cookie";
 export default {
   name: "App",
   components: {
     sidebar,
   },
+  mounted() {
+    this.getListaBebe();
+  },
+  setup() {
+    const useBebeStoreAdmi = useBebeStore();
+    return { useBebeStoreAdmi };
+  },
   data() {
     return {
       showModal: false,
       currentModal: null,
+      listaBebe: [],
+      RegistroComida: {
+        idBebe: null,
+        tipocomida: "",
+        fecha: "",
+        idUsuario: {
+          idUsuario: Cookies.get("idUser"),
+        },
+      },
+      RegistroDatosBebe: {
+        peso: 10,
+        altura: 50,
+        fecha: "",
+      },
+      RegistroDatosBebeMandar: {
+        peso: "",
+        altura: "",
+        fecha: "",
+      },
+      RegistroComidaMandar: {
+        tipocomida: "",
+        fecha: "",
+      },
+
+      RegistroPesoAltura: {
+        peso: "",
+        altura: "",
+        fecha: "",
+      },
       peso: 10,
       altura: 50,
       minPeso: 0,
       maxPeso: 50,
       minAltura: 0, // Altura mínima
       maxAltura: 150, // Altura máxima en cm
-      comidaSeleccionada: "",
+      comidaSeleccionada: null,
       fecha: new Date().toISOString().split("T")[0], // Fecha actual en formato YYYY-MM-DD
       hora: new Date().toLocaleTimeString("en-US", {
         hour12: false,
         hour: "2-digit",
         minute: "2-digit",
       }), // Hora actual en formato HH:MM
-
+      //en el fomato 2024-11-14T12:34:56.000+00:00
       cantidad: 0,
       horario: "",
       comidas: ["Leche", "Papilla", "Fruta", "Cereal", "Otros"],
@@ -177,8 +299,83 @@ export default {
       console.log(`Altura registrada: ${this.altura} cm`);
       this.closeModal();
     },
-    saveComida() {
-      console.log(`Comida: ${this.comidaSeleccionada}, Hora: ${this.horario}`);
+    async getListaBebe() {
+      console.log("idUser: ", Cookies.get("idUser"));
+      const idUser = Cookies.get("idUser");
+      console.log("idUser: ", idUser);
+      this.listaBebe = await this.useBebeStoreAdmi.getBabybyUser(idUser);
+
+      console.log("lista luego de pedir", this.listaBebe);
+      if (this.listaBebe == null) {
+        alert("No se encontraron bebes registrados");
+      }
+    },
+
+    async saveDatos() {
+      // Obtener fecha y hora
+      // Obtener fecha y hora
+      const fecha = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+      const hora = new Date().toLocaleTimeString("en-US", {
+        hour12: false,
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      });
+
+      // Crear el formato final
+      const fechaHora = `${fecha}T${hora}.000+00:00`;
+      this.RegistroDatosBebe.fecha = fechaHora;
+      if (
+        this.RegistroDatosBebe.peso === null ||
+        this.RegistroDatosBebe.altura === null ||
+        this.RegistroDatosBebe.fecha === null ||
+        this.RegistroComida.idBebe === null
+      ) {
+        alert("Por favor llene todos los campos");
+        return;
+      }
+
+      console.log("Datos", this.RegistroDatosBebe);
+      console.log("idBebe", this.RegistroComida.idBebe);
+      const peticionPostAlimentacion =
+        await this.useBebeStoreAdmi.postRegistroDatosBebe(
+          this.RegistroComida.idBebe,
+          this.RegistroDatosBebe
+        );
+      console.log(peticionPostAlimentacion);
+      this.closeModal();
+    },
+
+    async saveComida() {
+      if (
+        this.comidaSeleccionada === null ||
+        this.fecha === null ||
+        this.hora === null ||
+        this.RegistroComida.idBebe === null
+      ) {
+        alert("Por favor llene todos los campos");
+        return;
+      }
+      //que si es solida es true y si no false
+      if (this.comidaSeleccionada === "Sólido") {
+        this.RegistroComida.tipocomida = true;
+      } else {
+        this.RegistroComida.tipocomida = false;
+      }
+      const chi = `${this.fecha}T${this.hora}:00.000+00:00`;
+
+      this.RegistroComida.fecha = chi;
+      console.log(
+        `Comida: ${this.RegistroComida.tipocomida}, Hora: ${this.RegistroComida.fecha},lsjksjds${this.RegistroComida.idBebe}`
+      );
+      this.RegistroComidaMandar.tipocomida = this.RegistroComida.tipocomida;
+      this.RegistroComidaMandar.fecha = this.RegistroComida.fecha;
+      const peticionPostAlimentacion =
+        await this.useBebeStoreAdmi.postRegistroAlimento(
+          this.RegistroComida.idBebe,
+          this.RegistroComidaMandar
+        );
+      console.log(peticionPostAlimentacion);
       this.closeModal();
     },
   },
@@ -187,7 +384,7 @@ export default {
 
 <style scoped>
 .main-container {
-  background-image: url('/src/assets/Fondobb.png');
+  background-image: url("/src/assets/Fondobb.png");
   min-height: 100vh;
   background-repeat: repeat;
   display: flex;
@@ -206,7 +403,9 @@ export default {
   width: 80%;
   max-width: 800px;
 }
-h1 ,p,h2{
+h1,
+p,
+h2 {
   font-family: Montserrat;
 }
 .baby-info {
@@ -215,7 +414,6 @@ h1 ,p,h2{
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 5px;
-
 }
 
 .info-grid {
@@ -233,7 +431,11 @@ h1 ,p,h2{
   gap: 20px;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle, var(--secondary-color) 36%, var(--gradient-color) 100%);
+  background: radial-gradient(
+    circle,
+    var(--secondary-color) 36%,
+    var(--gradient-color) 100%
+  );
   background-color: var(--primary-color);
   padding: 20px;
   border-radius: 10px;
@@ -244,11 +446,10 @@ h1 ,p,h2{
 .info-card:hover {
   transform: scale(1.05);
 }
-label{
+label {
   font-family: Montserrat;
 }
 .info-card i {
-
   margin-bottom: 10px;
 }
 
@@ -257,7 +458,7 @@ label{
 
   font-size: medium;
   font-weight: 600;
-  font-family: Montserrat
+  font-family: Montserrat;
 }
 
 .card {
@@ -402,8 +603,7 @@ label{
   border-radius: 8px;
   border: 2px solid #ccc;
   overflow: hidden;
-  margin:2rem ;
-  
+  margin: 2rem;
 }
 
 .progress {
@@ -502,7 +702,6 @@ label{
   background-color: var(--secondary-color);
   color: white;
 }
-
 
 label {
   font-size: 1rem;

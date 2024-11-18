@@ -788,15 +788,15 @@ export const useBebeStore = defineStore("bebe", {
         response = await axios.get(`${RutaApi}datosmesbebe/${idBebe}`);
         // te da una lista de JSON, solo obtendrás el último
         const registros = response.data.response;
-        
+
         // Ordenar los registros por fecha (opcional si no están ordenados)
         registros.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
-    
+
         // Obtener el último registro
         const ultimo = registros[registros.length - 1]; // Accede al último elemento correctamente
-    
+
         console.log("Datos obtenidos en getUltimoRegistro:", ultimo);
-        response.data.response=ultimo;
+        response.data.response = ultimo;
         return ultimo;
       } catch (error) {
         this.error = error;
@@ -808,9 +808,77 @@ export const useBebeStore = defineStore("bebe", {
           return null;
         }
       }
-    }
+    },
+    async getUltimoRegistroAlimentacion(idBebe) {
+      this.loading = true;
+      let response = null;
+      console.log("idBebe en getUltimoRegistro alimentacion:", idBebe);
+      try {
+        response = await axios.get(`${RutaApi}registroalimentacion/${idBebe}`);
+        // te da una lista de JSON, solo obtendrás el último
+        const registros = response.data.response;
+        console.log(
+          "Datos obtenidos en getUltimoRegistro alimentacion:",
+          response
+        );
+        // Ordenar los registros por fecha (opcional si no están ordenados)
+        registros.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
 
-    
-    
+        // Obtener el último registro
+        const ultimo = registros[registros.length - 1]; // Accede al último elemento correctamente
+
+        console.log(
+          "Datos obtenidos en getUltimoRegistro alimentacion:",
+          ultimo
+        );
+        response.data.response = ultimo;
+        return ultimo;
+      } catch (error) {
+        this.error = error;
+      } finally {
+        this.loading = false;
+        if (response && response.data.code === "200") {
+          return response.data.response;
+        } else {
+          return null;
+        }
+      }
+    },
+    async postRegistroAlimento(idBebe, registro) {
+      this.loading = true;
+      var response = null;
+      try {
+          response = await axios.post(`${RutaApi}registroalimentacion/${idBebe}`, registro);
+        console.log('respues',response);
+          this.bebe = response.data.response;
+      } catch (error) {
+          this.error = error;
+      }finally{
+          this.loading = false;
+      if(response.data.code === "200"){
+          return response.data.response;
+      }else{
+          return null;
+      }
+  }},
+
+  async postRegistroDatosBebe(idBebe, registro) {
+    this.loading = true;
+    var response = null;
+    console.log("Datos enviados en postRegistroDatosBebe:", registro);
+    try {
+        response = await axios.post(`${RutaApi}datosmesbebe/${idBebe}`, registro);
+      console.log('respuesta',response.data);
+        this.bebe = response.data.response;
+    } catch (error) {
+        this.error = error;
+    }finally{
+        this.loading = false;
+    if(response.data.code === "200"){
+        return response.data.response;
+    }else{
+        return null;
+    }
+}},
   },
 });
