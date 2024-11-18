@@ -1,52 +1,225 @@
 <template>
-  
-    <div class="main-container">
-      <sidebar />
-      <div class="baby-info">
 
-<div class="info-grid">
-  <div class="info-card" style="background-image: url(/src/assets/5.png);">
-    <font-awesome-icon :icon="['fas', 'weight-scale']"
-      style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
-    <p>Peso:</p>
-  </div>
-  <div class="info-card" style="background-image: url(/src/assets/5.png);">
-    <font-awesome-icon :icon="['fas', 'ruler']" style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
-    <p>Peso:</p>
-  </div>
-  <div class="info-card" style="background-image: url(/src/assets/5.png);">
-    <font-awesome-icon :icon="['fas', 'baby']" style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
-    <p>Peso:</p>
-  </div>
-  
+  <div class="main-container">
+    <sidebar />
+    <div class="baby-info">
+      <h1 style="font-family: Montserrat;font-weight: 800;">
+
+   
+   <font-awesome-icon :icon="['fas', 'clipboard']" style="height: 2rem;color: var(--primary-color);margin: 0.5rem;" />
+   Registro
+      </h1>
+      <div class="info-grid">
+        <div class="info-card" @click="openModal('peso')">
+          <font-awesome-icon :icon="['fas', 'weight-scale']" style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
+          <p>Peso</p>
+        </div>
+        <div class="info-card"  @click="openModal('altura')">
+          <font-awesome-icon :icon="['fas', 'ruler']" style="height: 5rem;color: whitesmoke;margin: 0.5rem;" />
+          <p>Altura</p>
+        </div>
+        <div class="info-card" @click="openModal('comida')">
+  <font-awesome-icon :icon="['fas', 'bowl-food']" style="height: 5rem; color: whitesmoke; margin: 0.5rem;" />
+  <p>Última Comida</p>
 </div>
+
+
+      </div>
+    </div>
+  </div>
+  <!-- Modal de Peso -->
+  <div v-if="showModal && currentModal === 'peso'" class="modal-overlay" @click.self="closeModal">
+  <div class="modal">
+    <h2>Registrar Peso</h2>
+    <div class="balance-container">
+      <div class="scale">
+        <div class="needle" :style="{ transform: `rotate(${(peso / maxPeso) * 180 - 90}deg)` }"></div>
+        <div class="scale-marks">
+          <span v-for="n in 11" :key="n" :style="{ left: `${(n - 1) * 10}%` }">
+            {{ (n - 1) * (maxPeso / 10) }}
+          </span>
+        </div>
+      </div>
+      <div class="input-container">
+        <!-- Control deslizante -->
+        <input
+          type="range"
+          v-model.number="peso"
+          :min="minPeso"
+          :max="maxPeso"
+          step="0.1"
+          class="slider"
+        />
+        <!-- Campo de texto -->
+        <input
+          type="number"
+          v-model.number="peso"
+          :min="minPeso"
+          :max="maxPeso"
+          step="0.1"
+          class="text-input"
+        />
+      </div>
+      <p>Peso actual: <strong>{{ peso }} kg</strong></p>
+    </div>
+    <button @click="savePeso" class="btn-save">Guardar</button>
+  </div>
+</div>
+<!-- Modal de Altura -->
+<div v-if="showModal && currentModal === 'altura'" class="modal-overlay" @click.self="closeModal">
+  <div class="modal">
+    <h2>Registrar Altura</h2>
+    <div class="height-container">
+      <!-- Regla -->
+      <div class="ruler">
+        <div class="progress" :style="{ height: `${(altura / maxAltura) * 100}%` }"></div>
+        <div class="ruler-marks">
+          <div v-for="n in 31" :key="n" class="ruler-mark" :style="{ bottom: `${(n - 1) * 3.33}%` }">
+            <span v-if="(n - 1) % 5 === 0">{{ (n - 1) * (maxAltura / 30) }} -</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controles -->
+      <div class="input-container">
+        <div class="slider-container">
+          <input
+            type="range"
+            v-model.number="altura"
+            :min="minAltura"
+            :max="maxAltura"
+            step="0.5"
+            class="slider"
+          />
+        </div>
+        <input
+          type="number"
+          v-model.number="altura"
+          :min="minAltura"
+          :max="maxAltura"
+          step="0.5"
+          class="text-input"
+        />
+      </div>
+    </div>
+    <p>Altura actual: <strong>{{ altura }} cm</strong></p>
+    <button @click="saveAltura" class="btn-save">Guardar</button>
+  </div>
+</div>
+<div v-if="showModal && currentModal === 'comida'" class="modal-overlay" @click.self="closeModal">
+  <div class="modal">
+    <h2>Registrar Última Comida</h2>
+    <div class="food-container">
+      <!-- Selección de tipo de comida -->
+      <div class="food-type">
+       
+        <div class="button-group">
+          <button
+            class="food-button"
+            :class="{ active: comidaSeleccionada === 'Sólido' }"
+            @click="comidaSeleccionada = 'Sólido'"
+          >
+            <font-awesome-icon :icon="['fas', 'drumstick-bite']" />
+            Sólido
+          </button>
+          <button
+            class="food-button"
+            :class="{ active: comidaSeleccionada === 'Líquido' }"
+            @click="comidaSeleccionada = 'Líquido'"
+          >
+            <font-awesome-icon :icon="['fas', 'glass-whiskey']" />
+            Líquido
+          </button>
+        </div>
+      </div>
+
+      <!-- Campo de fecha y hora -->
+      
+<div class="food-datetime">
+  <label for="fecha">Fecha:</label>
+  <input type="date" v-model="fecha" id="fecha" />
+  <label for="hora">Hora:</label>
+  <input type="time" v-model="hora" id="hora" />
 </div>
     </div>
-  </template>
-  
-  <script>
-  import sidebar from "@/components/sidebar.vue";
-  
-  export default {
-    name: "App",
-    components: {
-      sidebar,
+    <br>
+    <p>
+      Última comida: <strong>{{ comidaSeleccionada }}</strong>, <br>
+     
+      Fecha: <strong>{{ fecha }}</strong>, <br>
+      Hora: <strong>{{ hora }}</strong><br>
+    </p>
+    <button @click="saveComida" class="btn-save">Guardar</button>
+  </div>
+</div>
+
+
+</template>
+
+<script>
+import sidebar from "@/components/sidebar.vue";
+
+export default {
+  name: "App",
+  components: {
+    sidebar,
+  },
+  data() {
+    return {
+      showModal: false,
+      currentModal: null,
+      peso: 10, 
+      altura: 50,
+      minPeso: 0,
+      maxPeso: 50,
+      minAltura: 0, // Altura mínima
+      maxAltura: 150, // Altura máxima en cm
+      comidaSeleccionada: "",
+      fecha: new Date().toISOString().split("T")[0], // Fecha actual en formato YYYY-MM-DD
+      hora: new Date().toLocaleTimeString("en-US", {
+        hour12: false,
+        hour: "2-digit",
+        minute: "2-digit",
+      }), // Hora actual en formato HH:MM
+    
+    cantidad: 0,
+    horario: "",
+    comidas: ["Leche", "Papilla", "Fruta", "Cereal", "Otros"],
+      options: [
+        { label: "Desarrollo", icon: "fas fa-baby" },
+
+        { label: "Alimento", icon: "fas fa-utensils" },
+        { label: "Peso", icon: "fas fa-weight" },
+        { label: "Sueño", icon: "fas fa-bed" },
+        { label: "Llanto", icon: "fas fa-cry" },
+      ],
+    };
+  },
+  methods: {
+    openModal(modalType) {
+      this.currentModal = modalType;
+      this.showModal = true;
     },
-    data() {
-      return {
-        options: [
-          { label: "Desarrollo", icon: "fas fa-baby" },
-        
-          { label: "Alimento", icon: "fas fa-utensils" },
-          { label: "Peso", icon: "fas fa-weight" },
-          { label: "Sueño", icon: "fas fa-bed" },
-          { label: "Llanto", icon: "fas fa-cry" },
-        ],
-      };
+    closeModal() {
+      this.showModal = false;
+      this.currentModal = null;
     },
-  };
-  </script>
-  
+    savePeso() {
+      console.log(`Peso registrado: ${this.peso} kg`);
+      this.closeModal();
+    },
+    saveAltura() {
+      console.log(`Altura registrada: ${this.altura} cm`);
+      this.closeModal();
+    },
+    saveComida() {
+    console.log(`Comida: ${this.comidaSeleccionada}, Hora: ${this.horario}`);
+    this.closeModal();
+  },
+  },
+};
+</script>
+
 <style scoped>
 .main-container {
   background-image: url('/src/assets/Fondobb.png');
@@ -61,7 +234,8 @@
 .button-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(3, 1fr);  /* 3 filas para los 6 botones */
+  grid-template-rows: repeat(3, 1fr);
+  /* 3 filas para los 6 botones */
   gap: 20px;
   margin-top: 40px;
   width: 80%;
@@ -79,7 +253,7 @@
 
 .info-grid {
   display: grid;
-  grid-template-columns: repeat(2,1fr);
+  grid-template-columns: repeat(2, 1fr);
   /* Ajusta el número de columnas automáticamente */
   gap: 20px;
   /* Espaciado entre tarjetas */
@@ -88,17 +262,19 @@
 
 .info-card {
   display: grid;
-  grid-template-columns: repeat(2,1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   align-items: center;
   justify-content: center;
-
+  background: radial-gradient(circle, var(--secondary-color) 36%, var(--gradient-color) 100%);
+  background-color: var(--primary-color);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
 }
-.info-card:hover{
+
+.info-card:hover {
   transform: scale(1.05);
 }
 
@@ -109,10 +285,12 @@
 
 .info-card p {
   color: white;
+
   font-size: medium;
   font-weight: 600;
   font-family: Montserrat
 }
+
 .card {
   display: flex;
   justify-content: center;
@@ -150,11 +328,216 @@
   font-size: 16px;
 }
 
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.slider-container {
+  margin: 20px 0;
+}
+
+.slider {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.btn-save {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.btn-save:hover {
+  background-color: var(--secondary-color);
+}
+.balance-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.scale {
+  position: relative;
+  width: 100px;
+  height: 50px;
+  background: #f0f0f0;
+  border-radius: 100px 100px 0 0;
+  border: 2px solid #ccc;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.needle {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 4px;
+  height: 80px;
+  background: var(--primary-color);
+  transform-origin: bottom;
+  transition: transform 0.3s ease;
+}
+
+.scale-marks {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.scale-marks span {
+  position: absolute;
+  font-size: 12px;
+  transform: translateX(-50%);
+}
+.height-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ruler {
+  position: relative;
+  width: 60px;
+  height: 250px;
+  background: #e0e0e0;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  overflow: hidden;
+  margin-right: 20px;
+}
+
+.progress {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: var(--primary-color);
+  transition: height 0.3s ease;
+}
+
+.ruler-marks {
+  position: absolute;
+  left: 100%;
+  width: 100%;
+  z-index: 1000;
+  height: 100%;
+}
+
+.ruler-mark {
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+  border-top: 1px solid #333;
+}
+
+.ruler-mark span {
+  position: absolute;
+  left: -20%;
+  transform: translate(-50%, -50%);
+  font-size: 10px;
+  color: #333;
+}
+
+.input-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.slider-container {
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.text-input {
+  width: 100%;
+  padding: 5px;
+  font-size: 1rem;
+}
+.food-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.food-selector,
+.food-quantity,
+.food-time {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.food-button {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background-color 0.3s;
+}
+.button-group {
+  display: flex;
+  flex-direction: row;
+  position: relative;  /* O relative si es necesario */
+  top: 100%;
+  left: 65%;
+  transform: translate(-50%, 20%);
+}
+
+.food-button.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.food-button:hover {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+
+label {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
 @media (max-width: 600px) {
   .button-container {
-    grid-template-columns: repeat(2, 1fr);  /* 2 columnas */
-    grid-template-rows: repeat(3, 1fr);  /* 3 filas */
+    grid-template-columns: repeat(2, 1fr);
+    /* 2 columnas */
+    grid-template-rows: repeat(3, 1fr);
+    /* 3 filas */
   }
 }
 </style>
-  
