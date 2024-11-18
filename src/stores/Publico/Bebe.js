@@ -664,9 +664,7 @@ export const useBebeStore = defineStore("bebe", {
       this.loading = true;
       var response = null;
       try {
-        response = await axios.put(
-          `${RutaApi}bebe/movimiento/false`
-        );
+        response = await axios.put(`${RutaApi}bebe/movimiento/false`);
         console.log("Datos obtenidos en putBebeMovimiento:", response);
         return this.bebe;
       } catch (error) {
@@ -782,5 +780,37 @@ export const useBebeStore = defineStore("bebe", {
         this.loading = false;
       }
     },
+
+    async getUltimoRegistro(idBebe) {
+      this.loading = true;
+      let response = null;
+      try {
+        response = await axios.get(`${RutaApi}datosmesbebe/${idBebe}`);
+        // te da una lista de JSON, solo obtendrás el último
+        const registros = response.data.response;
+        
+        // Ordenar los registros por fecha (opcional si no están ordenados)
+        registros.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+    
+        // Obtener el último registro
+        const ultimo = registros[registros.length - 1]; // Accede al último elemento correctamente
+    
+        console.log("Datos obtenidos en getUltimoRegistro:", ultimo);
+        response.data.response=ultimo;
+        return ultimo;
+      } catch (error) {
+        this.error = error;
+      } finally {
+        this.loading = false;
+        if (response && response.data.code === "200") {
+          return response.data.response;
+        } else {
+          return null;
+        }
+      }
+    }
+
+    
+    
   },
 });

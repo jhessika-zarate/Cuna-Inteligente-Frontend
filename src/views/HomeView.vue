@@ -255,6 +255,7 @@ export default {
           idUsuario: null,
         },
       },
+      datosBebes: [],
       babyData: {
         nombre: "Juanito",
         fechaNacimiento: "2024-01-15",
@@ -276,10 +277,13 @@ export default {
       this.peso = null;
       alert("Datos actualizados correctamente");
     },
-    actualizarBebe(bebe) {
+    async actualizarBebe(bebe) {
       console.log("Actualizando bebé:", bebe);
       this.bebeActual = { ...bebe };
-
+      this.datosBebes= await this.useBebeStoreAdmi.getUltimoRegistro(this.bebeActual.idBebe);
+      console.log("datos bebe", this.datosBebes);
+      this.bebeActual.peso = this.datosBebes.peso;
+      this.bebeActual.altura = this.datosBebes.altura;
       // Cambiar colores según el género
       const root = document.documentElement;
       if (bebe.color === "Femenino") {
