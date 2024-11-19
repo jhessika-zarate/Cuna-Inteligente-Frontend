@@ -7,6 +7,7 @@ import Login from '@/views/Login.vue'
 import FormularioNuevoBebe from '@/views/FormularioNuevoBebe.vue'
 import Dashboard from '@/views/Dashboard.vue'
 import Consejos from '@/views/Consejos.vue'
+import AudioBebe from '@/views/AudioBebe.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -57,6 +58,11 @@ const router = createRouter({
       path: "/consejos",
       name: "Consejos",
       component: Consejos,
+    },
+    {
+      path: "/audio",
+      name: "AudioBebe",
+      component: AudioBebe,
     }
   ],
 })
