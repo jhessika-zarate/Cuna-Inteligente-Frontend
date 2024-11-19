@@ -22,7 +22,7 @@ export default {
       audioURL: null,
       mediaRecorder: null,
       audioChunks: [],
-      ngrokUrl: "https://jhessika-to-do.serverbb.online", // Cambia esto a la URL de tu máquina virtual
+      ngrokUrl: "https://jhessika.serverbb.online", // Cambia esto a la URL de tu máquina virtual
     };
   },
   methods: {
@@ -88,9 +88,10 @@ export default {
     },
 
     // Método para subir el audio al servidor
+    // Método para subir el audio al servidor
+    // Método para subir el audio al servidor
     async uploadAudio() {
       try {
-        // Verifica si hay datos de audio antes de proceder
         if (!this.audioChunks || this.audioChunks.length === 0) {
           console.error("No hay datos de audio para subir.");
           alert("No se grabó ningún audio.");
@@ -99,7 +100,6 @@ export default {
 
         const blob = new Blob(this.audioChunks, { type: "audio/webm" });
 
-        // Verifica que el archivo sea válido
         if (!blob || blob.size === 0) {
           console.error("El archivo de audio está vacío.");
           alert("El archivo de audio está vacío.");
@@ -110,21 +110,24 @@ export default {
         const formData = new FormData();
         formData.append("audio", blob, "recording.webm");
 
-        const response = await fetch(`${this.ngrokUrl}/upload-audio`, {
-          method: "POST",
-          body: formData,
-        });
+        const response = await fetch(
+          "https://jhessika.serverbb.online/upload-audio",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
 
         if (!response.ok) {
           const errorText = await response.text();
           alert("Error en el servidor: " + errorText);
+          return;
         }
 
         const result = await response.json();
         console.log("Resultado del servidor:", result);
         alert("Audio subido correctamente: " + JSON.stringify(result));
 
-        // Limpia la URL del audio después de subirlo
         this.audioURL = null;
         this.audioChunks = [];
       } catch (error) {
