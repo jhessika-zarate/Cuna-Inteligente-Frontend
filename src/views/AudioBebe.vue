@@ -1,8 +1,9 @@
 <template>
-  <div>
+ 
+  
     <div class="main-container">
+      <sidebar />
       <div>
-        <sidebar />
         <div class="controles">
           <!-- Contenedor de ondas -->
           <div class="wave-container" v-if="isRecording">
@@ -11,7 +12,7 @@
             <div class="wave"></div>
           </div>
           <h1 style="font-weight: 600;">Grabación de Audio</h1>
-          <h3>Presiona al oso y acerca tu dispositivo a tu bebe, te ayudaremos a detectar el motivo del llanto</h3>
+          <h3>Presiona al oso <br>y acerca tu dispositivo a tu bebe<br> te ayudaremos a detectar <br>el motivo del llanto</h3>
           <!-- Imagen del oso -->
           <img 
             class="logo" 
@@ -26,7 +27,7 @@
         </div>
       </div>
     </div>
-  </div>
+ 
 </template>
 
 
@@ -173,12 +174,14 @@ export default {
   background-image: url("/src//assets/fondoaudio.png");
   min-height: 100vh;
   background-repeat: repeat;
-  padding-bottom: 10rem;
+  
+  background-size: auto;
+  
 }
 
 .logo {
-  width: 30rem;
-  height: 30rem;
+  width: 25rem;
+  height: 25rem;
   z-index: 500;
   margin-left: 10px
  
@@ -188,6 +191,7 @@ export default {
   flex-direction: column;
   align-items: center;
   align-self: center;
+  text-align: center;
   position: absolute;
   top: 50%;
   left: 50%;

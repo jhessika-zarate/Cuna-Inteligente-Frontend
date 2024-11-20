@@ -26,12 +26,21 @@
     </a>
     <a 
       href="#" 
+      :class="{ active: $route.path === '/audio' }" 
+      @click="redirectToAudio"
+    >
+      <font-awesome-icon :icon="['fas', 'baby']" class="icon" />
+      <span>Llanto</span>
+    </a>
+    <a 
+      href="#" 
       :class="{ active: $route.path === '/Consejos' }" 
       @click="redirectToConsejos"
     >
       <font-awesome-icon :icon="['fas', 'clipboard']" class="icon" />
       <span>Consejos</span>
     </a>
+    
     <a 
       href="#" 
       :class="{ active: $route.path === '/login' }" 
@@ -75,6 +84,9 @@ export default {
     },
     redirectToConsejos() {
       this.$router.push('/Consejos');  // Ruta para la página de "Más"
+    },
+    redirectToAudio() {
+      this.$router.push('/audio');  // Ruta para la página de "Más"
     },
     logout() {
       // Lógica de logout, por ejemplo, eliminar el token de sesión o redirigir al login
