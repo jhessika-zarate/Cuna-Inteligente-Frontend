@@ -50,6 +50,22 @@
                   </option>
                 </select>
               </template>
+              <template v-else-if="question.type === 'password'">
+          <div class="password-container">
+            <input
+              :id="`question-${index}`"
+              :type="showPassword ? 'text' : 'password'"
+              v-model="answers[question.id]"
+              required
+            />
+            <span
+              class="toggle-password"
+              @click="togglePasswordVisibility"
+            >
+              {{ showPassword ? '🙈' : '👁️' }}
+            </span>
+          </div>
+        </template>
             </div>
             <!-- Botones de navegación -->
             <div class="navigation-buttons">
@@ -101,6 +117,7 @@ import 'sweetalert2/src/sweetalert2.scss'
     },
     data() {
       return {
+        showPassword: false,
         usuario: {
           idUsuario: null,
           username: null,
@@ -122,7 +139,7 @@ import 'sweetalert2/src/sweetalert2.scss'
         answers: {},
         questions: [
           { id: 1, label: "Correo Electrónico", type: "text" },
-          { id: 2, label: "Contraseña", type: "text" },
+          { id: 2, label: "Contraseña", type: "password" },
           ],
         questionsPerStep: 3,
         stepTitles: [
@@ -156,6 +173,9 @@ import 'sweetalert2/src/sweetalert2.scss'
           this.currentStep--;
         }
       },
+      togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
+    },
       async doLogin(datoGmail, datoContrasenia) {
   try {
     const credentials = {
@@ -236,6 +256,21 @@ async submitForm() {
     min-height: 100vh;
     background-repeat: repeat;
   }
+  .password-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.password-container input {
+  flex: 1;
+}
+
+.toggle-password {
+  cursor: pointer;
+  margin-left: 8px;
+  font-size: 1.2rem;
+}
   .form-container {
     display: flex;
     flex-direction: column;

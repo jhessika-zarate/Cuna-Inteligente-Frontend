@@ -93,10 +93,13 @@ import { useUsusrioStore } from "@/stores/Publico/Usuario";
 import { mapActions } from "pinia";
 import Cookies from "js-cookie";
 import { useAuthStore } from "@/stores/Privado/authStore";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import "sweetalert2/src/sweetalert2.scss";
 export default {
   setup() {
     const { login } = useAuthStore();
-    return { login };
+    const useBebeStoreAdmi = useBebeStore();
+    return { login, useBebeStoreAdmi };
   },
   data() {
     return {
@@ -117,6 +120,11 @@ export default {
           idUsuario: null,
         },
       },
+      RegistroDatosBebe: {
+        peso: "",
+        altura: "",
+        fecha: "",
+      },
       currentStep: 1,
       answers: {},
       questions: [
@@ -131,6 +139,7 @@ export default {
           options: ["Masculino", "Femenino", "Otro"],
         },
         { id: 9, label: "Peso KG", type: "text" },
+        { id: 10, label: "Altura cm", type: "text" },
       ],
       questionsPerStep: 3,
       stepTitles: ["Sobre el Bebe", "Sobre el Bebe"],
@@ -174,11 +183,42 @@ export default {
         const bebeResponse = await this.postBebe(this.bebe);
         console.log("bebeResponse", bebeResponse);
         if (bebeResponse) {
-          alert("Formulario completado. ¡Gracias!");
+          Swal.fire(
+            "¡Formulario Completado!",
+            "Gracias por completar el formulario.",
+            "success"
+          );
 
-          this.$router.push("/Home");
+          const fecha = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+          const hora = new Date().toLocaleTimeString("en-US", {
+            hour12: false,
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          });
+          this.listaBebe = await this.useBebeStoreAdmi.getBabybyUser(
+            bebeResponse.idUsuario.idUsuario
+          );
+
+          console.log("lista luego de pedir", this.listaBebe);
+          console.log("lista luego de pedir id", this.listaBebe[0].idBebe);
+          // Crear el formato final
+          const fechaHora = `${fecha}T${hora}.000+00:00`;
+          this.RegistroDatosBebe.fecha = fechaHora;
+          this.RegistroDatosBebe.peso = this.answers[9];
+          this.RegistroDatosBebe.altura = this.answers[10];
+
+          const DatosBebe = await this.useBebeStoreAdmi.postRegistroDatosBebe(
+            bebeResponse.idBebe,
+            this.RegistroDatosBebe
+          );
+          console.log("respuesta de datos bebe", DatosBebe);
+
+          if (DatosBebe) {
+             this.$router.push("/Home");
+          }
         } else {
-          alert("Error al no hizo post.");
+          Swal.fire("Error", "Error al enviar datos del bebé.", "error");
         }
       } catch (error) {
         console.error("Error al enviar el los datos del bebe:", error);

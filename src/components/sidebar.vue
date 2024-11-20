@@ -21,8 +21,16 @@
       :class="{ active: $route.path === '/dashboard' }" 
       @click="redirectToHistorial"
     >
-      <font-awesome-icon :icon="['fas', 'question']" class="icon" />
-      <span>Guia</span>
+      <font-awesome-icon :icon="['fas', 'chart-line']" class="icon" />
+      <span>Dashboard</span>
+    </a>
+    <a 
+      href="#" 
+      :class="{ active: $route.path === '/Consejos' }" 
+      @click="redirectToConsejos"
+    >
+      <font-awesome-icon :icon="['fas', 'clipboard']" class="icon" />
+      <span>Consejos</span>
     </a>
     <a 
       href="#" 
@@ -64,6 +72,9 @@ export default {
     },
     redirectToHistorial() {
       this.$router.push('/dashboard');  // Ruta para la página de "Más"
+    },
+    redirectToConsejos() {
+      this.$router.push('/Consejos');  // Ruta para la página de "Más"
     },
     logout() {
       // Lógica de logout, por ejemplo, eliminar el token de sesión o redirigir al login

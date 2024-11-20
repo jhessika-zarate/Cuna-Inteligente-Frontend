@@ -50,6 +50,19 @@
                 </option>
               </select>
             </template>
+            <template v-else-if="question.type === 'password'">
+              <div class="password-container">
+                <input
+                  :id="`question-${index}`"
+                  :type="showPassword ? 'text' : 'password'"
+                  v-model="answers[question.id]"
+                  required
+                />
+                <span class="toggle-password" @click="togglePasswordVisibility">
+                  {{ showPassword ? "🙈" : "👁️" }}
+                </span>
+              </div>
+            </template>
           </div>
           <!-- Botones de navegación -->
           <div class="navigation-buttons">
@@ -92,15 +105,17 @@ import { useBebeStore } from "@/stores/Publico/Bebe";
 import { useUsusrioStore } from "@/stores/Publico/Usuario";
 import { mapActions } from "pinia";
 import { useAuthStore } from "@/stores/Privado/authStore";
-import Swal from 'sweetalert2/dist/sweetalert2.js'
-import 'sweetalert2/src/sweetalert2.scss' 
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import "sweetalert2/src/sweetalert2.scss";
 export default {
   setup() {
     const { login } = useAuthStore();
-    return { login };
+    const useBebeStoreAdmi = useBebeStore();
+    return { login, useBebeStoreAdmi };
   },
   data() {
     return {
+      showPassword: false,
       usuario: {
         idUsuario: null,
         username: null,
@@ -118,12 +133,17 @@ export default {
           idUsuario: null,
         },
       },
+      RegistroDatosBebe: {
+        peso: "",
+        altura: "",
+        fecha: "",
+      },
       currentStep: 1,
       answers: {},
       questions: [
         { id: 1, label: "Nombre de Usuario", type: "text" },
         { id: 2, label: "Correo Electrónico", type: "text" },
-        { id: 3, label: "Contraseña", type: "text" },
+        { id: 3, label: "Contraseña", type: "password" },
         { id: 4, label: "Nombre", type: "text" },
         { id: 5, label: "Apellido Paterno", type: "text" },
         { id: 6, label: "Apellido Materno", type: "text" },
@@ -132,9 +152,10 @@ export default {
           id: 8,
           label: "Género",
           type: "select",
-          options: ["Masculino", "Femenino", "Otro"],
+          options: ["Masculino", "Femenino"],
         },
         { id: 9, label: "Peso KG", type: "text" },
+        { id: 10, label: "Altura cm", type: "text" },
       ],
       questionsPerStep: 3,
       stepTitles: [
@@ -170,75 +191,130 @@ export default {
         this.currentStep--;
       }
     },
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
+    },
     async doLogin(datoGmail, datoContrasenia) {
-  try {
-    const credentials = {
-      gmail: datoGmail, 
-      contrasenia: datoContrasenia,
-    };
-    console.log("Consulta", credentials);
+      try {
+        const credentials = {
+          gmail: datoGmail,
+          contrasenia: datoContrasenia,
+        };
+        console.log("Consulta", credentials);
 
-    const response = await this.login(credentials);
+        const response = await this.login(credentials);
 
-    if (response) {
-      if (
-        response.response.type === 1 &&
-        response.response.authToken !== null
-      ) {
-        Swal.fire('¡Perfecto!', 'Inicio de sesión exitoso.', 'success');
-      } else {
-        Swal.fire('Error', 'Usuario o contraseña incorrectos.', 'error');
-        throw new Error("Usuario o contraseña incorrectos");
+        if (response) {
+          if (
+            response.response.type === 1 &&
+            response.response.authToken !== null
+          ) {
+            Swal.fire("¡Perfecto!", "Inicio de sesión exitoso.", "success");
+          } else {
+            Swal.fire("Error", "Usuario o contraseña incorrectos.", "error");
+            throw new Error("Usuario o contraseña incorrectos");
+          }
+        } else {
+          Swal.fire("Error", "Usuario o contraseña incorrectos.", "error");
+          throw new Error("Usuario o contraseña incorrectos");
+        }
+      } catch (error) {
+        Swal.fire("Error", "Usuario o contraseña incorrectos.", "error");
       }
-    } else {
-      Swal.fire('Error', 'Usuario o contraseña incorrectos.', 'error');
-      throw new Error("Usuario o contraseña incorrectos");
-    }
-  } catch (error) {
-    Swal.fire('Error', 'Usuario o contraseña incorrectos.', 'error');
-  }
-},
+    },
 
-async submitForm() {
-  try {
-    this.usuario.username = this.answers[1];
-    this.usuario.gmail = this.answers[2];
-    this.usuario.contrasenia = this.answers[3];
+    async submitForm() {
+      try {
+        this.usuario.username = this.answers[1];
+        this.usuario.gmail = this.answers[2];
+        this.usuario.contrasenia = this.answers[3];
 
-    const usuarioResponse = await this.postUsuario(this.usuario);
+        const usuarioResponse = await this.postUsuario(this.usuario);
 
-    if (usuarioResponse) {
-      this.bebe.idUsuario.idUsuario = usuarioResponse.idUsuario;
-      this.bebe.nombre = this.answers[4];
-      this.bebe.apellidopaterno = this.answers[5];
-      this.bebe.apellidomaterno = this.answers[6];
-      this.bebe.fechadenacimiento = this.answers[7];
-      this.bebe.color = this.answers[8];
+        if (usuarioResponse) {
+          this.bebe.idUsuario.idUsuario = usuarioResponse.idUsuario;
+          this.bebe.nombre = this.answers[4];
+          this.bebe.apellidopaterno = this.answers[5];
+          this.bebe.apellidomaterno = this.answers[6];
+          this.bebe.fechadenacimiento = this.answers[7];
+          this.bebe.color = this.answers[8];
 
-      const bebeResponse = await this.postBebe(this.bebe);
+          const bebeResponse = await this.postBebe(this.bebe);
 
-      if (bebeResponse) {
-        Swal.fire('¡Formulario Completado!', 'Gracias por completar el formulario.', 'success');
-        this.doLogin(this.usuario.gmail, this.usuario.contrasenia);
-        this.$router.push("/Home");
-      } else {
-        Swal.fire('Error', 'Error al enviar datos del bebé.', 'error');
+          if (bebeResponse) {
+            Swal.fire(
+              "¡Formulario Completado!",
+              "Gracias por completar el formulario.",
+              "success"
+            );
+
+            const fecha = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+            const hora = new Date().toLocaleTimeString("en-US", {
+              hour12: false,
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            });
+            this.listaBebe = await this.useBebeStoreAdmi.getBabybyUser(usuarioResponse.idUsuario);
+   
+            console.log("lista luego de pedir", this.listaBebe);
+            console.log("lista luego de pedir id", this.listaBebe[0].idBebe);
+            // Crear el formato final
+            const fechaHora = `${fecha}T${hora}.000+00:00`;
+            this.RegistroDatosBebe.fecha = fechaHora;
+            this.RegistroDatosBebe.peso = this.answers[9];
+            this.RegistroDatosBebe.altura = this.answers[10];
+
+            const DatosBebe = await this.useBebeStoreAdmi.postRegistroDatosBebe(
+              this.listaBebe[0].idBebe,
+              this.RegistroDatosBebe
+            );
+            console.log("respuesta de datos bebe", DatosBebe);
+
+        
+            if(DatosBebe){
+              this.doLogin(this.usuario.gmail, this.usuario.contrasenia);
+            this.$router.push("/Home");
+
+            }
+
+            
+          } else {
+            Swal.fire("Error", "Error al enviar datos del bebé.", "error");
+          }
+        } else {
+          Swal.fire("Error", "Error al enviar datos de usuario.", "error");
+        }
+      } catch (error) {
+        console.error("Error al enviar el formulario:", error);
+        Swal.fire(
+          "Error",
+          "Ocurrió un problema al enviar el formulario.",
+          "error"
+        );
       }
-    } else {
-      Swal.fire('Error', 'Error al enviar datos de usuario.', 'error');
-    }
-  } catch (error) {
-    console.error("Error al enviar el formulario:", error);
-    Swal.fire('Error', 'Ocurrió un problema al enviar el formulario.', 'error');
-  }
-},
-
+    },
   },
 };
 </script>
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+.password-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.password-container input {
+  flex: 1;
+}
+
+.toggle-password {
+  cursor: pointer;
+  margin-left: 8px;
+  font-size: 1.2rem;
+}
 .contenedorpreguntas {
   max-width: 800px; /* Limita el ancho del formulario */
   width: 100%;
