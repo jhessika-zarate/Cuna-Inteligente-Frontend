@@ -180,8 +180,8 @@ export default {
 }
 
 .logo {
-  width: 25rem;
-  height: 25rem;
+  width: 30rem;
+  height: 30rem;
   z-index: 500;
   margin-left: 10px
  
