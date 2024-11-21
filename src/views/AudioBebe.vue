@@ -23,7 +23,7 @@
           
           <p v-if="isRecording">Grabando...</p>
           <audio v-if="audioURL" :src="audioURL" controls></audio>
-          <button v-if="audioURL" @click="uploadAudio">Detectar </button>
+          <button class="botoncito" v-if="audioURL" @click="uploadAudio">Detectar </button>
         </div>
       </div>
     </div>
@@ -241,7 +241,7 @@ h1,h2,h3,p{
   font-family: Montserrat;
   color: white
 }
-button{
+.botoncito{
   font-family: Montserrat;
   margin: 10px;
   background-color: var(--primary-color);
