@@ -31,8 +31,9 @@ import { faClipboard } from '@fortawesome/free-solid-svg-icons'
 import { faDrumstickBite } from '@fortawesome/free-solid-svg-icons'
 import { faGlassWhiskey } from '@fortawesome/free-solid-svg-icons'
 import { faChartLine } from '@fortawesome/free-solid-svg-icons'
+import { faAudible } from '@fortawesome/free-brands-svg-icons'
 /* add icons to the library */
-library.add(faUserSecret,faWeight,faRuler,faBaby,faCalendar,faBabyCarriage,faNoteSticky,faQuestion,faSignOut,faBowlFood,faClipboard,faDrumstickBite,faGlassWhiskey,faChartLine)
+library.add(faUserSecret,faWeight,faRuler,faBaby,faCalendar,faBabyCarriage,faNoteSticky,faQuestion,faSignOut,faBowlFood,faClipboard,faDrumstickBite,faGlassWhiskey,faChartLine,faAudible)
 app.use(createPinia())
 app.use(router)
 

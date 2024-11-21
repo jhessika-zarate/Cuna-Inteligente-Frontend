@@ -1,21 +1,45 @@
 <template>
-  <div>
-    <h2>Grabación de Audio</h2>
-    <p v-if="isRecording">Grabando...</p>
-
-    <button @click="startRecording" :disabled="isRecording">
-      Iniciar Grabación
-    </button>
-    <button @click="stopRecording" :disabled="!isRecording">
-      Detener Grabación
-    </button>
-    <audio v-if="audioURL" :src="audioURL" controls></audio>
-    <button v-if="audioURL" @click="uploadAudio">Subir Audio</button>
-  </div>
+ 
+  
+    <div class="main-container">
+      <sidebar />
+      <div>
+        <div class="controles">
+          <!-- Contenedor de ondas -->
+          <div class="wave-container" v-if="isRecording">
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+          </div>
+          <h1 style="font-weight: 600;">Grabación de Audio</h1>
+          <h3>Presiona al oso <br>y acerca tu dispositivo a tu bebe<br> te ayudaremos a detectar <br>el motivo del llanto</h3>
+          <!-- Imagen del oso -->
+          <img 
+            class="logo" 
+            src="@/assets/Teddy.png" 
+            alt="Iniciar/Detener Grabación" 
+            @click="toggleRecording" 
+          />
+          
+          <p v-if="isRecording">Grabando...</p>
+          <audio v-if="audioURL" :src="audioURL" controls></audio>
+          <button v-if="audioURL" @click="uploadAudio">Detectar </button>
+        </div>
+      </div>
+    </div>
+ 
 </template>
 
+
+
 <script>
+import sidebar from "@/components/sidebar.vue";
+import { useBebeStore } from "@/stores/Publico/Bebe";
+import Cookies from "js-cookie";
 export default {
+  components: {
+    sidebar,
+  },
   data() {
     return {
       isRecording: false,
@@ -26,6 +50,13 @@ export default {
     };
   },
   methods: {
+    async toggleRecording() {
+      if (this.isRecording) {
+        this.stopRecording(); // Detener grabación
+      } else {
+        await this.startRecording(); // Iniciar grabación
+      }
+    },
     // Método para iniciar la grabación
     // Método para iniciar la grabación
     async startRecording() {
@@ -138,3 +169,86 @@ export default {
   },
 };
 </script>
+<style>
+.main-container {
+  background-image: url("/src//assets/fondoaudio.png");
+  min-height: 100vh;
+  background-repeat: repeat;
+  
+  background-size: auto;
+  
+}
+
+.logo {
+  width: 30rem;
+  height: 30rem;
+  z-index: 500;
+  margin-left: 10px
+ 
+}
+.controles{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 500;
+  transform: translate(-50%, -50%);
+}
+.wave-container {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  top: 45%;
+  left: 50%;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  margin-bottom: 20px;
+}
+
+.wave {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 20px solid var(--primary-color); /* Color de la onda */
+  border-radius: 50%;
+  animation: ripple 1.5s infinite;
+}
+
+.wave:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.wave:nth-child(3) {
+  animation-delay: 1s;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+h1,h2,h3,p{
+  font-family: Montserrat;
+  color: white
+}
+button{
+  font-family: Montserrat;
+  margin: 10px;
+  background-color: var(--primary-color);
+  padding: 10px;
+  font-size: larger;
+  border-radius: 8%;
+  font-weight: 700;
+  z-index: 500;
+}
+</style>
