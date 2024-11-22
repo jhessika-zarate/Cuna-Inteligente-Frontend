@@ -26,7 +26,18 @@
           <button class="botoncito" v-if="audioURL" @click="uploadAudio">Detectar </button>
         </div>
       </div>
+       <!-- Modal -->
+       <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
+      <div class="modal-content">
+        <h2>Motivo del llanto detectado</h2>
+        <img v-if="razonllanto" :src="getImageForReason(razonllanto)" alt="Motivo" />
+        <p v-if="razonllanto">{{ razonllanto }}</p>
+        <button class="botoncito" @click="closeModal">Cerrar</button>
+      </div>
     </div>
+  
+    </div>
+    
  
 </template>
 
@@ -44,7 +55,9 @@ export default {
     return {
       isRecording: false,
       audioURL: null,
+      showModal: false, 
       mediaRecorder: null,
+      razonllanto: null,
       audioChunks: [],
       ngrokUrl: "https://jhessika.serverbb.online", // Cambia esto a la URL de tu máquina virtual
     };
@@ -130,7 +143,9 @@ export default {
         }
 
         const blob = new Blob(this.audioChunks, { type: "audio/webm" });
-
+        const simulatedResponse = "Hungry"; // Cambiar según las pruebas
+        this.razonllanto = simulatedResponse;
+        this.openModal();
         if (!blob || blob.size === 0) {
           console.error("El archivo de audio está vacío.");
           alert("El archivo de audio está vacío.");
@@ -152,19 +167,35 @@ export default {
         if (!response.ok) {
           const errorText = await response.text();
           alert("Error en el servidor: " + errorText);
+          
           return;
         }
 
         const result = await response.json();
         console.log("Resultado del servidor:", result);
         alert("Audio subido correctamente: " + JSON.stringify(result));
-
+        
         this.audioURL = null;
         this.audioChunks = [];
       } catch (error) {
         console.error("Error al subir el audio:", error);
         alert("Hubo un problema al subir el audio. Verifica el servidor.");
       }
+    },
+    openModal() {
+      this.showModal = true; // Mostrar el modal
+    },
+    closeModal() {
+      this.showModal = false; // Ocultar el modal
+    },
+    getImageForReason(razonllanto) {
+      const images = {
+        "Belly pain": "@/assets/belly-pain.jpeg",
+        Discomfort: "@/assets/discomfort.jpeg",
+        Hungry: "/assets/hungry.jpeg",
+        Tired: "@/assets/tired.jpeg",
+      };
+      return images[razonllanto] || "@/assets/default.png";
     },
   },
 };
@@ -236,7 +267,9 @@ export default {
     opacity: 0;
   }
 }
-
+.modal-overlay h1{
+  color: black
+}
 h1,h2,h3,p{
   font-family: Montserrat;
   color: white
@@ -250,5 +283,43 @@ h1,h2,h3,p{
   border-radius: 8%;
   font-weight: 700;
   z-index: 500;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+ 
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: left;
+  max-width: 500px;
+  text-align: center;
+}
+
+.modal-content h2 {
+  font-size: 34px;
+  color: black;
+  
+  margin-bottom: 10px;
+  font-weight: 800
+}
+
+.modal-content p {
+  margin-bottom: 20px;
+  color: black;
+  
+  font-size: 26px;
+  font-weight: 500;
 }
 </style>
