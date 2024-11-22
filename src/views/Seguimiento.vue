@@ -26,6 +26,20 @@
           />
           <p>Última Comida</p>
         </div>
+        <div class="info-card" @click="llanto()">
+          <font-awesome-icon
+            :icon="['fas', 'baby']"
+            style="height: 5rem; color: whitesmoke; margin: 0.5rem"
+          />
+          <p>Registro Llanto</p>
+        </div>
+        <div class="info-card" @click="vacunas()">
+          <font-awesome-icon
+            :icon="['fas', 'kit-medical']"
+            style="height: 5rem; color: whitesmoke; margin: 0.5rem"
+          />
+          <p>Registro Vacunas</p>
+        </div>
         <!-- Combo box para seleccionar comida -->
       </div>
     </div>
@@ -378,6 +392,12 @@ export default {
       console.log(peticionPostAlimentacion);
       this.closeModal();
     },
+    async llanto(){
+      this.$router.push('/RegistroLlanto'); 
+    },
+    async vacunas(){
+      this.$router.push('/RegistroVacunas'); 
+    }
   },
 };
 </script>
