@@ -50,6 +50,7 @@
 <script>
 import { useBebeStore } from "@/stores/Publico/Bebe";
 import sidebar from "@/components/sidebar.vue";
+import Cookies from "js-cookie";
 export default {
   components: {
     sidebar,
