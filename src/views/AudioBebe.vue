@@ -1,44 +1,40 @@
 <template>
- 
-  
-    <div class="main-container">
-      <sidebar />
-      <div>
-        <div class="controles">
-          <!-- Contenedor de ondas -->
-          <div class="wave-container" v-if="isRecording">
-            <div class="wave"></div>
-            <div class="wave"></div>
-            <div class="wave"></div>
-          </div>
-          <h1 style="font-weight: 600;">Grabación de Audio</h1>
-          <h3>Presiona al oso <br>y acerca tu dispositivo a tu bebe<br> te ayudaremos a detectar <br>el motivo del llanto</h3>
-          <!-- Imagen del oso -->
-          <img 
-            class="logo" 
-            src="@/assets/Teddy.png" 
-            alt="Iniciar/Detener Grabación" 
-            @click="toggleRecording" 
-          />
-          
-          <p v-if="isRecording">Grabando...</p>
-          <audio v-if="audioURL" :src="audioURL" controls></audio>
-          <button class="botoncito" v-if="audioURL" @click="uploadAudio">Detectar </button>
+
+
+  <div class="main-container">
+    <sidebar />
+    <div>
+      <div class="controles">
+        <!-- Contenedor de ondas -->
+        <div class="wave-container" v-if="isRecording">
+          <div class="wave"></div>
+          <div class="wave"></div>
+          <div class="wave"></div>
         </div>
+        <h1 style="font-weight: 600;">Grabación de Audio</h1>
+        <h3>Presiona al oso <br>y acerca tu dispositivo a tu bebe<br> te ayudaremos a detectar <br>el motivo del llanto
+        </h3>
+        <!-- Imagen del oso -->
+        <img class="logo" src="@/assets/Teddy.png" alt="Iniciar/Detener Grabación" @click="toggleRecording" />
+
+        <p v-if="isRecording">Grabando...</p>
+        <audio v-if="audioURL" :src="audioURL" controls></audio>
+        <button class="botoncito" v-if="audioURL" @click="uploadAudio">Detectar </button>
       </div>
-       <!-- Modal -->
-       <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
+    </div>
+    <!-- Modal -->
+    <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
       <div class="modal-content">
         <h2>Motivo del llanto detectado</h2>
-        <img v-if="razonllanto" :src="getImageForReason(razonllanto)" alt="Motivo" />
+        <img v-if="razonllanto" :src="getImageForReason(razonllanto)" alt="Motivo" class="imgoso" />
         <p v-if="razonllanto">{{ razonllanto }}</p>
         <button class="botoncito" @click="closeModal">Cerrar</button>
       </div>
     </div>
-  
-    </div>
-    
- 
+
+  </div>
+
+
 </template>
 
 
@@ -47,6 +43,11 @@
 import sidebar from "@/components/sidebar.vue";
 import { useBebeStore } from "@/stores/Publico/Bebe";
 import Cookies from "js-cookie";
+import bellyPainImg from '@/assets/belly-pain.jpeg';
+import discomfortImg from '@/assets/discomfort.jpeg';
+import hungryImg from '@/assets/hungry.jpeg';
+import tiredImg from '@/assets/tired.jpeg';
+
 export default {
   components: {
     sidebar,
@@ -55,7 +56,7 @@ export default {
     return {
       isRecording: false,
       audioURL: null,
-      showModal: false, 
+      showModal: false,
       mediaRecorder: null,
       razonllanto: null,
       audioChunks: [],
@@ -143,7 +144,7 @@ export default {
         }
 
         const blob = new Blob(this.audioChunks, { type: "audio/webm" });
-        const simulatedResponse = "Hungry"; // Cambiar según las pruebas
+        const simulatedResponse = "Discomfort"; // Cambiar según las pruebas
         this.razonllanto = simulatedResponse;
         this.openModal();
         if (!blob || blob.size === 0) {
@@ -167,14 +168,14 @@ export default {
         if (!response.ok) {
           const errorText = await response.text();
           alert("Error en el servidor: " + errorText);
-          
+
           return;
         }
 
         const result = await response.json();
         console.log("Resultado del servidor:", result);
         alert("Audio subido correctamente: " + JSON.stringify(result));
-        
+
         this.audioURL = null;
         this.audioChunks = [];
       } catch (error) {
@@ -189,14 +190,16 @@ export default {
       this.showModal = false; // Ocultar el modal
     },
     getImageForReason(razonllanto) {
-      const images = {
-        "Belly pain": "@/assets/belly-pain.jpeg",
-        Discomfort: "@/assets/discomfort.jpeg",
-        Hungry: "/assets/hungry.jpeg",
-        Tired: "@/assets/tired.jpeg",
-      };
-      return images[razonllanto] || "@/assets/default.png";
-    },
+  const images = {
+    "Belly pain": bellyPainImg,
+    Discomfort: discomfortImg,
+    Hungry: hungryImg,
+    Tired: tiredImg,
+  };
+  return images[razonllanto];
+},
+
+
   },
 };
 </script>
@@ -205,9 +208,9 @@ export default {
   background-image: url("/src//assets/fondoaudio.png");
   min-height: 100vh;
   background-repeat: repeat;
-  
+
   background-size: auto;
-  
+
 }
 
 .logo {
@@ -215,9 +218,9 @@ export default {
   height: 30rem;
   z-index: 500;
   margin-left: 10px
- 
 }
-.controles{
+
+.controles {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -229,6 +232,10 @@ export default {
   z-index: 500;
   transform: translate(-50%, -50%);
 }
+.imgoso{
+  width: 150px;
+}
+
 .wave-container {
   position: absolute;
   width: 250px;
@@ -244,7 +251,8 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  border: 20px solid var(--primary-color); /* Color de la onda */
+  border: 20px solid var(--primary-color);
+  /* Color de la onda */
   border-radius: 50%;
   animation: ripple 1.5s infinite;
 }
@@ -262,19 +270,26 @@ export default {
     transform: scale(0.5);
     opacity: 1;
   }
+
   100% {
     transform: scale(3);
     opacity: 0;
   }
 }
-.modal-overlay h1{
+
+.modal-overlay h1 {
   color: black
 }
-h1,h2,h3,p{
+
+h1,
+h2,
+h3,
+p {
   font-family: Montserrat;
   color: white
 }
-.botoncito{
+
+.botoncito {
   font-family: Montserrat;
   margin: 10px;
   background-color: var(--primary-color);
@@ -284,11 +299,12 @@ h1,h2,h3,p{
   font-weight: 700;
   z-index: 500;
 }
+
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
- 
+
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
@@ -310,7 +326,7 @@ h1,h2,h3,p{
 .modal-content h2 {
   font-size: 34px;
   color: black;
-  
+
   margin-bottom: 10px;
   font-weight: 800
 }
@@ -318,7 +334,7 @@ h1,h2,h3,p{
 .modal-content p {
   margin-bottom: 20px;
   color: black;
-  
+
   font-size: 26px;
   font-weight: 500;
 }
