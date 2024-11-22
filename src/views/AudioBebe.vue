@@ -81,6 +81,7 @@ import bellyPainImg from "@/assets/belly-pain.jpeg";
 import discomfortImg from "@/assets/discomfort.jpeg";
 import hungryImg from "@/assets/hungry.jpeg";
 import tiredImg from "@/assets/tired.jpeg";
+import RegistroLlanto from "./RegistroLlanto.vue";
 
 export default {
   components: {
