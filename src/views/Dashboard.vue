@@ -251,12 +251,12 @@ export default {
       console.log("ahora este es el bebe", this.bebe);
       this.bebe = { ...actualBebe }; // Copiar directamente los datos del bebé seleccionado
       this.getListaBebe();
-      location.reload();
+     
     },
 
-    async cambiarSeleccionado(id) {
-      console.log("id de bebe enviado", id);
-      const datosActualizados = await this.bebeStore.putBebeSeleccionado(id);
+    async cambiarSeleccionado(idNuevoBbes) {
+      console.log("id de bebe enviado",idNuevoBbes);
+      const datosActualizados = await this.bebeStore.putBebeSeleccionado(idNuevoBbes);
 
       console.log("datosActualizados", datosActualizados);
     },

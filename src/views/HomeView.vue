@@ -70,8 +70,8 @@
               <label class="switch">
                 <input
                   type="checkbox"
-                  v-model="isChecked"
-                  @change="toggleMessage()"
+                  v-model="isCheckedMusica"
+                  @change="toggleMessageMusica()"
                 />
                 <span class="slider"></span>
               </label>
@@ -250,6 +250,7 @@ export default {
   data() {
     return {
       isChecked: false, // Estado del switch
+      isCheckedMusica: false, // Estado del switch
       message: "", // Mensaje a mostrar
       listaBebe: [],
       bebe: {
@@ -346,7 +347,7 @@ export default {
       if (this.isChecked) {
         this.message = "¡Bienvenido!";
         console.log(
-          "isChecked2",
+          "isChecked",
           this.isChecked,
           "bebe",
           this.bebeActual.idBebe
@@ -359,6 +360,25 @@ export default {
        const movil = await this.useBebeStoreAdmi.putBebeMovimientofalse(
         );
         console.log("movil", movil);
+      }
+    },
+    async toggleMessageMusica() {
+      if (this.isCheckedMusica) {
+        this.message = "¡Bienvenido!";
+        console.log(
+          "isCheckedisCheckedMusica",
+          this.isCheckedMusica,
+          "idUsuario",
+          Cookies.get("idUser")
+        );
+        const movil = await this.useBebeStoreAdmi.putBebeReproducirMusica(
+          Cookies.get("idUser")
+        );
+        console.log("REPRODUCIR", movil);
+      }else{
+       const movil = await this.useBebeStoreAdmi.putBebeDetenerMusica( Cookies.get("idUser")
+        );
+        console.log("DETENER", movil);
       }
     },
     elegirmusica(){
