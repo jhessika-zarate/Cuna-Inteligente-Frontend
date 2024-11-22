@@ -1,6 +1,4 @@
 <template>
-
-
   <div class="main-container">
     <sidebar />
     <div>
@@ -11,42 +9,74 @@
           <div class="wave"></div>
           <div class="wave"></div>
         </div>
-        <h1 style="font-weight: 600;">Grabación de Audio</h1>
-        <h3>Presiona al oso <br>y acerca tu dispositivo a tu bebe<br> te ayudaremos a detectar <br>el motivo del llanto
+        <h1 style="font-weight: 600">Grabación de Audio</h1>
+        <h3>
+          Presiona al oso <br />y acerca tu dispositivo a tu bebe<br />
+          te ayudaremos a detectar <br />el motivo del llanto
         </h3>
         <!-- Imagen del oso -->
-        <img class="logo" src="@/assets/Teddy.png" alt="Iniciar/Detener Grabación" @click="toggleRecording" />
+        <img
+          class="logo"
+          src="@/assets/Teddy.png"
+          alt="Iniciar/Detener Grabación"
+          @click="toggleRecording"
+        />
 
         <p v-if="isRecording">Grabando...</p>
         <audio v-if="audioURL" :src="audioURL" controls></audio>
-        <button class="botoncito" v-if="audioURL" @click="uploadAudio">Detectar </button>
+        <button class="botoncito" v-if="audioURL" @click="uploadAudio">
+          Detectar
+        </button>
       </div>
     </div>
-    <!-- Modal -->
+
+    <!-- Modal de motivo del llanto -->
     <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
       <div class="modal-content">
         <h2>Motivo del llanto detectado</h2>
-        <img v-if="razonllanto" :src="getImageForReason(razonllanto)" alt="Motivo" class="imgoso" />
+        <img
+          v-if="razonllanto"
+          :src="getImageForReason(razonllanto)"
+          alt="Motivo"
+          class="imgoso"
+        />
         <p v-if="razonllanto">{{ razonllanto }}</p>
+        <button class="botoncito" @click="openSpectrogramModal">
+          Ver espectrograma
+        </button>
         <button class="botoncito" @click="closeModal">Cerrar</button>
       </div>
     </div>
 
+    <!-- Modal del espectrograma -->
+    <div
+      v-if="showSpectrogramModal"
+      class="modal-overlay"
+      @click.self="closeSpectrogramModal"
+    >
+      <div class="modal-content">
+        <h2>Espectrograma Mel</h2>
+        <span>Un espectrograma mel es una variante del espectrograma que se utiliza comúnmente en el procesamiento del habla y en tareas de aprendizaje automático.</span>
+        <img
+          v-if="spectrogramImage"
+          :src="spectrogramImage"
+          alt="Espectrograma"
+          class="spectrogram-img"
+        />
+        <button class="botoncito" @click="closeSpectrogramModal">Cerrar</button>
+      </div>
+    </div>
   </div>
-
-
 </template>
-
-
 
 <script>
 import sidebar from "@/components/sidebar.vue";
 import { useBebeStore } from "@/stores/Publico/Bebe";
 import Cookies from "js-cookie";
-import bellyPainImg from '@/assets/belly-pain.jpeg';
-import discomfortImg from '@/assets/discomfort.jpeg';
-import hungryImg from '@/assets/hungry.jpeg';
-import tiredImg from '@/assets/tired.jpeg';
+import bellyPainImg from "@/assets/belly-pain.jpeg";
+import discomfortImg from "@/assets/discomfort.jpeg";
+import hungryImg from "@/assets/hungry.jpeg";
+import tiredImg from "@/assets/tired.jpeg";
 
 export default {
   components: {
@@ -57,22 +87,22 @@ export default {
       isRecording: false,
       audioURL: null,
       showModal: false,
+      showSpectrogramModal: false, // Estado para mostrar el modal del espectrograma
       mediaRecorder: null,
       razonllanto: null,
       audioChunks: [],
-      ngrokUrl: "https://jhessika.serverbb.online", // Cambia esto a la URL de tu máquina virtual
+      spectrogramImage: null, // Imagen del espectrograma
+      ngrokUrl: "https//localhost:8080",
     };
   },
   methods: {
     async toggleRecording() {
       if (this.isRecording) {
-        this.stopRecording(); // Detener grabación
+        this.stopRecording();
       } else {
-        await this.startRecording(); // Iniciar grabación
+        await this.startRecording();
       }
     },
-    // Método para iniciar la grabación
-    // Método para iniciar la grabación
     async startRecording() {
       try {
         console.log("Iniciando grabación...");
@@ -90,65 +120,54 @@ export default {
 
         console.log("Micrófono accedido con éxito.");
 
-        // Verificar tipo MIME soportado y configurar MediaRecorder
         const mimeType = MediaRecorder.isTypeSupported("audio/webm")
           ? "audio/webm"
           : "audio/mp4";
         this.mediaRecorder = new MediaRecorder(stream, { mimeType });
 
-        this.audioChunks = []; // Reinicia los datos del audio
+        this.audioChunks = [];
         this.mediaRecorder.ondataavailable = (e) => {
-          console.log("Datos de audio disponibles:", e.data);
-          this.audioChunks.push(e.data); // Agrega los datos grabados al array
+          this.audioChunks.push(e.data);
         };
 
         this.mediaRecorder.onstop = () => {
-          console.log("Grabación detenida.");
           if (this.audioChunks.length > 0) {
             const blob = new Blob(this.audioChunks, { type: mimeType });
-            this.audioURL = URL.createObjectURL(blob); // Crea una URL para reproducir el audio
-            console.log("Audio creado con éxito. URL:", this.audioURL);
+            this.audioURL = URL.createObjectURL(blob);
           } else {
             console.warn("No hay datos de audio.");
           }
         };
 
-        this.mediaRecorder.start(); // Inicia la grabación
-        console.log("Grabación en curso...");
-        this.isRecording = true; // Cambia el estado para deshabilitar el botón
+        this.mediaRecorder.start();
+        this.isRecording = true;
       } catch (error) {
         console.error("Error al iniciar la grabación:", error);
         alert("No se pudo acceder al micrófono. Verifica los permisos.");
       }
     },
-    // Método para detener la grabación
+
     stopRecording() {
       if (this.mediaRecorder && this.mediaRecorder.state === "recording") {
-        console.log("Deteniendo grabación...");
-        this.mediaRecorder.stop(); // Detiene la grabación
-        this.isRecording = false; // Cambia el estado para habilitar el botón
+        this.mediaRecorder.stop();
+        this.isRecording = false;
       } else {
         console.warn("No hay una grabación activa.");
       }
     },
 
-    // Método para subir el audio al servidor
-    // Método para subir el audio al servidor
-    // Método para subir el audio al servidor
     async uploadAudio() {
+      this.audioURL = null;
       try {
         if (!this.audioChunks || this.audioChunks.length === 0) {
-          console.error("No hay datos de audio para subir.");
           alert("No se grabó ningún audio.");
           return;
         }
 
         const blob = new Blob(this.audioChunks, { type: "audio/webm" });
-        const simulatedResponse = "Discomfort"; // Cambiar según las pruebas
-        this.razonllanto = simulatedResponse;
-        this.openModal();
+        
+
         if (!blob || blob.size === 0) {
-          console.error("El archivo de audio está vacío.");
           alert("El archivo de audio está vacío.");
           return;
         }
@@ -157,52 +176,74 @@ export default {
         const formData = new FormData();
         formData.append("audio", blob, "recording.webm");
 
-        const response = await fetch(
-          "https://jhessika.serverbb.online/upload-audio",
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
+        const response = await fetch("http://localhost:8080/upload-audio", {
+          method: "POST",
+          body: formData,
+        });
 
         if (!response.ok) {
           const errorText = await response.text();
           alert("Error en el servidor: " + errorText);
-
           return;
         }
-
+        
         const result = await response.json();
         console.log("Resultado del servidor:", result);
-        alert("Audio subido correctamente: " + JSON.stringify(result));
+        this.razonllanto = result.prediction;
+        console.log("Razón del llanto:", this.razonllanto);
+        this.openModal();
 
-        this.audioURL = null;
-        this.audioChunks = [];
+        const responseImagen = await fetch(
+          "http://localhost:8080/get-spectrogram",
+          {
+            method: "GET", // Cambié a "GET"
+          }
+        );
+
+        if (!responseImagen.ok) {
+          const errorText = await responseImagen.text();
+          alert("Error en el servidor: " + errorText);
+          return;
+        }
+        // Simulando la respuesta del espectrograma
+        this.spectrogramImage = URL.createObjectURL(
+          await responseImagen.blob()
+        );
       } catch (error) {
         console.error("Error al subir el audio:", error);
-        alert("Hubo un problema al subir el audio. Verifica el servidor.");
+        alert("Hubo un problema al subir el audio.");
       }
     },
+
     openModal() {
-      this.showModal = true; // Mostrar el modal
+      this.showModal = true;
     },
+
     closeModal() {
-      this.showModal = false; // Ocultar el modal
+      this.showModal = false;
     },
+
+    openSpectrogramModal() {
+      this.showSpectrogramModal = true;
+    },
+
+    closeSpectrogramModal() {
+      this.showSpectrogramModal = false;
+    },
+
     getImageForReason(razonllanto) {
-  const images = {
-    "Belly pain": bellyPainImg,
-    Discomfort: discomfortImg,
-    Hungry: hungryImg,
-    Tired: tiredImg,
-  };
-  return images[razonllanto];
-},
-
-
+      const images = {
+        "Belly pain": bellyPainImg,
+        Discomfort: discomfortImg,
+        Hungry: hungryImg,
+        Tired: tiredImg,
+      };
+      return images[razonllanto];
+    },
   },
 };
 </script>
+
 <style>
 .main-container {
   background-image: url("/src//assets/fondoaudio.png");
@@ -210,14 +251,13 @@ export default {
   background-repeat: repeat;
 
   background-size: auto;
-
 }
 
 .logo {
   width: 30rem;
   height: 30rem;
   z-index: 500;
-  margin-left: 10px
+  margin-left: 10px;
 }
 
 .controles {
@@ -232,7 +272,7 @@ export default {
   z-index: 500;
   transform: translate(-50%, -50%);
 }
-.imgoso{
+.imgoso {
   width: 150px;
 }
 
@@ -278,7 +318,7 @@ export default {
 }
 
 .modal-overlay h1 {
-  color: black
+  color: black;
 }
 
 h1,
@@ -286,7 +326,7 @@ h2,
 h3,
 p {
   font-family: Montserrat;
-  color: white
+  color: white;
 }
 
 .botoncito {
@@ -328,7 +368,7 @@ p {
   color: black;
 
   margin-bottom: 10px;
-  font-weight: 800
+  font-weight: 800;
 }
 
 .modal-content p {
@@ -337,5 +377,12 @@ p {
 
   font-size: 26px;
   font-weight: 500;
+}
+
+.spectrogram-img {
+  width: 100%;
+  height: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 </style>
