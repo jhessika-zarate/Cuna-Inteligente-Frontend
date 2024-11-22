@@ -11,7 +11,7 @@
           Mantén al día el historial de vacunación de tus hijos para su
           bienestar.
         </p>
-        <span>Vacunas de {{ nombreBebe }}</span>
+        <p>Vacunas de {{ nombreBebe }}</p>
       </div>
     </div>
 
@@ -242,6 +242,10 @@ export default {
   font-size: 1.2rem;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
+.banner-content span {
+  font-size: 1.2rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
 
 /* Botones */
 .btn-registrar {
@@ -327,7 +331,7 @@ export default {
   top: 1rem;
   right: 1rem;
   background-color: var(--primary-color);
-  color: var(--primary-color);
+  color: white;
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
@@ -336,7 +340,7 @@ export default {
 }
 
 .modal-close:hover {
-  color: var(--primary-color-dark);
+  color: white;
   transform: scale(1.2);
 }
 
@@ -370,7 +374,8 @@ export default {
 }
 
 .btn-guardar:hover {
-  background-color: var(--primary-color-dark);
-  color: white;
+  background-color: white;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
 }
 </style>

@@ -99,7 +99,7 @@
           imagen: "/src/assets/relaciones.jpg",
         },
         {
-          titulo: "Cuidado postparto para la mamá",
+          titulo: "Cuidado postparto",
           resumen: "Prioriza también tu bienestar.",
           detalle:
             "Descansa, hidrátate y mantén una dieta balanceada. Cuidar de ti misma es crucial para cuidar a tu bebé.",
@@ -172,6 +172,7 @@
     background-repeat: repeat;
     min-height: 100vh;
     padding: 2rem;
+    padding-bottom: 7rem;
   }
   
   .consejos-grid {
@@ -240,6 +241,7 @@
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     transition: opacity 0.3s ease, visibility 0.3s ease;
+    padding-bottom: 5rem;
   }
  
   

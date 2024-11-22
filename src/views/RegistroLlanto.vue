@@ -129,6 +129,7 @@ import Cookies from "js-cookie";
     background-repeat: repeat;
     min-height: 100vh;
     padding: 2rem;
+    padding-bottom: 7rem;
   }
   
   /* Banner */
