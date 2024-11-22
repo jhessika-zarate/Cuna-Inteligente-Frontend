@@ -61,6 +61,23 @@
               </label>
             </div>
           </div>
+          <div>
+            <div class="banner-container2" style="height: 7rem; margin-top:20px">
+              <img class="bannermovil" src="@/assets/movil.png" alt="" />
+              <h1 class="banner-textmovil">Musica</h1>
+              <div class="controlesmusica">
+              <button class="switch2" @click="elegirmusica()" >Seleccionar</button>
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  v-model="isCheckedMusica"
+                  @change="toggleMessageMusica()"
+                />
+                <span class="slider"></span>
+              </label>
+              </div>
+            </div>
+          </div>
           <h1 style="font-family: Montserrat; font-weight: 700">
             <strong>Información de </strong>
             {{ bebeActual.nombre }}
@@ -203,6 +220,7 @@ import sidebar from "@/components/sidebar.vue";
 import { useBebeStore } from "@/stores/Publico/Bebe";
 import Cookies from "js-cookie";
 import FormularioNuevoBebe from "./FormularioNuevoBebe.vue";
+import router from "@/router";
 export default {
   name: "App",
   components: {
@@ -232,6 +250,7 @@ export default {
   data() {
     return {
       isChecked: false, // Estado del switch
+      isCheckedMusica: false, // Estado del switch
       message: "", // Mensaje a mostrar
       listaBebe: [],
       bebe: {
@@ -289,6 +308,12 @@ export default {
     },
     async actualizarBebe(bebe) {
       console.log("Actualizando bebé:", bebe);
+      const datosActualizados = await this.useBebeStoreAdmi.putBebeSeleccionado(bebe.idBebe);
+      console.log("datosActualizados", datosActualizados);
+      if(bebe.musica<10){
+        this.isCheckedMusica=true;
+
+      }
       this.bebeActual = { ...bebe };
       this.datosBebes= await this.useBebeStoreAdmi.getUltimoRegistro(this.bebeActual.idBebe);
       console.log("datos bebe", this.datosBebes);
@@ -328,7 +353,7 @@ export default {
       if (this.isChecked) {
         this.message = "¡Bienvenido!";
         console.log(
-          "isChecked2",
+          "isChecked",
           this.isChecked,
           "bebe",
           this.bebeActual.idBebe
@@ -343,6 +368,28 @@ export default {
         console.log("movil", movil);
       }
     },
+    async toggleMessageMusica() {
+      if (this.isCheckedMusica) {
+        this.message = "¡Bienvenido!";
+        console.log(
+          "isCheckedisCheckedMusica",
+          this.isCheckedMusica,
+          "idUsuario",
+          Cookies.get("idUser")
+        );
+        const movil = await this.useBebeStoreAdmi.putBebeReproducirMusica(
+          Cookies.get("idUser")
+        );
+        console.log("REPRODUCIR", movil);
+      }else{
+       const movil = await this.useBebeStoreAdmi.putBebeDetenerMusica( Cookies.get("idUser")
+        );
+        console.log("DETENER", movil);
+      }
+    },
+    elegirmusica(){
+      this.$router.push('/musica');
+    }
   },
 };
 </script>
@@ -371,7 +418,7 @@ export default {
   width: 5em;
   height: 2em;
   position: absolute;
-  top: 20%;
+  top: 8%;
   /* Ajusta según sea necesario */
   right: 5%;
   transform: translateX(-50%);
@@ -380,7 +427,28 @@ export default {
   font-family: Montserrat, sans-serif;
   z-index: 1;
 }
+.switch2 {
+  font-size: 17px;
+  position: relative;
+  display: inline-block;
+  
+  height: 2em;
+  position: absolute;
+  top: 50%;
+  /* Ajusta según sea necesario */
+  right: 0%;
+  transform: translateX(-50%);
+  color: black;
+  border: none;
+  background-color: var(--highlight-color);
 
+  font-family: Montserrat, sans-serif;
+  z-index: 1;
+}
+.controlesmusica{
+  display: flex;
+  flex-direction: row;
+}
 /* Hide default HTML checkbox */
 .switch input {
   opacity: 0;
@@ -449,6 +517,19 @@ export default {
   position: relative;
   width: 100%;
   height: 23vh;
+  /* Mantener la altura del banner */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  /* Apilar logo y texto verticalmente */
+  gap: 10px;
+  /* Espacio entre los elementos */
+}
+.banner-container2 {
+  position: relative;
+  width: 100%;
+  height: 30rem;
   /* Mantener la altura del banner */
   display: flex;
   justify-content: center;

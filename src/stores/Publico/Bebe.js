@@ -880,5 +880,62 @@ export const useBebeStore = defineStore("bebe", {
         return null;
     }
 }},
+
+async putBebeReproducirMusica(idUsuario) {
+  this.loading = true;
+  var response = null;
+  try {
+    response = await axios.put(`${RutaApi}bebe/musica/reproducir/${idUsuario}`);
+    console.log("Datos obtenidos en putBebeReproducirMusica:", response);
+    return this.bebe;
+  } catch (error) {
+    this.error = error;
+  } finally {
+    this.loading = false;
+    if (response.data.code === "200") {
+      return response.data.response;
+    } else {
+      return null;
+    }
+  }
+},
+
+async putBebeDetenerMusica(idUsuario) {
+  this.loading = true;
+  var response = null;
+  try {
+    response = await axios.put(`${RutaApi}bebe/musica/detener/${idUsuario}`);
+    console.log("Datos obtenidos en putBebeDetenerMusica:", response);
+    return this.bebe;
+  } catch (error) {
+    this.error = error;
+  } finally {
+    this.loading = false;
+    if (response.data.code === "200") {
+      return response.data.response;
+    } else {
+      return null;
+    }
+  }
+},
+async putBebeSeleccionarMusica(idUsuario, numeroMusica) {
+  this.loading = true;
+  var response = null;
+  try {
+    response = await axios.put(`${RutaApi}bebe/usuario/${idUsuario}/musica/${numeroMusica}`);
+    console.log("Datos obtenidos en putBebeDetenerMusica:", response);
+    return this.bebe;
+  } catch (error) {
+    this.error = error;
+  } finally {
+    this.loading = false;
+    if (response.data.code === "200") {
+      return response.data.response;
+    } else {
+      return null;
+    }
+  }
+},
+
   },
 });

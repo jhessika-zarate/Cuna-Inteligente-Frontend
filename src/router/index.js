@@ -8,6 +8,7 @@ import FormularioNuevoBebe from '@/views/FormularioNuevoBebe.vue'
 import Dashboard from '@/views/Dashboard.vue'
 import Consejos from '@/views/Consejos.vue'
 import AudioBebe from '@/views/AudioBebe.vue'
+import musica from '@/views/musica.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -63,6 +64,11 @@ const router = createRouter({
       path: "/audio",
       name: "AudioBebe",
       component: AudioBebe,
+    },
+    {
+      path: "/musica",
+      name: "musica",
+      component: musica,
     }
   ],
 })
