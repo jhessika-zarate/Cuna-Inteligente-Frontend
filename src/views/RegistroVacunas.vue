@@ -8,6 +8,7 @@
         <div class="banner-content">
           <h1>Registro de Vacunas</h1>
           <p>Mantén al día el historial de vacunación de tus hijos para su bienestar.</p>
+          <span>Vacunas de {{ nombreBebe }}</span>
         </div>
       </div>
   
@@ -74,15 +75,21 @@
   
   <script>
   import sidebar from '@/components/sidebar.vue';
-  
+  import { useBebeStore } from "@/stores/Publico/Bebe";
+  import Cookies from 'js-cookie';
   export default {
     name: 'Vacunas',
     components: {
       sidebar,
     },
+    setup() {
+    const useBebeStoreAdmi = useBebeStore();
+    return { useBebeStoreAdmi };
+  },
     data() {
       return {
         vacunas: [],
+        nombreBebe: '',
         mostrarModal: false,
         nuevaVacuna: {
           nombreVacuna: '',
@@ -92,6 +99,19 @@
         },
       };
     },
+    async beforeCreate() {
+    if (!Cookies.get("idUser")) {
+      this.$router.push("/login");
+    } else {
+      console.log("idUser", Cookies.get("idUser"));
+      const idBebeSeleccionado = await this.useBebeStoreAdmi.getBebeSeleccionado();
+console.log("idBebeSeleccionado", idBebeSeleccionado);
+      this.nombreBebe = idBebeSeleccionado.nombre;
+      this.vacunas = await this.useBebeStoreAdmi.getVacunas(idBebeSeleccionado.idBebe);
+    }
+  },
+
+
     methods: {
       async cargarVacunas() {
         try {
@@ -124,7 +144,7 @@
       },
     },
     mounted() {
-      this.cargarVacunas();
+     
     },
   };
   </script>
