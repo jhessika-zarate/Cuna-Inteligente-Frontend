@@ -76,6 +76,7 @@ const router = createRouter({
       path: "/registroLlanto",
       name: "RegistroLlanto",
       component: RegistroLlanto,
+    },{
       path: "/musica",
       name: "musica",
       component: musica,

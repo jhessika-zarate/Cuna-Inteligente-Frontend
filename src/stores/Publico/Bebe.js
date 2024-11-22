@@ -848,94 +848,258 @@ export const useBebeStore = defineStore("bebe", {
       this.loading = true;
       var response = null;
       try {
-          response = await axios.post(`${RutaApi}registroalimentacion/${idBebe}`, registro);
-        console.log('respues',response);
-          this.bebe = response.data.response;
-      } catch (error) {
-          this.error = error;
-      }finally{
-          this.loading = false;
-      if(response.data.code === "200"){
-          return response.data.response;
-      }else{
-          return null;
-      }
-  }},
-
-  async postRegistroDatosBebe(idBebe, registro) {
-    this.loading = true;
-    var response = null;
-    console.log("Datos enviados en postRegistroDatosBebe:", registro);
-    try {
-        response = await axios.post(`${RutaApi}datosmesbebe/${idBebe}`, registro);
-      console.log('respuesta',response.data);
+        response = await axios.post(
+          `${RutaApi}registroalimentacion/${idBebe}`,
+          registro
+        );
+        console.log("respues", response);
         this.bebe = response.data.response;
-    } catch (error) {
+      } catch (error) {
         this.error = error;
-    }finally{
+      } finally {
         this.loading = false;
-    if(response.data.code === "200"){
-        return response.data.response;
-    }else{
+        if (response.data.code === "200") {
+          return response.data.response;
+        } else {
+          return null;
+        }
+      }
+    },
+
+    async postRegistroDatosBebe(idBebe, registro) {
+      this.loading = true;
+      var response = null;
+      console.log("Datos enviados en postRegistroDatosBebe:", registro);
+      try {
+        response = await axios.post(
+          `${RutaApi}datosmesbebe/${idBebe}`,
+          registro
+        );
+        console.log("respuesta", response.data);
+        this.bebe = response.data.response;
+      } catch (error) {
+        this.error = error;
+      } finally {
+        this.loading = false;
+        if (response.data.code === "200") {
+          return response.data.response;
+        } else {
+          return null;
+        }
+      }
+    },
+
+    async putBebeReproducirMusica(idUsuario) {
+      this.loading = true;
+      var response = null;
+      try {
+        response = await axios.put(
+          `${RutaApi}bebe/musica/reproducir/${idUsuario}`
+        );
+        console.log("Datos obtenidos en putBebeReproducirMusica:", response);
+        return this.bebe;
+      } catch (error) {
+        this.error = error;
+      } finally {
+        this.loading = false;
+        if (response.data.code === "200") {
+          return response.data.response;
+        } else {
+          return null;
+        }
+      }
+    },
+
+    async putBebeDetenerMusica(idUsuario) {
+      this.loading = true;
+      var response = null;
+      try {
+        response = await axios.put(
+          `${RutaApi}bebe/musica/detener/${idUsuario}`
+        );
+        console.log("Datos obtenidos en putBebeDetenerMusica:", response);
+        return this.bebe;
+      } catch (error) {
+        this.error = error;
+      } finally {
+        this.loading = false;
+        if (response.data.code === "200") {
+          return response.data.response;
+        } else {
+          return null;
+        }
+      }
+    },
+    async putBebeSeleccionarMusica(idUsuario, numeroMusica) {
+      this.loading = true;
+      var response = null;
+      try {
+        response = await axios.put(
+          `${RutaApi}bebe/usuario/${idUsuario}/musica/${numeroMusica}`
+        );
+        console.log("Datos obtenidos en putBebeDetenerMusica:", response);
+        return this.bebe;
+      } catch (error) {
+        this.error = error;
+      } finally {
+        this.loading = false;
+        if (response.data.code === "200") {
+          return response.data.response;
+        } else {
+          return null;
+        }
+      }
+    },
+    async getVacunas(idBebe) {
+      this.loading = true;
+      var response = null;
+      try {
+        response = await axios.get(`${RutaApi}registrovacuna/${idBebe}`);
+        this.bebes = response.data;
+      } catch (error) {
+        this.error = error;
+      } finally {
+        this.loading = false;
+        if (response.data.code === "200") {
+          return response.data.response;
+        } else {
+          return null;
+        }
+      }
+    },
+
+    async postVacunas(idBebe, registro) {
+      this.loading = true;
+      var response = null;
+      console.log("Datos enviados en postRegistroDatosBebe:", registro);
+      try {
+        response = await axios.post(
+          `${RutaApi}registrovacuna/${idBebe}`,
+          registro
+        );
+        console.log("respuesta", response.data);
+        this.bebe = response.data.response;
+      } catch (error) {
+        this.error = error;
+      } finally {
+        this.loading = false;
+        if (response.data.code === "200") {
+          return response.data.response;
+        } else {
+          return null;
+        }
+      }
+    },
+
+    async getLlanto(idBebe) {
+      this.loading = true;
+      var response = null;
+      try {
+        response = await axios.get(`${RutaApi}registrollanto/${idBebe}`);
+        this.bebes = response.data;
+      } catch (error) {
+        this.error = error;
+      } finally {
+        this.loading = false;
+        if (response.data.code === "200") {
+          return response.data.response;
+        } else {
+          return null;
+        }
+      }
+    },
+    async postLlanto(idBebe, registro) {
+      this.loading = true;
+      var response = null;
+      console.log("Datos enviados en postLlanto:", registro);
+      try {
+        response = await axios.post(
+          `${RutaApi}registrollanto/${idBebe}`,
+          registro
+        );
+        console.log("respuesta", response.data);
+        this.bebe = response.data.response;
+      } catch (error) {
+        this.error = error;
+      } finally {
+        this.loading = false;
+        if (response.data.code === "200") {
+          return response.data.response;
+        } else {
+          return null;
+        }
+      }
+    },
+
+    async obtenerDatosGraficasLlanto(idBaby) {
+      try {
+        const response = await axios.get(`${RutaApi}registrollanto/${idBaby}`);
+        const registros = response.data.response;
+        console.log("Datos obtenidos en obtenerDatosGraficas:", registros);
+
+        if (!registros || registros.length < 1) {
+          throw new Error(
+            "Se necesitan al menos un registro para generar las gráficas."
+          );
+        }
+
+        // Filtrar los registros de la última semana
+        const fechaActual = new Date();
+        const fechaSemanaAnterior = new Date(fechaActual);
+        fechaSemanaAnterior.setDate(fechaActual.getDate() - 7); // Fecha hace 7 días
+
+        const registrosUltimaSemana = registros.filter((r) => {
+          const fechaRegistro = new Date(r.fecha);
+          return (
+            fechaRegistro >= fechaSemanaAnterior && fechaRegistro <= fechaActual
+          );
+        });
+
+        if (registrosUltimaSemana.length === 0) {
+          throw new Error("No hay registros de llanto en la última semana.");
+        }
+
+        // Contar las razones de los llantos
+        const razonesCount = registrosUltimaSemana.reduce((acc, r) => {
+          const razon = r.razon;
+          acc[razon] = (acc[razon] || 0) + 1;
+          return acc;
+        }, {});
+
+        // Preparar los datos para el gráfico de barras
+        const razones = Object.keys(razonesCount);
+        const cantidades = razones.map((razon) => razonesCount[razon]);
+
+        // Datos para el gráfico
+        return {
+          otherCharts: [
+            {
+              title: "Razones de Llanto en la Última Semana",
+              subtitle: "Frecuencia de llanto por razón",
+              chartId: "razones-llanto-bar-chart",
+              component: "bar-chart",
+              chartData: {
+                datasets: [
+                  {
+                    label: "Cantidad de Llantos",
+                    data: cantidades,
+                    backgroundColor: "#3498db",
+                    borderColor: "#3498db",
+                    borderWidth: 2,
+                  },
+                ],
+                labels: razones,
+              },
+              gradientColors: ["#3498db", "#2980b9"],
+              gradientStops: [1, 0.6, 0],
+              extraOptions: { responsive: true },
+            },
+          ],
+        };
+      } catch (error) {
+        console.error("Error al obtener los datos:", error.message);
         return null;
-    }
-}},
-
-async putBebeReproducirMusica(idUsuario) {
-  this.loading = true;
-  var response = null;
-  try {
-    response = await axios.put(`${RutaApi}bebe/musica/reproducir/${idUsuario}`);
-    console.log("Datos obtenidos en putBebeReproducirMusica:", response);
-    return this.bebe;
-  } catch (error) {
-    this.error = error;
-  } finally {
-    this.loading = false;
-    if (response.data.code === "200") {
-      return response.data.response;
-    } else {
-      return null;
-    }
-  }
-},
-
-async putBebeDetenerMusica(idUsuario) {
-  this.loading = true;
-  var response = null;
-  try {
-    response = await axios.put(`${RutaApi}bebe/musica/detener/${idUsuario}`);
-    console.log("Datos obtenidos en putBebeDetenerMusica:", response);
-    return this.bebe;
-  } catch (error) {
-    this.error = error;
-  } finally {
-    this.loading = false;
-    if (response.data.code === "200") {
-      return response.data.response;
-    } else {
-      return null;
-    }
-  }
-},
-async putBebeSeleccionarMusica(idUsuario, numeroMusica) {
-  this.loading = true;
-  var response = null;
-  try {
-    response = await axios.put(`${RutaApi}bebe/usuario/${idUsuario}/musica/${numeroMusica}`);
-    console.log("Datos obtenidos en putBebeDetenerMusica:", response);
-    return this.bebe;
-  } catch (error) {
-    this.error = error;
-  } finally {
-    this.loading = false;
-    if (response.data.code === "200") {
-      return response.data.response;
-    } else {
-      return null;
-    }
-  }
-},
-
+      }
+    },
   },
 });

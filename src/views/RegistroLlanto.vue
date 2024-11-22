@@ -8,21 +8,34 @@
         <div class="banner-content">
           <h1>Registro de Llanto</h1>
           <p>Mantén un seguimiento del llanto de tu bebé para un mejor cuidado.</p>
-        </div>
+          <h2>Lista de Registros de Llanto de {{ nombreBebe }}</h2></div>
       </div>
     
-      <!-- Encabezado -->
-      <header>
-        <h2>Lista de Registros de Llanto</h2>
-      </header>
-    
+      <div class="charts-container">
+        <div v-for="chart in charts" :key="chart.chartId" class="chart-item">
+          <div class="card">
+            <div class="card-body">
+              <component
+                :is="chart.component"
+                class="chart-component"
+                :chart-id="chart.chartId"
+                :chart-data="chart.chartData"
+                gradient-colors='["#f96332", "#f96332"]'
+                gradient-stops="[0, 0.5, 0.7, 0.9]"
+                :extra-options="chart.extraOptions"
+                titulox="Fecha"
+                tituloy="kilogramos"
+              ></component>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- Tabla de registros (Siempre visible) -->
       <section class="tabla-registros">
         <table class="tabla-llanto">
           <thead>
             <tr>
               <th>Fecha y Hora</th>
-              <th>Duración (min)</th>
               <th>Razón</th>
             </tr>
           </thead>
@@ -32,8 +45,9 @@
               <td colspan="3" class="no-data">No hay registros de llanto aún.</td>
             </tr>
             <tr v-for="llanto in llantos" :key="llanto.idLlanto">
-              <td>{{ llanto.fechaHora }}</td>
-              <td>{{ llanto.duracion }}</td>
+              <td>{{ new Date(
+                        llanto.fecha
+                      ).toLocaleDateString()  }}</td>
               <td>{{ llanto.razon }}</td>
             </tr>
           </tbody>
@@ -44,17 +58,55 @@
   
   <script>
   import sidebar from '@/components/sidebar.vue';
-  
+  import LineChart from "@/components/Dashboard/LineChart.vue";
+import BarChart from "@/components/Dashboard/BarChart.vue";
+import { chartData } from "@/components/Dashboard/chartConfig";
+import VelocímetroChart from "@/components/Dashboard/VelocímetroChart.vue";
+
+import { useBebeStore } from "@/stores/Publico/Bebe";
+import Cookies from "js-cookie";
   export default {
     name: 'Llanto',
     components: {
-      sidebar,
-    },
+    LineChart,
+    BarChart,
+    VelocímetroChart,
+    sidebar,
+  },
+    setup() {
+    const useBebeStoreAdmi = useBebeStore();
+    return { useBebeStoreAdmi };
+  },
     data() {
       return {
+        nombreBebe: "",
+        IDbebe: "",
+        charts: chartData.otherCharts,
         llantos: [], // Datos de llanto
       };
-    },
+    
+  },
+  async beforeCreate() {
+    if (!Cookies.get("idUser")) {
+      this.$router.push("/login");
+    } else {
+      console.log("idUser", Cookies.get("idUser"));
+      const idBebeSeleccionado =
+        await this.useBebeStoreAdmi.getBebeSeleccionado();
+      this.IDbebe = idBebeSeleccionado.idBebe;
+      console.log("idBebeSeleccionado", idBebeSeleccionado);
+      this.nombreBebe = idBebeSeleccionado.nombre;
+      this.llantos = await this.useBebeStoreAdmi.getLlanto(
+        idBebeSeleccionado.idBebe
+      );
+      const crecimientobebe = await this.useBebeStoreAdmi.obtenerDatosGraficasLlanto(
+        idBebeSeleccionado.idBebe
+    );
+    this.charts = crecimientobebe.otherCharts;
+    }
+  },
+
+    
     methods: {
       async cargarLlantos() {
         try {
@@ -66,8 +118,7 @@
       },
     },
     mounted() {
-      this.cargarLlantos(); // Cargar los datos cuando el componente se monta
-    },
+        },
   };
   </script>
   
