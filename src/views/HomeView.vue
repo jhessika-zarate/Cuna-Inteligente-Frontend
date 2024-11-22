@@ -308,6 +308,12 @@ export default {
     },
     async actualizarBebe(bebe) {
       console.log("Actualizando bebé:", bebe);
+      const datosActualizados = await this.useBebeStoreAdmi.putBebeSeleccionado(bebe.idBebe);
+      console.log("datosActualizados", datosActualizados);
+      if(bebe.musica<10){
+        this.isCheckedMusica=true;
+
+      }
       this.bebeActual = { ...bebe };
       this.datosBebes= await this.useBebeStoreAdmi.getUltimoRegistro(this.bebeActual.idBebe);
       console.log("datos bebe", this.datosBebes);
