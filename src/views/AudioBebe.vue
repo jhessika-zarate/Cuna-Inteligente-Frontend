@@ -56,7 +56,11 @@
     >
       <div class="modal-content">
         <h2>Espectrograma Mel</h2>
-        <span>Un espectrograma mel es una variante del espectrograma que se utiliza comúnmente en el procesamiento del habla y en tareas de aprendizaje automático.</span>
+        <span
+          >Un espectrograma mel es una variante del espectrograma que se utiliza
+          comúnmente en el procesamiento del habla y en tareas de aprendizaje
+          automático.</span
+        >
         <img
           v-if="spectrogramImage"
           :src="spectrogramImage"
@@ -77,13 +81,26 @@ import bellyPainImg from "@/assets/belly-pain.jpeg";
 import discomfortImg from "@/assets/discomfort.jpeg";
 import hungryImg from "@/assets/hungry.jpeg";
 import tiredImg from "@/assets/tired.jpeg";
+import RegistroLlanto from "./RegistroLlanto.vue";
 
 export default {
   components: {
     sidebar,
   },
+  setup() {
+    const useBebeStoreAdmi = useBebeStore();
+    return { useBebeStoreAdmi };
+  },
   data() {
     return {
+      RegistroLlanto: {
+        razon: "",
+        fecha: "2025-11-22T04:03:08.339+00:00",
+        idBebe: {
+          idBebe: 0,
+        },
+      },
+      IDbebe: "",
       isRecording: false,
       audioURL: null,
       showModal: false,
@@ -94,6 +111,18 @@ export default {
       spectrogramImage: null, // Imagen del espectrograma
       ngrokUrl: "https//localhost:8080",
     };
+  },
+  async beforeCreate() {
+    if (!Cookies.get("idUser")) {
+      this.$router.push("/login");
+    } else {
+      console.log("idUser", Cookies.get("idUser"));
+      const idBebeSeleccionado =
+        await this.useBebeStoreAdmi.getBebeSeleccionado();
+      this.IDbebe = idBebeSeleccionado.idBebe;
+      console.log("idBebeSeleccionado", idBebeSeleccionado);
+      this.nombreBebe = idBebeSeleccionado.nombre;
+    }
   },
   methods: {
     async toggleRecording() {
@@ -165,7 +194,6 @@ export default {
         }
 
         const blob = new Blob(this.audioChunks, { type: "audio/webm" });
-        
 
         if (!blob || blob.size === 0) {
           alert("El archivo de audio está vacío.");
@@ -186,7 +214,7 @@ export default {
           alert("Error en el servidor: " + errorText);
           return;
         }
-        
+
         const result = await response.json();
         console.log("Resultado del servidor:", result);
         this.razonllanto = result.prediction;
@@ -209,10 +237,32 @@ export default {
         this.spectrogramImage = URL.createObjectURL(
           await responseImagen.blob()
         );
+        this.registraLlanto(this.razonllanto);
       } catch (error) {
         console.error("Error al subir el audio:", error);
         alert("Hubo un problema al subir el audio.");
       }
+    },
+
+    async registraLlanto(dato) {
+      if (!this.razonllanto) {
+        alert("No se ha detectado un motivo de llanto.");
+        return;
+      }
+      try {
+        this.RegistroLlanto.razon = dato;
+        this.RegistroLlanto.fecha = new Date().toISOString();
+        const response = await this.useBebeStoreAdmi.postLlanto(
+          this.IDbebe,
+          this.RegistroLlanto
+        );
+        console.log("Registro de llanto:", response);
+      } catch (error) {
+        console.error("Error al registrar el llanto:", error);
+        alert("Hubo un problema al registrar el llanto.");
+      }
+
+      console.log("Registro de llanto:", response);
     },
 
     openModal() {

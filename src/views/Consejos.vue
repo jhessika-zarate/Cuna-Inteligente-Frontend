@@ -311,6 +311,7 @@
   visibility: visible;
   transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 }
+
 .banner {
   background-image: url("/src/assets/banner.png"); /* Cambia por tu imagen de fondo */
   background-size: cover;
