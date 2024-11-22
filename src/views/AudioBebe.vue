@@ -109,7 +109,7 @@ export default {
       razonllanto: null,
       audioChunks: [],
       spectrogramImage: null, // Imagen del espectrograma
-      ngrokUrl: "https//localhost:8080",
+      ngrokUrl: "https://jhessika.serverbb.online",
     };
   },
   async beforeCreate() {
@@ -204,10 +204,13 @@ export default {
         const formData = new FormData();
         formData.append("audio", blob, "recording.webm");
 
-        const response = await fetch("http://localhost:8080/upload-audio", {
-          method: "POST",
-          body: formData,
-        });
+        const response = await fetch(
+          "https://jhessika.serverbb.online/upload-audio",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
 
         if (!response.ok) {
           const errorText = await response.text();
@@ -222,7 +225,7 @@ export default {
         this.openModal();
 
         const responseImagen = await fetch(
-          "http://localhost:8080/get-spectrogram",
+          "https://jhessika.serverbb.online/get-spectrogram",
           {
             method: "GET", // Cambié a "GET"
           }
