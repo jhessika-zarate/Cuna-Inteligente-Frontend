@@ -40,46 +40,33 @@
           <card type="chart">
             \
             <div class="chart-area">
-              <line-chart
-                class="grafica-principal"
-                ref="bigChart"
-                chart-id="big-line-chart"
-                :chart-data="bigLineChart.chartData"
-                :gradient-colors="bigLineChart.gradientColors"
-                :gradient-stops="bigLineChart.gradientStops"
-                :extra-options="bigLineChart.extraOptions"
-              ></line-chart>
+              <line-chart class="grafica-principal" ref="bigChart" chart-id="big-line-chart"
+                :chart-data="bigLineChart.chartData" :gradient-colors="bigLineChart.gradientColors"
+                :gradient-stops="bigLineChart.gradientStops" :extra-options="bigLineChart.extraOptions"></line-chart>
             </div>
           </card>
         </div>
       </div>
-
-      <div class="charts-container2">
-        <!-- Dos instancias del gráfico con valores de humedad distintos -->
-        <div class="col-6 sped">
-          <VelocímetroChart :humidityValue="humidityValue1" titulo="Humedad" />
-        </div>
-        <div class="col-6 sped">
-          <VelocímetroChart :humidityValue="humidityValue2" titulo="Temperatura" />
-        </div>
+      <div class="contenedormedidores">
+      <div class="col-6 sped">
+        <VelocímetroChart :humidityValue="humidityValue1" titulo="Humedad" />
+        <h1 class="valor-texto">{{ humidityValue1 }}%</h1>
       </div>
+      <div class="col-6 sped">
+        <VelocímetroChart :humidityValue="humidityValue2" titulo="Temperatura" />
+        <h1 class="valor-texto">{{ humidityValue2 }}°C</h1>
+      </div>
+    </div>
 
       <!-- Otros gráficos organizados en 3 columnas -->
       <div class="charts-container">
         <div v-for="chart in charts" :key="chart.chartId" class="chart-item">
           <div class="card">
             <div class="card-body">
-              <component
-                :is="chart.component"
-                class="chart-component"
-                :chart-id="chart.chartId"
-                :chart-data="chart.chartData"
-                gradient-colors='["#f96332", "#f96332"]'
-                gradient-stops="[0, 0.5, 0.7, 0.9]"
-                :extra-options="chart.extraOptions"
-                titulox="Fecha"
-                tituloy="kilogramos"
-              ></component>
+              <component :is="chart.component" class="chart-component" :chart-id="chart.chartId"
+                :chart-data="chart.chartData" gradient-colors='["#f96332", "#f96332"]'
+                gradient-stops="[0, 0.5, 0.7, 0.9]" :extra-options="chart.extraOptions" titulox="Fecha"
+                tituloy="kilogramos"></component>
             </div>
           </div>
         </div>
@@ -251,11 +238,11 @@ export default {
       console.log("ahora este es el bebe", this.bebe);
       this.bebe = { ...actualBebe }; // Copiar directamente los datos del bebé seleccionado
       this.getListaBebe();
-     
+
     },
 
     async cambiarSeleccionado(idNuevoBbes) {
-      console.log("id de bebe enviado",idNuevoBbes);
+      console.log("id de bebe enviado", idNuevoBbes);
       const datosActualizados = await this.bebeStore.putBebeSeleccionado(idNuevoBbes);
 
       console.log("datosActualizados", datosActualizados);
@@ -295,6 +282,7 @@ export default {
   background-repeat: repeat;
   padding-bottom: 5rem;
 }
+
 /* Estilo general para las tarjetas */
 .card {
   border-radius: 10px;
@@ -311,6 +299,13 @@ export default {
   color: #343a40;
   margin: 20px 0;
   text-transform: uppercase;
+}
+.contenedormedidores{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px; /* Espacio entre gráficos */
+  margin-top: 20px;
 }
 
 /* Títulos de las tarjetas */
@@ -333,22 +328,29 @@ export default {
   padding: 15px;
   border-bottom: 1px solid #ddd;
 }
+
 .muestrabbs {
   display: flex;
   flex-direction: row;
   padding: 0.5rem;
   margin: 0 auto;
   align-self: center;
-  overflow-x: scroll; /* Permite el desplazamiento horizontal */
-  scrollbar-width: none; /* Oculta la barra de desplazamiento en Firefox */
-  -ms-overflow-style: none; /* Oculta la barra en IE y Edge */
+  overflow-x: scroll;
+  /* Permite el desplazamiento horizontal */
+  scrollbar-width: none;
+  /* Oculta la barra de desplazamiento en Firefox */
+  -ms-overflow-style: none;
+  /* Oculta la barra en IE y Edge */
 }
+
 ul {
   list-style: none;
 }
+
 li {
   list-style: none;
 }
+
 .contenedorbb {
   align-items: center;
   align-content: center;
@@ -356,6 +358,7 @@ li {
   margin-right: 1rem;
   margin-bottom: 1rem;
 }
+
 .logobb {
   width: 4rem;
   margin: 0 auto;
@@ -364,6 +367,7 @@ li {
 .logobb:hover {
   transform: scale(1.1);
 }
+
 .botonbb {
   position: relative;
   padding: 1px 10px;
@@ -380,6 +384,7 @@ li {
   border-radius: 30px;
   transition: color 0.5s;
 }
+
 .botonbbelegido {
   position: relative;
   padding: 1px 10px;
@@ -403,6 +408,20 @@ li {
 .botonbb:hover {
   background-color: var(--secondary-color);
   transform: scale(1.1);
+}
+
+.valor-texto {
+  font-size: 30px; /* Tamaño del texto mayor */
+  font-family: 'Montserrat', sans-serif; /* Fuente más moderna */
+  font-weight: 700; /* Peso más destacado */
+  color: #ff5722; /* Color vibrante */
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); /* Gradiente de colores */
+  -webkit-background-clip: text; /* Clip de texto para el gradiente */
+  -webkit-text-fill-color: transparent; /* Hace que solo el texto tenga el gradiente */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Sombra sutil */
+  margin-top: 0px; /* Espacio superior entre el gráfico y el texto */
+  text-transform: uppercase; /* Convierte el texto a mayúsculas */
+  /* Espacio superior entre el gráfico y el texto */
 }
 
 /* Estilo de los botones del gráfico */
@@ -480,6 +499,7 @@ li {
 .text-right {
   text-align: right;
 }
+
 .text-left {
   text-align: left;
 }
@@ -487,39 +507,39 @@ li {
 /* Contenedor principal para los gráficos */
 .charts-container {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(320px, 1fr)
-  ); /* Usa un tamaño mínimo adecuado */
-  gap: 20px; /* Espacio entre los gráficos */
+  grid-template-columns: repeat(auto-fill,
+      minmax(320px, 1fr));
+  /* Usa un tamaño mínimo adecuado */
+  gap: 20px;
+  /* Espacio entre los gráficos */
   padding: 20px;
 }
 
 .charts-container2 {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(520px, 1fr)
-  ); /* Usa un tamaño mínimo adecuado */
-  gap: 20px; /* Espacio entre los gráficos */
+  grid-template-columns: repeat(auto-fill,
+      minmax(520px, 1fr));
+  /* Usa un tamaño mínimo adecuado */
+  gap: 20px;
+  /* Espacio entre los gráficos */
   padding: 20px;
 }
 
 /* Asegúrate de que el contenedor se vea bien en pantallas más grandes */
 @media (min-width: 1200px) {
   .charts-container {
-    grid-template-columns: repeat(
-      3,
-      1fr
-    ); /* 3 columnas para pantallas grandes */
+    grid-template-columns: repeat(3,
+        1fr);
+    /* 3 columnas para pantallas grandes */
   }
+
   .charts-container2 {
-    grid-template-columns: repeat(
-      2,
-      1fr
-    ); /* 3 columnas para pantallas grandes */
+    grid-template-columns: repeat(2,
+        1fr);
+    /* 3 columnas para pantallas grandes */
   }
 }
+
 /* Cada gráfico dentro del contenedor */
 .chart-item {
   display: flex;
@@ -536,6 +556,7 @@ li {
   background-color: #fff;
   padding: 20px;
 }
+
 .grafica-principal {
   height: 20rem;
 }
@@ -545,57 +566,75 @@ li {
   .chart-item {
     padding: 0px;
   }
+
   .charts-container {
     padding: 0px;
   }
+
   .charts-container2 {
     padding: 0px;
   }
+
   /* Estilos para los gráficos */
   .chart-component {
     height: 10rem;
   }
+
   .grafica-principal {
     height: 15rem;
   }
+
   .sped {
     margin-top: 2rem;
     width: 60%;
     margin-bottom: 2rem;
   }
 }
+
 @media (max-width: 400px) {
   .pantalla {
     padding: 10px;
   }
+
   .sped {
     width: 10%;
   }
 }
+
 .sped {
+  text-align: center;
+  margin-bottom: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 200px; /* Altura fija para el velocímetro */
+  height: 200px;
+  /* Altura fija para el velocímetro */
   width: 80%;
 }
 
 .centered-container {
   display: flex;
-  justify-content: center; /* Centra horizontalmente */
-  align-items: center; /* Centra verticalmente */
-  min-height: 50vh; /* Altura mínima de la pantalla completa */
+  justify-content: center;
+  /* Centra horizontalmente */
+  align-items: center;
+  /* Centra verticalmente */
+  min-height: 50vh;
+  /* Altura mínima de la pantalla completa */
 }
 
 .title {
-  margin-bottom: 20px; /* Ajusta el espaciado del título */
+  margin-bottom: 20px;
+  /* Ajusta el espaciado del título */
 }
 
 .muestrabbs {
   display: flex;
-  flex-wrap: wrap; /* Permite que los elementos se ajusten si hay muchos */
-  gap: 10px; /* Espaciado entre los elementos */
-  justify-content: center; /* Centra horizontalmente el contenido */
+  flex-wrap: wrap;
+  /* Permite que los elementos se ajusten si hay muchos */
+  gap: 10px;
+  /* Espaciado entre los elementos */
+  justify-content: center;
+  /* Centra horizontalmente el contenido */
 }
 
 .contenedorbb {
