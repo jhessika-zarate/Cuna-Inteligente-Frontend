@@ -8,6 +8,8 @@ import FormularioNuevoBebe from '@/views/FormularioNuevoBebe.vue'
 import Dashboard from '@/views/Dashboard.vue'
 import Consejos from '@/views/Consejos.vue'
 import AudioBebe from '@/views/AudioBebe.vue'
+import RegistroVacunas from '@/views/RegistroVacunas.vue'
+import RegistroLlanto from '@/views/RegistroLlanto.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -63,7 +65,18 @@ const router = createRouter({
       path: "/audio",
       name: "AudioBebe",
       component: AudioBebe,
+    },
+    {
+      path: "/registroVacunas",
+      name: "RegistroVacunas",
+      component: RegistroVacunas,
+    },
+    {
+      path: "/registroLlanto",
+      name: "RegistroLlanto",
+      component: RegistroLlanto,
     }
+
   ],
 })
 
