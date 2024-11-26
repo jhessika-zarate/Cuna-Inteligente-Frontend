@@ -47,105 +47,105 @@
           resumen: "Consulta con el pediatra sobre alimentos adecuados.",
           detalle:
             "Es importante mantener una rutina de alimentación para garantizar que el bebé reciba todos los nutrientes necesarios. Consulta regularmente con el pediatra para adaptar la dieta según la etapa de desarrollo.",
-          imagen: "/src/assets/alimentacion.jpg",
+          imagen: "/assets/alimentacion.jpg",
         },
         {
           titulo: "Sueño",
           resumen: "Asegura un ambiente cómodo para dormir.",
           detalle:
             "Crea una rutina de sueño establecida. Evita el uso de almohadas o juguetes dentro de la cuna para minimizar riesgos.",
-          imagen: "/src/assets/sueño.jpg",
+          imagen: "/assets/sueño.jpg",
         },
         {
           titulo: "Higiene",
           resumen: "Mantén la piel del bebé limpia y seca.",
           detalle:
             "Limpia cuidadosamente la piel del bebé durante el cambio de pañal. Usa productos adecuados para evitar irritaciones.",
-          imagen: "/src/assets/higiene.jpg",
+          imagen: "/assets/higiene.jpg",
         },
         {
           titulo: "Paseos y aire fresco",
           resumen: "Beneficia su desarrollo físico y emocional.",
           detalle:
             "Salir al aire libre ayuda a regular el ritmo circadiano y estimula el desarrollo cognitivo del bebé.",
-          imagen: "/src/assets/airelibre.jpg",
+          imagen: "/assets/airelibre.jpg",
         },
         {
           titulo: "Lactancia",
           resumen: "La lactancia exclusiva es recomendada hasta los 6 meses.",
           detalle:
             "La leche materna proporciona todos los nutrientes esenciales para el desarrollo del bebé. También refuerza el vínculo emocional.",
-          imagen: "/src/assets/lactancia.jpg",
+          imagen: "/assets/lactancia.jpg",
         },
         {
           titulo: "Cuidado de la salud",
           resumen: "Mantén un seguimiento médico constante.",
           detalle:
             "Lleva al bebé a sus chequeos regulares y asegúrate de que reciba sus vacunas a tiempo.",
-          imagen: "/src/assets/salud.jpg",
+          imagen: "/assets/salud.jpg",
         },
         {
           titulo: "Estimulación temprana",
           resumen: "Juegos y actividades para el desarrollo.",
           detalle:
             "Interactúa con tu bebé mediante sonidos, colores y movimientos. Esto favorece sus habilidades sensoriales y motoras.",
-          imagen: "/src/assets/estimulacion.jpg",
+          imagen: "/assets/estimulacion.jpg",
         },
         {
           titulo: "Relación con otros",
           resumen: "Socialización desde temprana edad.",
           detalle:
             "Permite que tu bebé interactúe con familiares y otros niños para fomentar sus habilidades sociales.",
-          imagen: "/src/assets/relaciones.jpg",
+          imagen: "/assets/relaciones.jpg",
         },
         {
           titulo: "Cuidado postparto para la mamá",
           resumen: "Prioriza también tu bienestar.",
           detalle:
             "Descansa, hidrátate y mantén una dieta balanceada. Cuidar de ti misma es crucial para cuidar a tu bebé.",
-          imagen: "/src/assets/postparto.jpg",
+          imagen: "/assets/postparto.jpg",
         },
         {
           titulo: "Seguridad en casa",
           resumen: "Haz tu hogar seguro para tu bebé.",
           detalle:
             "Coloca protectores en enchufes, asegúrate de que los muebles sean estables y evita objetos pequeños al alcance del bebé.",
-          imagen: "/src/assets/seguridad.jpg",
+          imagen: "/assets/seguridad.jpg",
         },
         {
           titulo: "Ergonomía al cargar al bebé",
           resumen: "Cuidar tu postura es importante.",
           detalle:
             "Usa portabebés ergonómicos para distribuir el peso del bebé de forma adecuada y evitar molestias en la espalda.",
-          imagen: "/src/assets/ergonomia.jpg",
+          imagen: "/assets/ergonomia.jpg",
         },
         {
           titulo: "Llantos y consuelo",
           resumen: "Aprende a interpretar sus necesidades.",
           detalle:
             "El llanto es la principal forma de comunicación del bebé. Puede significar hambre, sueño o incomodidad.",
-          imagen: "/src/assets/llanto.jpg",
+          imagen: "/assets/llanto.jpg",
         },
         {
           titulo: "Desarrollo emocional",
           resumen: "Fortalece el vínculo afectivo.",
           detalle:
             "Abraza, acaricia y habla con tu bebé constantemente para fortalecer la conexión emocional.",
-          imagen: "/src/assets/emociones.jpg",
+          imagen: "/assets/emociones.jpg",
         },
         {
           titulo: "Introducción a sólidos",
           resumen: "Empieza gradualmente a partir de los 6 meses.",
           detalle:
             "Introduce alimentos sólidos como purés y cereales siguiendo las recomendaciones de tu pediatra.",
-          imagen: "/src/assets/solidos.jpg",
+          imagen: "/assets/solidos.jpg",
         },
         {
           titulo: "Hora del baño",
           resumen: "Haz que el baño sea un momento relajante.",
           detalle:
             "Usa agua tibia y productos especiales para bebés. Supervisa siempre al bebé mientras esté en el agua.",
-          imagen: "/src/assets/ducha.jpg",
+          imagen: "/assets/ducha.jpg",
         },
       ],
 

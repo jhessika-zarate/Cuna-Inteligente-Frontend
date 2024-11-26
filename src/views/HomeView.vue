@@ -86,8 +86,7 @@
             <div class="baby-info">
               <div class="info-grid">
                 <div
-                  class="info-card"
-                  style="background-image: url('@/assets/6.png')"
+                  class="info-card nina"
                 >
                   <font-awesome-icon
                     :icon="['fas', 'weight-scale']"
@@ -98,9 +97,8 @@
                   </p>
                 </div>
                 <div
-                  class="info-card"
-                  style="background-image: url(/src/assets/6.png)"
-                >
+                  class="info-card nina"
+                    >
                   <font-awesome-icon
                     :icon="['fas', 'ruler']"
                     style="height: 5rem; color: whitesmoke; margin: 0.5rem"
@@ -110,9 +108,8 @@
                   </p>
                 </div>
                 <div
-                  class="info-card"
-                  style="background-image: url(/src/assets/6.png)"
-                >
+                  class="info-card nina"
+                     >
                   <font-awesome-icon
                     :icon="['fas', 'baby']"
                     style="height: 5rem; color: whitesmoke; margin: 0.5rem"
@@ -123,8 +120,7 @@
                   </p>
                 </div>
                 <div
-                  class="info-card"
-                  style="background-image: url(/src/assets/6.png)"
+                  class="info-card nina"
                 >
                   <font-awesome-icon
                     :icon="['fas', 'calendar']"
@@ -157,8 +153,7 @@
                   </p>
                 </div>
                 <div
-                  class="info-card"
-                  style="background-image: url('/assets/5.png')"
+                  class="info-card nino"
                 >
                   <font-awesome-icon
                     :icon="['fas', 'ruler']"
@@ -169,8 +164,7 @@
                   </p>
                 </div>
                 <div
-                  class="info-card"
-                  style="background-image: url(/src/assets/5.png)"
+                  class="info-card nino"
                 >
                   <font-awesome-icon
                     :icon="['fas', 'baby']"
@@ -189,8 +183,7 @@
                   </p>
                 </div>
                 <div
-                  class="info-card"
-                  style="background-image: url(/src/assets/5.png)"
+                  class="info-card nino"
                 >
                   <font-awesome-icon
                     :icon="['fas', 'calendar']"
@@ -514,6 +507,10 @@ export default {
 
 .nino{
   background-image: url('@/assets/5.png');
+}
+
+.nina{
+  background-image: url('@/assets/6.png');
 }
 
 .banner-container {
