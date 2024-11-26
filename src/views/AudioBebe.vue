@@ -205,7 +205,7 @@ export default {
         formData.append("audio", blob, "recording.webm");
 
         const response = await fetch(
-          "http://localhost:3030/upload-audio",
+          "https://jhessika.serverbb.online/upload-audio",
           {
             method: "POST",
             body: formData,
@@ -225,7 +225,7 @@ export default {
         this.openModal();
 
         const responseImagen = await fetch(
-          "http://localhost:3030/get-spectrogram",
+          "https://jhessika.serverbb.online/get-spectrogram",
           {
             method: "GET", // Cambié a "GET"
           }

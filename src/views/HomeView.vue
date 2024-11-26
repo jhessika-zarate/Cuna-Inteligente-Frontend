@@ -87,7 +87,7 @@
               <div class="info-grid">
                 <div
                   class="info-card"
-                  style="background-image: url(/src/assets/6.png)"
+                  style="background-image: url('@/assets/6.png')"
                 >
                   <font-awesome-icon
                     :icon="['fas', 'weight-scale']"
@@ -146,8 +146,7 @@
             <div class="baby-info">
               <div class="info-grid">
                 <div
-                  class="info-card"
-                  style="background-image: url(/src/assets/5.png)"
+                  class="info-card nino"
                 >
                   <font-awesome-icon
                     :icon="['fas', 'weight-scale']"
@@ -159,7 +158,7 @@
                 </div>
                 <div
                   class="info-card"
-                  style="background-image: url(/src/assets/5.png)"
+                  style="background-image: url('/assets/5.png')"
                 >
                   <font-awesome-icon
                     :icon="['fas', 'ruler']"
@@ -511,6 +510,10 @@ export default {
   display: flex;
   flex-direction: row;
   background-image: url(/assets/movil.png);
+}
+
+.nino{
+  background-image: url('@/assets/5.png');
 }
 
 .banner-container {

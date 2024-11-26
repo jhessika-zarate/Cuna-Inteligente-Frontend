@@ -70,9 +70,9 @@ export default {
           id: 1,
           title: "Canción de Cuna",
           description: "Canción clásica de cuna",
-          cover: "/src//assets/imgmusica/1.jpg",
+          cover: "/assets/imgmusica/1.jpg",
           category: 1,
-          audio: "/src//assets/musica/1.mp3",
+          audio: "/assets/musica/1.mp3",
         },
         {
           id: 2,
