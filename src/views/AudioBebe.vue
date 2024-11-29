@@ -200,10 +200,9 @@ export default {
     }
 
     console.log("Subiendo audio al servidor...");
-    const formData = new FormData();
-    formData.append("audio", blob, "recording.webm");
 
-    const uploadResponse = await this.uploadAudioToServer(formData);
+
+    const uploadResponse = await this.uploadAudioToServer(blob);
     if (uploadResponse) {
       const spectrogramResponse = await this.getSpectrogram();
       if (spectrogramResponse) {
