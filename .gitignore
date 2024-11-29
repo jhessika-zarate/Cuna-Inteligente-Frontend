@@ -34,4 +34,4 @@ coverage
 
 *.tsbuildinfo
 
-.js
+*.js
