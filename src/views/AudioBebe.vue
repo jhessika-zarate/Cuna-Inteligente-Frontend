@@ -185,67 +185,7 @@ export default {
       }
     },
 
-    async uploadAudio() {
-      this.audioURL = null;
-      try {
-        if (!this.audioChunks || this.audioChunks.length === 0) {
-          alert("No se grabó ningún audio.");
-          return;
-        }
-
-        const blob = new Blob(this.audioChunks, { type: "audio/webm" });
-
-        if (!blob || blob.size === 0) {
-          alert("El archivo de audio está vacío.");
-          return;
-        }
-
-        console.log("Subiendo audio al servidor...");
-        const formData = new FormData();
-        formData.append("audio", blob, "recording.webm");
-
-        const response = await fetch(
-          "https://jhessika.serverbb.online/upload-audio",
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          alert("Error en el servidor: " + errorText);
-          return;
-        }
-
-        const result = await response.json();
-        console.log("Resultado del servidor:", result);
-        this.razonllanto = result.prediction;
-        console.log("Razón del llanto:", this.razonllanto);
-        this.openModal();
-
-        const responseImagen = await fetch(
-          "https://jhessika.serverbb.online/get-spectrogram",
-          {
-            method: "GET", // Cambié a "GET"
-          }
-        );
-
-        if (!responseImagen.ok) {
-          const errorText = await responseImagen.text();
-          alert("Error en el servidor: " + errorText);
-          return;
-        }
-        // Simulando la respuesta del espectrograma
-        this.spectrogramImage = URL.createObjectURL(
-          await responseImagen.blob()
-        );
-        this.registraLlanto(this.razonllanto);
-      } catch (error) {
-        console.error("Error al subir el audio:", error);
-        alert("Hubo un problema al subir el audio.");
-      }
-    },
+   
 
     async registraLlanto(dato) {
       if (!this.razonllanto) {
