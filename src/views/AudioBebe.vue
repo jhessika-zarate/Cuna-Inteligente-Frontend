@@ -185,7 +185,37 @@ export default {
       }
     },
 
-   
+   async uploadAudio() {
+  try {
+    if (!this.audioChunks || this.audioChunks.length === 0) {
+      alert("No se grabó ningún audio.");
+      return;
+    }
+
+    const blob = new Blob(this.audioChunks, { type: "audio/webm" });
+
+    if (!blob || blob.size === 0) {
+      alert("El archivo de audio está vacío.");
+      return;
+    }
+
+    console.log("Subiendo audio al servidor...");
+    const formData = new FormData();
+    formData.append("audio", blob, "recording.webm");
+
+    const uploadResponse = await this.uploadAudioToServer(formData);
+    if (uploadResponse) {
+      const spectrogramResponse = await this.getSpectrogram();
+      if (spectrogramResponse) {
+        this.spectrogramImage = URL.createObjectURL(spectrogramResponse);
+        this.registraLlanto(this.razonllanto);
+      }
+    }
+  } catch (error) {
+    console.error("Error al subir el audio:", error);
+    alert("Hubo un problema al subir el audio.");
+  }
+},
 
     async registraLlanto(dato) {
       if (!this.razonllanto) {
